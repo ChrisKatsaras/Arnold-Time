@@ -24,7 +24,6 @@ angular.module('Game.factories')
 
 		},
 		
-
 		refresh : function () {
 			//this.person.css('left', this.x - 30 + 'px');
 			//this.person.css('top', );

@@ -1,7 +1,7 @@
 <div ng-controller="GameCtrl as game">
 	<div flex="100" layout="column" layout-align="center center">
 		<h1>Tank Time!</h1>
-		<div layout="row">
+		<div layout="row" ng-if="game.showForm">
 			<form name="myForm">
 				<md-input-container>
 					<label>Name</label>

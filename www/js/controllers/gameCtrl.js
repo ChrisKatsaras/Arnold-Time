@@ -3,11 +3,14 @@ angular.module('Game.controllers')
 
     var client = this;
     var socket = io.connect();
+    client.showForm = true;
+
     GameFactory.createGame(1000, 500, socket);
 
 
     client.joinGame = function(name) {
         socket.emit('joinGame', {id: name});
+        client.showForm = false;
         //var audio = new Audio('audio/sob.wav'); LOL!
         //audio.play();
     }	
