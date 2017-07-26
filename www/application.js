@@ -38,6 +38,7 @@ io.on('connection', function(user) {
 		var initX = Math.floor(Math.random() * (900 - 40)) + 40;
         var initY = Math.floor(Math.random() * (500 - 40)) + 40;
         //user.emit('addTank', {id: data.id, x: initX, y: initY, hp: 100});
+       	user.emit('addTank', { id: data.id, x: initX, y: initY, hp: 100 });
         game.addTank({id: data.id, x: initX, y: initY, hp: 100});
 	})
 
