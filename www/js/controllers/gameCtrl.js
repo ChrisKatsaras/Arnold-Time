@@ -6,6 +6,10 @@ angular.module('Game.controllers')
 
     TankFactory.createGame(socket);
 
+    socket.on('sync',function () {
+    	console.log("Sync client");
+    })
+
     game.joinGame = function(name) {
         socket.emit('joinGame', {id: name});
     }

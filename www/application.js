@@ -11,17 +11,6 @@ app.use('/', express.static(__dirname + '/'));
 
 console.log("\nInitilization complete.\n");
 
-io.on('connection', function(user) {
-	console.log("A user has connected");
-
-	user.on('joinGame', function(data) {
-		console.log(data.id," is joining the game!");
-		var initX = Math.floor(Math.random() * (900 - 40)) + 40;
-        var initY = Math.floor(Math.random() * (500 - 40)) + 40;
-        //user.emit('addTank', {id: data.id, x: initX, y: initY, hp: 100});
-        game.addTank({id: data.id, x: initX, y: initY, hp: 100});
-	}) 
-});
 
 var GameServer = function () {
 	console.log("Starting the game server");
@@ -40,7 +29,26 @@ GameServer.prototype = {
 
 var game = new GameServer();
 
+/*Socket events*/
+io.on('connection', function(user) {
+	console.log("A user has connected");
+	
+	user.on('joinGame', function(data) {
+		console.log(data.id," is joining the game!");
+		var initX = Math.floor(Math.random() * (900 - 40)) + 40;
+        var initY = Math.floor(Math.random() * (500 - 40)) + 40;
+        //user.emit('addTank', {id: data.id, x: initX, y: initY, hp: 100});
+        game.addTank({id: data.id, x: initX, y: initY, hp: 100});
+	})
 
+	user.on('sync', function(data) {
+		console.log("Sync server")
+		if(data.tank = undefined) {
+			console.log('sync the tank');
+		}
+		user.emit('sync');
+	})
+});
 
 //our app is now fully initialized, listen on port 3000 and await a request from the client.
 http.listen(8082, function() {
