@@ -1,5 +1,5 @@
-angular.module('Game.factories', [])
-.factory('GameFactory', function(){
+angular.module('Game.factories')
+.factory('GameFactory' ,['TankFactory', function(TankFactory){
 	
 	var GameFactory = {};
 	GameFactory.createGame = function (socket) {
@@ -21,20 +21,15 @@ angular.module('Game.factories', [])
 		
 	}
 
-	GameFactory.recieveData = function(data) {
+	GameFactory.receiveData = function(data) {
 		console.log("Data recieved");
 	}
 
-	GameFactory.receiveData = function(gameData) {
-		//for(i=0;i<gameData.length;i++) {
-
-		//}
-	}
-
 	GameFactory.addTank = function(tankData) {
-		
+		var tank = new TankFactory(tankData.id, tankData.x, tankData.y, tankData.hp);
+		console.log("MOTHA FUCKA TANK")
 	}
 
 	return GameFactory;	
 
-});
+}]);
