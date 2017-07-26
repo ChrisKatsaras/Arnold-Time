@@ -11,12 +11,16 @@ app.use('/', express.static(__dirname + '/'));
 
 console.log("\nInitilization complete.\n");
 
-io.on('connection', function(socket) {
+io.on('connection', function(user) {
 	console.log("A user has connected");
 
-	socket.on('joinGame', function(test) {
-		console.log("Wat");
-	})
+	user.on('joinGame', function(data) {
+		console.log(data.id," is joining the game!");
+		var initX = Math.floor(Math.random() * (900 - 40)) + 40;
+        var initY = Math.floor(Math.random() * (500 - 40)) + 40;
+        //user.emit('addTank', {id: data.id, x: initX, y: initY, hp: 100});
+        game.addTank({id: data.id, x: initX, y: initY, hp: 100});
+	}) 
 });
 
 var GameServer = function () {
@@ -25,6 +29,13 @@ var GameServer = function () {
 	this.balls = [];
 	this. lastBallId = 0;
 	
+}
+
+GameServer.prototype = {
+	addTank: function(tank) {
+		this.tanks.push(tank);
+		console.log(this.tanks);
+	}
 }
 
 var game = new GameServer();

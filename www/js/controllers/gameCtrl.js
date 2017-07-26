@@ -5,7 +5,6 @@ angular.module('Game.controllers')
     var socket = io.connect();
 
     game.joinGame = function(name) {
-        console.log(name);
         socket.emit('joinGame', {id: name});
     }
 
