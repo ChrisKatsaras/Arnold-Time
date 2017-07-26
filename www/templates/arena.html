@@ -2,7 +2,7 @@
 	<div flex="100" layout="column" layout-align="center center">
 		<h1>Tank Time!</h1>
 		<div layout="row" ng-if="game.showForm">
-			<form name="myForm">
+			<form name="myForm" ng-submit="game.joinGame(inputValue);">
 				<md-input-container>
 					<label>Name</label>
 	  				<input ng-model="inputValue" type="text" ng-model="mytext" required />
