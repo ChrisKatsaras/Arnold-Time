@@ -43,7 +43,7 @@ io.on('connection', function(user) {
 	})
 
 	user.on('sync', function(data) {
-		console.log("Sync server")
+		//console.log("Sync server")
 		if(data.tank = undefined) {
 			console.log('sync the tank');
 		}

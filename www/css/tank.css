@@ -1,0 +1,11 @@
+.tank{
+	position: absolute;
+	background-repeat: no-repeat;
+	background-position: -10px 0;
+}
+
+.tank1{
+	background-image: url('../img/hero.png');
+	height: 132px;
+	width: 200px;
+}

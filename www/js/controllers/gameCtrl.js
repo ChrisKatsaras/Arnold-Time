@@ -3,19 +3,19 @@ angular.module('Game.controllers')
 
     var client = this;
     var socket = io.connect();
-    GameFactory.createGame(socket);
-
-    
+    GameFactory.createGame(1000, 500, socket);
 
 
     client.joinGame = function(name) {
         socket.emit('joinGame', {id: name});
+        //var audio = new Audio('audio/sob.wav'); LOL!
+        //audio.play();
     }	
 
 
     /*Socket events*/
     socket.on('sync',function (gameServerData) {
-    	console.log("Sync client");
+    	//console.log("Sync client");
     	GameFactory.receiveData(gameServerData);
     });
 
