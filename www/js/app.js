@@ -1,4 +1,4 @@
-var Game = angular.module('Game', ['ngRoute', 'ngMaterial', 'ngAnimate', 'Game.controllers','smoothScroll','chart.js'])
+var Game = angular.module('Game', ['ngRoute', 'ngMaterial', 'ngAnimate', 'Game.controllers','Game.factories','smoothScroll','chart.js'])
 
 //function runs when app has been initialized and has started
 .run(function(){
