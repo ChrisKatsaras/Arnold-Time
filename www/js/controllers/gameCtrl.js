@@ -5,7 +5,7 @@ angular.module('Game.controllers')
     var socket = io.connect();
     client.showForm = true;
 
-    GameFactory.createGame(1000, 500, socket);
+    var game = new GameFactory(1000, 500, socket);
 
 
     client.joinGame = function(name) {
@@ -19,11 +19,11 @@ angular.module('Game.controllers')
     /*Socket events*/
     socket.on('sync',function (gameServerData) {
     	//console.log("Sync client");
-    	GameFactory.receiveData(gameServerData);
+    	game.receiveData(gameServerData);
     });
 
     socket.on('addTank',function (tank) {
-    	GameFactory.addTank(tank)
+    	game.addTank(tank)
     });
 
 }]);
