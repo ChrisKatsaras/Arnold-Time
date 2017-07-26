@@ -1,0 +1,4 @@
+Game.service('ExampleCachingService', function(){
+   
+    
+});

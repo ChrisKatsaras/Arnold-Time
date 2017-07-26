@@ -1,0 +1,16 @@
+<div ng-controller="GameCtrl as game">
+	<div flex="100" layout="column" layout-align="center center">
+		<h1>Tank Time!</h1>
+		<div layout="row">
+			  <!-- Textbox -->
+			<md-input-container> 
+				<label>Name</label>
+			    <input ng-model="inputValue">
+			</md-input-container>
+			  <!-- Send Button -->
+			<md-input-container>
+				<md-button id="send" class="md-raised md-primary" ng-click="game.joinGame(inputValue);">Send</md-button>
+			</md-input-container>
+		</div>
+	</div>
+</div>
