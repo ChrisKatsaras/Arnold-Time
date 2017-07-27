@@ -5,6 +5,9 @@ angular.module('Game.factories')
 		this.id = id;
 		this.x = x;
 		this.y = y;
+		this.mouseX = null;
+		this.mouseY = null;
+		this.angle = Math.floor(Math.random() * (360 - 0)) + 0;
 		this.hp = hp;
 		this.direction = {
 			up: false,
@@ -31,8 +34,10 @@ angular.module('Game.factories')
 		},
 		
 		refresh : function () {
-			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px');
-			//angular.element(document.querySelector('#'+this.id)).css('top',this.y - 40 + 'px');
+			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px) rotateZ('+this.angle+'deg)');
+			//angular.element(document.querySelector('#'+this.id)).css('-webkit-transform','rotateZ(' + this.angle + 'deg');
+			
+			
 			//angular.element(document.querySelector('#'+this.id)).css('left',this.x - 40 + 'px');
 		},
 
@@ -57,22 +62,22 @@ angular.module('Game.factories')
 			}
 			console.log(k);
 			}).keyup( function(e){
-			var k = e.keyCode || e.which;
-			switch(k){
-				case 87: //W
-					t.direction.up = false;
-					break;
-				case 68: //D
-					t.direction.right = false;
-					break;
-				case 83: //S
-					t.direction.down = false;
-					break;
-				case 65: //A
-					t.direction.left = false;
-					break;
-			}
-		})
+				var k = e.keyCode || e.which;
+				switch(k){
+					case 87: //W
+						t.direction.up = false;
+						break;
+					case 68: //D
+						t.direction.right = false;
+						break;
+					case 83: //S
+						t.direction.down = false;
+						break;
+					case 65: //A
+						t.direction.left = false;
+						break;
+				}
+			})
 		},
 
 		move: function () {
