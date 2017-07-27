@@ -1,16 +1,19 @@
 <div ng-controller="GameCtrl as game">
-	<md-dialog aria-label="City Form" flex="50">
+	<md-dialog aria-label="City Form" flex="100">
 	  	<md-toolbar> <!--Header bar for the efp modal popup.-->
 	    	<div class="md-toolbar-tools">
 	      		<h2 class="font-primary f2f-text-brown">
-	       			Type your name!
+	       			ARNOLD TIME!
 	      		</h2>
 	      		<span flex></span>
 	    	</div>
 	  	</md-toolbar>
+
+	  	
 	  <!--Content of modal-->
 	 	<md-dialog-content class="section" layout-margin>
-			<form name="myForm" ng-submit="game.joinGame(inputValue); game.cancelModal()">
+	 	<img src="img/ARNOLD.jpg"/>
+			<form name="myForm" ng-submit="game.joinGame(inputValue); game.cancelModal();">
 				<md-input-container>
 					<label>Name</label>
 						<input ng-model="inputValue" type="text" ng-model="mytext" required />

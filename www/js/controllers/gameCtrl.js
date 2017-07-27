@@ -22,8 +22,8 @@ angular.module('Game.controllers')
     client.joinGame = function(name) {
     	game = new GameFactory(1000, 500, socket);
         socket.emit('joinGame', {id: name});
-        //var audio = new Audio('audio/sob.wav'); LOL!
-        //audio.play();
+        var audio = new Audio('audio/sob.wav');//LOL
+        audio.play();
     }	
 
 

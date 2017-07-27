@@ -9,3 +9,7 @@
 	height: 132px;
 	width: 200px;
 }
+
+.feet {
+	background-image: url('../img/feet.png');
+}

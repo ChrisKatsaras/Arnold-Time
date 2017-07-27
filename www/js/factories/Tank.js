@@ -22,7 +22,7 @@ angular.module('Game.factories')
 	TankFactory.prototype = { 
 
 		draw : function(){
-			var div = angular.element('<div id="'+this.id+'"class="tank tank1"></div>');
+			var div = angular.element('<div id="'+this.id+'"class="tank tank1"><div class="feet"></div></div>');
 			this.body = angular.element(document).find('body').eq(0);
 			this.body.append(div);
 			this.person = angular.element(document.querySelector('#'+this.id));
