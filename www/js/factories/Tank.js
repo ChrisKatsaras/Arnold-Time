@@ -31,13 +31,9 @@ angular.module('Game.factories')
 		},
 		
 		refresh : function () {
-			//this.person.css('left', this.x - 30 + 'px');
-			//this.person.css('top', );
-			console.log("X:",this.x," Y:",this.y,this.id);
-
-			angular.element(document.querySelector('#'+this.id)).css('top',this.y - 40 + 'px');
-			
-			angular.element(document.querySelector('#'+this.id)).css('left',this.x - 40 + 'px');
+			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px');
+			//angular.element(document.querySelector('#'+this.id)).css('top',this.y - 40 + 'px');
+			//angular.element(document.querySelector('#'+this.id)).css('left',this.x - 40 + 'px');
 		},
 
 		registerControls : function () {
