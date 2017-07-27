@@ -8,10 +8,9 @@ angular.module('Game.factories')
 		this.height = height
 		this.socket = socket;
 		var loop = this;
-		
+
 		setInterval(function() {
 			loop.gameLoop();
-			loop.tanks[0].move();
 		}, 25);
 	}
 
@@ -19,6 +18,7 @@ angular.module('Game.factories')
 	
 		gameLoop : function() {
 			this.sendData();
+			this.tanks[0].move();
 		},
 
 		sendData : function() {

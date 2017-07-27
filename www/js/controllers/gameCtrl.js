@@ -1,18 +1,27 @@
 angular.module('Game.controllers')
-.controller('GameCtrl', ['$location','$scope','GameFactory', function($location,$scope,GameFactory) {
+.controller('GameCtrl', ['$location', '$mdDialog','$scope','GameFactory', function($location, $mdDialog,$scope,GameFactory) {
 
     var client = this;
     var socket = io.connect();
     var game;
-    client.showForm = true;
 
-   
+   	client.init = function(ev) {
+   		$mdDialog.show({
+     		templateUrl: 'templates/modal.html',
+     		parent: angular.element(document.body),
+     		targetEvent: event,
+     		clickOutsideToClose: false,
+     		fullscreen: false,
+     	});
+   	}
 
+   	client.cancelModal = function () {
+   		$mdDialog.cancel();
+   	}
 
     client.joinGame = function(name) {
     	game = new GameFactory(1000, 500, socket);
         socket.emit('joinGame', {id: name});
-        client.showForm = false;
         //var audio = new Audio('audio/sob.wav'); LOL!
         //audio.play();
     }	
