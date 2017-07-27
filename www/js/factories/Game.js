@@ -11,7 +11,8 @@ angular.module('Game.factories')
 		
 		setInterval(function() {
 			loop.gameLoop();
-		}, 1000);
+			loop.tanks[0].move();
+		}, 50);
 	}
 
 	GameFactory.prototype = { 
@@ -33,7 +34,6 @@ angular.module('Game.factories')
 		addTank : function(tankData) {
 			var tank = new TankFactory(tankData.id, tankData.x, tankData.y, tankData.hp);
 			this.tanks.push(tank);
-			console.log("THE LIST OF TANK OBJECTS!", this.tanks);
 		}
 	}
 
