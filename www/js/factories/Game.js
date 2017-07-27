@@ -7,6 +7,7 @@ angular.module('Game.factories')
 		this.width = width;
 		this.height = height
 		this.socket = socket;
+		this.local = null;
 		var loop = this;
 
 		setInterval(function() {
@@ -18,7 +19,7 @@ angular.module('Game.factories')
 	
 		gameLoop : function() {
 			this.sendData();
-			this.tanks[0].move();
+			this.local.move();
 		},
 
 		sendData : function() {
@@ -32,8 +33,15 @@ angular.module('Game.factories')
 		},
 
 		addTank : function(tankData) {
-			var tank = new TankFactory(tankData.id, tankData.x, tankData.y, tankData.hp);
-			this.tanks.push(tank);
+			var tank = new TankFactory(tankData.id, tankData.local, tankData.x, tankData.y, tankData.hp);
+			if(tank.local) {
+				console.log("the tank is local");
+				this.local = tank;
+			} else {
+				console.log("the AINT tank is local");
+				this.tanks.push(tank);
+			}
+			
 		}
 	}
 

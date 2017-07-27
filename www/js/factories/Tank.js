@@ -1,7 +1,7 @@
 angular.module('Game.factories')
 .factory('TankFactory' ,['$rootScope', function($rootScope){
 	
-	var TankFactory = function (id, x, y, hp) {
+	var TankFactory = function (id, local, x, y, hp) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
@@ -9,6 +9,7 @@ angular.module('Game.factories')
 		this.mouseY = null;
 		this.angle = Math.floor(Math.random() * (360 - 0)) + 0;
 		this.hp = hp;
+		this.local = local;
 		this.direction = {
 			up: false,
 			down: false,
