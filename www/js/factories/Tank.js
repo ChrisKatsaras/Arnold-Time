@@ -34,11 +34,7 @@ angular.module('Game.factories')
 		},
 		
 		refresh : function () {
-			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px) rotateZ('+this.angle+'deg)');
-			//angular.element(document.querySelector('#'+this.id)).css('-webkit-transform','rotateZ(' + this.angle + 'deg');
-			
-			
-			//angular.element(document.querySelector('#'+this.id)).css('left',this.x - 40 + 'px');
+			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px) rotate('+this.angle+'rad)');
 		},
 
 		registerControls : function () {
@@ -77,6 +73,15 @@ angular.module('Game.factories')
 						t.direction.left = false;
 						break;
 				}
+			}) .mousemove( function(e){ //Detect mouse for aiming
+				//Using jQuery
+				var div = document.querySelector("#"+t.id);
+				var dimensions = div.getBoundingClientRect();
+
+				t.mx = dimensions.left + dimensions.width / 2;
+				t.my = dimensions.top + dimensions.height / 2;
+
+				t.changeAngle();
 			})
 		},
 
@@ -103,6 +108,10 @@ angular.module('Game.factories')
 			this.y += moveY;
 			this.x += moveX;
 			this.refresh();
+		},
+
+		changeAngle : function () {
+			this.angle = Math.atan2(event.clientY - this.my, event.clientX - this.mx);
 		}
 	}
 	
