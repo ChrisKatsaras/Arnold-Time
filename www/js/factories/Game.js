@@ -37,7 +37,7 @@ angular.module('Game.factories')
 				angle: this.local.angle
 			};
 			gameData.tank = t;
-			console.log("Sync",gameData);
+			//console.log("Sync",gameData);
 			this.socket.emit('sync', gameData);	
 		},
 
@@ -73,7 +73,7 @@ angular.module('Game.factories')
 						found = true;
 					}
 				});
-				console.log("List of tanks", game.tanks);
+				//console.log("List of tanks", game.tanks);
 				if(!found && (game.local == undefined || serverTank.id != game.local.id)){
 					//I need to create it
 					console.log(serverTank);

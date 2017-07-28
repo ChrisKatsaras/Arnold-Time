@@ -41,13 +41,14 @@ GameServer.prototype = {
 		return gameData;
 	},
 	checkID : function(id) {
+		var flag = true;
 		this.tanks.forEach( function(tank){
 			if(tank.id === id) {
 				console.log("User already exists");
-				return true;
+				flag = false;
 			}
 		});
-		return false;
+		return flag;
 	},
 	removeTank: function(username){
 		//Remove tank object
@@ -62,12 +63,17 @@ io.on('connection', function(user) {
 	console.log("A user has connected");
 	
 	user.on('joinGame', function(data) {
-		console.log(data.id," is joining the game!");
-		var initX = Math.floor(Math.random() * (900 - 40)) + 40;
-        var initY = Math.floor(Math.random() * (500 - 40)) + 40;
-       	user.emit('addTank', { id: data.id, local: true, x: initX, y: initY, hp: 100 });
-       	user.broadcast.emit('addTank', { id: data.id, local: false, x: initX, y: initY, hp: 100 });
-        game.addTank({id: data.id, x: initX, y: initY, hp: 100});
+		console.log("THIS",game.checkID(data.id));
+		if(game.checkID(data.id)) {
+			console.log(data.id," is joining the game!");
+			var initX = Math.floor(Math.random() * (900 - 40)) + 40;
+	        var initY = Math.floor(Math.random() * (500 - 40)) + 40;
+	       	user.emit('addTank', { id: data.id, local: true, x: initX, y: initY, hp: 100 });
+	       	user.broadcast.emit('addTank', { id: data.id, local: false, x: initX, y: initY, hp: 100 });
+	        game.addTank({id: data.id, x: initX, y: initY, hp: 100});
+			user.emit('joinedGame');
+		}
+		
 	})
 
 	user.on('sync', function(data) {
