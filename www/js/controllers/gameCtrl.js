@@ -23,14 +23,14 @@ angular.module('Game.controllers')
     	game = new GameFactory(1000, 500, socket);
     	client.showForm = false;
         socket.emit('joinGame', {id: name});
-        var audio = new Audio('audio/sob.wav');//LOL
-        audio.play();
+        //var audio = new Audio('audio/sob.wav');//LOL
+        //audio.play();
     }	
 
 
     /*Socket events*/
     socket.on('sync',function (gameServerData) {
-    	//console.log("Sync client");
+    	//console.log(gameServerData);
     	game.receiveData(gameServerData);
     });
 

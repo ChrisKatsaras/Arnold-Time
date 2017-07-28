@@ -24,21 +24,57 @@ angular.module('Game.factories')
 
 		sendData : function() {
 			//console.log("Sending data");
-			var gameData = 2;
+			var gameData = {};
+
+			//Send tank data
+			var t = {
+				id: this.local.id,
+				x: this.local.x,
+				y: this.local.y,
+				angle: this.local.angle
+			};
+			gameData.tank = t;
 			this.socket.emit('sync', gameData);
 		},
 
-		receiveData : function(data) {
-			//console.log("Data recieved");
+		receiveData : function(serverData) {
+			
+			var game = this;
+			serverData.tanks.forEach( function(serverTank) {
+				//console.log(serverTank);
+
+				if(game.local != undefined && serverTank .id == game.local.id) {
+					game.local.hp = serverTank.hp;
+					if(game.local.hp <= 0){
+						//game.killTank(game.localTank);
+						console.log("You dead");
+					}
+				}
+
+				game.tanks.forEach( function(clientTank){
+					//update foreign tanks
+					if(clientTank.id == serverTank.id){
+						clientTank.x = serverTank.x;
+						clientTank.y = serverTank.y;
+						clientTank.angle = serverTank.angle;
+						clientTank.hp = serverTank.hp;
+						if(clientTank.hp <= 0){
+							//game.killTank(clientTank);
+						}
+						clientTank.refresh();
+						found = true;
+					}
+				});
+			});
 		},
 
 		addTank : function(tankData) {
 			var tank = new TankFactory(tankData.id, tankData.local, tankData.x, tankData.y, tankData.hp);
 			if(tank.local) {
-				console.log("the tank is local");
+				console.log("The player local");
 				this.local = tank;
 			} else {
-				console.log("the AINT tank is local");
+				console.log("The player isnt local");
 				this.tanks.push(tank);
 			}
 			

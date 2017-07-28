@@ -24,6 +24,23 @@ GameServer.prototype = {
 	addTank: function(tank) {
 		this.tanks.push(tank);
 		console.log(this.tanks);
+	},
+
+	updateTanks: function(data){
+		this.tanks.forEach( function(tank){
+			if(tank.id == data.id){
+				tank.x = data.x;
+				tank.y = data.y;
+				tank.angle = data.angle;
+			}
+		});
+	},
+	getData: function(){
+		var gameData = {};
+		gameData.tanks = this.tanks;
+
+
+		return gameData;
 	}
 }
 
@@ -44,11 +61,10 @@ io.on('connection', function(user) {
 	})
 
 	user.on('sync', function(data) {
-		//console.log("Sync server")
-		if(data.tank = undefined) {
-			console.log('sync the tank');
+		if(data.tank != undefined){
+			game.updateTanks(data.tank);
 		}
-		user.emit('sync');
+		user.emit('sync', game.getData());
 	})
 });
 

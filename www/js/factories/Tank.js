@@ -23,15 +23,16 @@ angular.module('Game.factories')
 	TankFactory.prototype = { 
 
 		draw : function(){
-			var div = angular.element('<div id="'+this.id+'"class="tank tank1"><div class="feet"></div></div>');
+			var div = angular.element('<div id="'+this.id+'"class="tank tank1"></div>');
 			this.body = angular.element(document).find('body').eq(0);
 			this.body.append(div);
 			this.person = angular.element(document.querySelector('#'+this.id));
 			//console.log(this.person);
-			
-			this.registerControls();
 			this.refresh();
 
+			if(this.local) {
+				this.registerControls();
+			}
 		},
 		
 		refresh : function () {
@@ -57,7 +58,6 @@ angular.module('Game.factories')
 					t.direction.left = true;
 					break;
 			}
-			console.log(k);
 			}).keyup( function(e){
 				var k = e.keyCode || e.which;
 				switch(k){
@@ -78,10 +78,8 @@ angular.module('Game.factories')
 				//Using jQuery
 				var div = document.querySelector("#"+t.id);
 				var dimensions = div.getBoundingClientRect();
-
 				t.mx = dimensions.left + dimensions.width / 2;
 				t.my = dimensions.top + dimensions.height / 2;
-
 				t.changeAngle();
 			})
 		},

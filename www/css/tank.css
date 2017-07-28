@@ -5,11 +5,7 @@
 }
 
 .tank1{
-	background-image: url('../img/hero.png');
-	height: 132px;
+	background-image: url('../img/handgun.png');
+	height: 171px;
 	width: 200px;
-}
-
-.feet {
-	background-image: url('../img/feet.png');
 }

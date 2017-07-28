@@ -1,8 +1,8 @@
 <div ng-controller="GameCtrl as game">
 	<div flex="100" layout="column" layout-align="center center">
 		<h1>Tank Time!</h1>
-		<div layout="row" ng-if="game.showForm">
-		<img src="img/ARNOLD.jpg"/>
+		<div layout="column" layout-align="center center"ng-if="game.showForm">
+			<img src="img/ARNOLD.jpg"/>
 			<form name="myForm" ng-submit="game.joinGame(inputValue);">
 				<md-input-container>
 					<label>Name</label>
