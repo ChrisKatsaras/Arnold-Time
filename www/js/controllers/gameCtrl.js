@@ -40,9 +40,14 @@ angular.module('Game.controllers')
         game.removeTank(username)
     });
 
-    socket.on('joinedGame',function (username) {
-        $mdDialog.cancel();
-        console.log("unique");
+    socket.on('joinedGame',function (status) {
+        if(status) {
+            $mdDialog.cancel();
+        } else {
+            var audio = new Audio('audio/dontdothat.mp3');//LOL
+            audio.play();
+        }
+        
     });
 
     //User leaves the game

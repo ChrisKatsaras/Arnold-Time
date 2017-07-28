@@ -71,7 +71,9 @@ io.on('connection', function(user) {
 	       	user.emit('addTank', { id: data.id, local: true, x: initX, y: initY, hp: 100 });
 	       	user.broadcast.emit('addTank', { id: data.id, local: false, x: initX, y: initY, hp: 100 });
 	        game.addTank({id: data.id, x: initX, y: initY, hp: 100});
-			user.emit('joinedGame');
+			user.emit('joinedGame', true);
+		} else {
+			user.emit('joinedGame', false);
 		}
 		
 	})
