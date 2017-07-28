@@ -39,6 +39,19 @@ GameServer.prototype = {
 		var gameData = {};
 		gameData.tanks = this.tanks;
 		return gameData;
+	},
+	checkID : function(id) {
+		this.tanks.forEach( function(tank){
+			if(tank.id === id) {
+				console.log("User already exists");
+				return true;
+			}
+		});
+		return false;
+	},
+	removeTank: function(username){
+		//Remove tank object
+		this.tanks = this.tanks.filter( function(t){return t.id != username} );
 	}
 }
 
@@ -52,7 +65,6 @@ io.on('connection', function(user) {
 		console.log(data.id," is joining the game!");
 		var initX = Math.floor(Math.random() * (900 - 40)) + 40;
         var initY = Math.floor(Math.random() * (500 - 40)) + 40;
-        
        	user.emit('addTank', { id: data.id, local: true, x: initX, y: initY, hp: 100 });
        	user.broadcast.emit('addTank', { id: data.id, local: false, x: initX, y: initY, hp: 100 });
         game.addTank({id: data.id, x: initX, y: initY, hp: 100});
@@ -62,10 +74,16 @@ io.on('connection', function(user) {
 		if(data.tank != undefined){
 			game.updateTanks(data.tank);
 		}
-		
+
 		user.emit('sync', game.getData());
 		user.broadcast.emit('sync', game.getData());
 	})
+
+	user.on('leaveGame', function(username){
+		console.log(username + ' has left the game');
+		game.removeTank(username);
+		user.broadcast.emit('removeTank', username);
+	});
 });
 
 //our app is now fully initialized, listen on port 3000 and await a request from the client.

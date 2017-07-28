@@ -12,7 +12,7 @@ angular.module('Game.factories')
 
 		setInterval(function() {
 			loop.gameLoop();
-		}, 50);
+		}, 25);
 	}
 
 	GameFactory.prototype = { 
@@ -54,7 +54,7 @@ angular.module('Game.factories')
 						console.log("You dead");
 					}
 				}	
-				console.log(game.tanks);
+				//console.log(game.tanks);
 				var found = false;
 				game.tanks.forEach( function(clientTank){
 					//update foreign tanks
@@ -68,7 +68,7 @@ angular.module('Game.factories')
 						if(clientTank.hp <= 0){
 							//game.killTank(clientTank);
 						}
-						console.log("refreshing client tank", clientTank);
+						//console.log("refreshing client tank", clientTank);
 						clientTank.refresh();
 						found = true;
 					}
@@ -93,6 +93,13 @@ angular.module('Game.factories')
 				this.tanks.push(tank);
 			}
 			
+		},
+		removeTank: function(username){
+			//Remove tank object
+			this.tanks = this.tanks.filter(function(t){return t.id != username} );
+			//remove tank from dom
+			console.log("removing")
+			$('#' + username).remove();
 		}
 	}
 
