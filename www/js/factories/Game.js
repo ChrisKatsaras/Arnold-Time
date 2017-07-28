@@ -95,10 +95,7 @@ angular.module('Game.factories')
 			
 		},
 		removeTank: function(username){
-			//Remove tank object
 			this.tanks = this.tanks.filter(function(t){return t.id != username} );
-			//remove tank from dom
-			console.log("removing")
 			$('#' + username).remove();
 		}
 	}

@@ -23,7 +23,7 @@
 	 	</md-dialog-content>
 	  <!--Button at bottom of modal-->
 	  	<md-dialog-actions>
-	    	<md-button class="md-raised md-primary" ng-click="client.joinGame(inputValue); game.cancelModal()" ng-disabled="myForm.$invalid || myForm.$pending">Send</button>
+	    	<md-button class="md-raised md-primary" ng-click="game.joinGame(inputValue); game.cancelModal()" ng-disabled="myForm.$invalid || myForm.$pending">Send</button>
 	 	</md-dialog-actions>
 	</md-dialog>
 </div>
