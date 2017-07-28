@@ -5,6 +5,7 @@ angular.module('Game.controllers')
     var socket = io.connect();
     var game;
     client.showForm = true;
+    game = new GameFactory(1000, 500, socket);
    	client.init = function(ev) {
    		$mdDialog.show({
      		templateUrl: 'templates/modal.html',
@@ -20,7 +21,7 @@ angular.module('Game.controllers')
    	}
 
     client.joinGame = function(name) {
-    	game = new GameFactory(1000, 500, socket);
+    	
     	client.showForm = false;
         socket.emit('joinGame', {id: name});
         //var audio = new Audio('audio/sob.wav');//LOL
@@ -30,7 +31,6 @@ angular.module('Game.controllers')
 
     /*Socket events*/
     socket.on('sync',function (gameServerData) {
-    	//console.log(gameServerData);
     	game.receiveData(gameServerData);
     });
 

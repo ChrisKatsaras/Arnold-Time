@@ -38,8 +38,6 @@ GameServer.prototype = {
 	getData: function(){
 		var gameData = {};
 		gameData.tanks = this.tanks;
-
-
 		return gameData;
 	}
 }
@@ -64,7 +62,9 @@ io.on('connection', function(user) {
 		if(data.tank != undefined){
 			game.updateTanks(data.tank);
 		}
+		
 		user.emit('sync', game.getData());
+		user.broadcast.emit('sync', game.getData());
 	})
 });
 
