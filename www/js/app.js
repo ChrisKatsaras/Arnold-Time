@@ -1,22 +1,22 @@
 var Game = angular.module('Game', ['ngRoute', 'ngMaterial', 'ngAnimate', 'Game.controllers','Game.factories','smoothScroll','chart.js'])
 
-//function runs when app has been initialized and has started
-.run(function(){
-	console.log("Project has started.");
-})
 
 //Configuration function. Here we define which templates are 
 //linked to which controllers.
-.config(function($routeProvider, $locationProvider) {
+Game.config(function($routeProvider, $locationProvider) {
 	$routeProvider
 
 	.when('/', {
-		templateUrl: "templates/arena.html"
+		templateUrl: "/templates/arena.html"
+	})
+
+	.when('/404', {
+		templateUrl: "/templates/404.html"
 	})
 
     //default catch-all
 	.otherwise({
-		redirectTo: '/404'
+		templateUrl: '/templates/404.html'
 	});
 
 	$locationProvider.html5Mode(true);

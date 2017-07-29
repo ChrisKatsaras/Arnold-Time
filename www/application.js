@@ -5,9 +5,11 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-//set the root directory of the project, required for res.sendFile.
 app.use('/', express.static(__dirname + '/'));
 
+app.get('*', function (req, res) {
+    res.sendFile(__dirname + '/index.html');
+});
 
 console.log("\nInitilization complete.\n");
 
