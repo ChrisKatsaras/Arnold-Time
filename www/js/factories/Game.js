@@ -38,7 +38,6 @@ angular.module('Game.factories')
 				angle: this.local.angle
 			};
 			gameData.tank = t;
-			//console.log("Sync",gameData);
 			this.socket.emit('sync', gameData);	
 		},
 
@@ -58,9 +57,7 @@ angular.module('Game.factories')
 				//console.log(game.tanks);
 				var found = false;
 				game.tanks.forEach( function(clientTank){
-					//update foreign tanks
-					//console.log("Foreign tanks",game.tanks);
-					//console.log("Server tank",serverTank);
+
 					if(clientTank.id == serverTank.id){
 						clientTank.x = serverTank.x;
 						clientTank.y = serverTank.y;
@@ -69,16 +66,14 @@ angular.module('Game.factories')
 						if(clientTank.hp <= 0){
 							//game.killTank(clientTank);
 						}
-						//console.log("refreshing client tank", clientTank);
+
 						clientTank.refresh();
 						found = true;
 					}
 				});
 				//console.log("List of tanks", game.tanks);
 				if(!found && (game.local == undefined || serverTank.id != game.local.id)){
-					//I need to create it
-					//console.log(serverTank);
-					//{ id: data.id, local: false, x: initX, y: initY, hp: 100 })
+
 					game.addTank({id : serverTank.id, local : false, x: serverTank.x, y: serverTank.y, hp: serverTank.hp});
 				}
 			});

@@ -47,7 +47,7 @@ angular.module('Game.factories')
 		registerControls : function () {
 			var t = this;
 			
-			$(document).keypress( function(e){
+			$(document).keypress( function(e) {
 			var k = e.keyCode || e.which;
 			switch(k){
 				case 119: //W
@@ -63,7 +63,7 @@ angular.module('Game.factories')
 					t.direction.left = true;
 					break;
 			}
-			}).keyup( function(e){
+			}).keyup( function(e) {
 				var k = e.keyCode || e.which;
 				switch(k){
 					case 87: //W
@@ -79,13 +79,15 @@ angular.module('Game.factories')
 						t.direction.left = false;
 						break;
 				}
-			}) .mousemove( function(e){ //Detect mouse for aiming
+			}) .mousemove( function(e) {
 				//Using jQuery
 				var div = document.querySelector("#"+t.id);
 				var dimensions = div.getBoundingClientRect();
 				t.mx = dimensions.left + dimensions.width / 2;
 				t.my = dimensions.top + dimensions.height / 2;
 				t.changeAngle();
+			}) .click( function() {
+				console.log("we did it");
 			})
 		},
 
