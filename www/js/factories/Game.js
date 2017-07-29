@@ -28,7 +28,6 @@ angular.module('Game.factories')
 		},
 
 		sendData : function() {
-			//console.log("Sending data");
 			var gameData = {};
 
 			//Send tank data
@@ -78,7 +77,7 @@ angular.module('Game.factories')
 				//console.log("List of tanks", game.tanks);
 				if(!found && (game.local == undefined || serverTank.id != game.local.id)){
 					//I need to create it
-					console.log(serverTank);
+					//console.log(serverTank);
 					//{ id: data.id, local: false, x: initX, y: initY, hp: 100 })
 					game.addTank({id : serverTank.id, local : false, x: serverTank.x, y: serverTank.y, hp: serverTank.hp});
 				}
