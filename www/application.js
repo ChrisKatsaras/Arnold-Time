@@ -70,8 +70,8 @@ io.on('connection', function(user) {
 	user.on('joinGame', function(data) {
 		if(game.checkID(data.id)) {
 			console.log(data.id," is joining the game!");
-			var initX = Math.floor(Math.random() * (1000 - 40)) + 40;
-	        var initY = Math.floor(Math.random() * (400 - 40)) + 40;
+			var initX = Math.floor(Math.random() * (1000 - 10)) + 40;
+	        var initY = Math.floor(Math.random() * (400 - 10)) + 40;
 	       	user.emit('addTank', { id: data.id, local: true, x: initX, y: initY, hp: 100 });
 	       	user.broadcast.emit('addTank', { id: data.id, local: false, x: initX, y: initY, hp: 100 });
 	        game.addTank({id: data.id, x: initX, y: initY, hp: 100});
@@ -93,7 +93,7 @@ io.on('connection', function(user) {
 
 	user.on('leaveGame', function(username){
 		console.log(username + ' has left the game');
-		game.removeTank(username);
+		game.removeTank(username);aw
 		user.broadcast.emit('removeTank', username);
 	});
 });

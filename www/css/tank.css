@@ -13,4 +13,5 @@
 .field {
 	background-image: url('../img/dirt.png');
 	min-width: 1100px; /*Prevents arena from shrinking*/
+	border-image: url('../img/handgun.png') 30 round;
 }

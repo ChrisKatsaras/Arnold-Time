@@ -110,8 +110,16 @@ angular.module('Game.factories')
 			moveY *= 5;
 			var div = document.querySelector("#field");
 			var dimensions = div.getBoundingClientRect();
-			this.y += moveY;
-			this.x += moveX;
+			console.log(dimensions);
+			if((this.x + moveX >  0) && (this.x + moveX < dimensions.width - 137)) {
+				this.x += moveX;
+			}
+
+			if((this.y + moveY > 0) && (this.y + moveY < dimensions.height - 99)) {
+				this.y += moveY;
+			}
+			
+			
 			this.refresh();
 		},
 
