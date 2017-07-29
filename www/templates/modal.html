@@ -1,9 +1,9 @@
 <div flex-xs="100">
 	<md-dialog aria-label="City Form" flex="100">
-	  	<md-toolbar> <!--Header bar for the efp modal popup.-->
+	  	<md-toolbar>
 	    	<div class="md-toolbar-tools">
-	      		<h2 class="font-primary f2f-text-brown">
-	       			ARNOLD TIME!
+	      		<h2>
+	       			Join the fight!
 	      		</h2>
 	      		<span flex></span>
 	    	</div>
@@ -12,11 +12,11 @@
 	  	
 	  <!--Content of modal-->
 	 	<md-dialog-content class="section" layout-margin>
-	 	<img src="img/ARNOLD.jpg"/>
-			<form name="myForm" ng-submit="game.joinGame(inputValue); game.cancelModal();">
+	 	<img src="img/giphy.gif"/>
+			<form name="myForm" ng-submit="game.joinGame(inputValue); game.cancelModal();" layout="column" layout-algin="center center">
 				<md-input-container>
 					<label>Name</label>
-						<input ng-model="inputValue" type="text" ng-model="mytext" required />
+						<input md-maxlength="20" ng-model="inputValue" type="text" ng-model="mytext" required  ng-pattern="/^[A-Za-z- ]+$/"/>
 				</md-input-container>
 				
 			</form>
