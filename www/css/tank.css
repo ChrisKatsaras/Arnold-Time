@@ -6,6 +6,11 @@
 
 .tank1{
 	background-image: url('../img/handgun.png');
-	height: 171px;
-	width: 200px;
+	height: 128px;
+	width: 150px;
+}
+
+.field {
+	background-image: url('../img/dirt.png');
+	min-width: 1100px; /*Prevents arena from shrinking*/
 }

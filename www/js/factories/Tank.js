@@ -2,6 +2,8 @@ angular.module('Game.factories')
 .factory('TankFactory' ,['$rootScope', function($rootScope){
 	
 	var TankFactory = function (id, local, x, y, hp) {
+		var div = document.querySelector("#field");
+		var dimensions = div.getBoundingClientRect();
 		this.id = id;
 		this.x = x;
 		this.y = y;
@@ -24,7 +26,8 @@ angular.module('Game.factories')
 
 		draw : function(){
 			var div = angular.element('<div id="'+this.id+'"class="tank tank1"></div>');
-			this.body = angular.element(document).find('body').eq(0);
+			//this.body = angular.element(document).find('body');
+			this.body = angular.element(document.querySelector('#field'))
 			this.body.append(div);
 			this.person = angular.element(document.querySelector('#'+this.id));
 			//console.log(this.person);
@@ -36,7 +39,9 @@ angular.module('Game.factories')
 		},
 		
 		refresh : function () {
+			
 			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px) rotate('+this.angle+'rad)');
+
 		},
 
 		registerControls : function () {

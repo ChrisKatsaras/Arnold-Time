@@ -7,6 +7,8 @@ angular.module('Game.factories')
 		this.width = width;
 		this.height = height
 		this.socket = socket;
+		angular.element(document.querySelector('#field')).css('height','500px');
+		angular.element(document.querySelector('#field')).css('width','1100px');
 		//this.local = null;
 		var loop = this;
 
@@ -18,11 +20,11 @@ angular.module('Game.factories')
 	GameFactory.prototype = { 
 	
 		gameLoop : function() {
+			//If the user is in the game
 			if(this.local) {
 				this.sendData();
 				this.local.move();
 			}
-			
 		},
 
 		sendData : function() {
