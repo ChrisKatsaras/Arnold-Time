@@ -42,7 +42,12 @@ GameServer.prototype = {
 	},
 	checkID : function(id) {
 		var flag = true;
+		
+		if(id === "field") {
+			flag = false;
+		}
 		this.tanks.forEach( function(tank){
+			console.log(id);
 			if(tank.id === id) {
 				console.log("User already exists");
 				flag = false;
@@ -63,7 +68,6 @@ io.on('connection', function(user) {
 	console.log("A user has connected");
 	
 	user.on('joinGame', function(data) {
-		console.log("THIS",game.checkID(data.id));
 		if(game.checkID(data.id)) {
 			console.log(data.id," is joining the game!");
 			var initX = Math.floor(Math.random() * (900 - 40)) + 40;

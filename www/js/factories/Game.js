@@ -14,7 +14,7 @@ angular.module('Game.factories')
 
 		setInterval(function() {
 			loop.gameLoop();
-		}, 25);
+		}, 35);
 	}
 
 	GameFactory.prototype = { 
