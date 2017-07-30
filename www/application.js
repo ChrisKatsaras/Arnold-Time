@@ -17,9 +17,8 @@ console.log("\nInitilization complete.\n");
 var GameServer = function () {
 	console.log("Starting the game server");
 	this.tanks = [];
-	this.balls = [];
-	this.lastBallId = 0;
-	
+	this.bullets = [];
+	this.bulletID = 0; //Keeps track of bullets
 }
 
 GameServer.prototype = {
@@ -28,8 +27,12 @@ GameServer.prototype = {
 		console.log(this.tanks);
 	},
 
-	updateTanks: function(data){
-		this.tanks.forEach( function(tank){
+	addBullet : function(bullet) {
+		this.bullets.push(bullet);
+	},
+
+	updateTanks : function(data){
+		this.tanks.forEach(function (tank) {
 			if(tank.id == data.id){
 				tank.x = data.x;
 				tank.y = data.y;
@@ -37,9 +40,24 @@ GameServer.prototype = {
 			}
 		});
 	},
-	getData: function(){
+
+	updateBullets : function () {
+		var game = this;
+
+		this.bullets.forEach(function (bullet) {
+			if(bullet.x < 0 || bullet.x > 1000 || bullet.y < 0 || bullet.y > 500) {
+				bullet.outOfBounds = true;
+			} else {
+				console.log("Moving bullet", bullet.bulletID, bullet.x, bullet.y);
+				bullet.move();
+			}
+		});
+	},
+
+	getData : function(){
 		var gameData = {};
 		gameData.tanks = this.tanks;
+		gameData.bullets = this.bullets;
 		return gameData;
 	},
 	checkID : function(id) {
@@ -57,13 +75,35 @@ GameServer.prototype = {
 		});
 		return flag;
 	},
-	removeTank: function(username){
+	removeTank : function(username){
 		//Remove tank object
 		this.tanks = this.tanks.filter( function(t){return t.id != username} );
 	}
 }
 
-var game = new GameServer();
+var Bullet = function (userID, alpha, x, y) {
+	this.userID = userID;
+	this.bulletID = game.bulletID;
+	game.bulletID++;
+	this.alpha = alpha;
+	this.outOfBounds = false;
+	this.x = x;
+	this.y = y;
+}
+
+Bullet.prototype = {
+
+	move : function() {
+
+		var speedX = 10 * Math.sin(this.alpha);
+		var speedY = -10 * Math.cos(this.alpha);
+		this.x += speedX;
+		this.y += speedY;
+		console.log(this.x)
+		console.log(this.y);
+	}
+
+}
 
 /*Socket events*/
 io.on('connection', function(user) {
@@ -89,6 +129,8 @@ io.on('connection', function(user) {
 			game.updateTanks(data.tank);
 		}
 
+		game.updateBullets();
+
 		user.emit('sync', game.getData());
 		user.broadcast.emit('sync', game.getData());
 	})
@@ -98,7 +140,14 @@ io.on('connection', function(user) {
 		game.removeTank(username);
 		user.broadcast.emit('removeTank', username);
 	});
+
+	user.on('shoot', function(bullet) {
+		var bulletObj = new Bullet(bullet.username, bullet.alpha, bullet.x, bullet.y);
+		game.addBullet(bulletObj);
+	});
 });
+
+var game = new GameServer();
 
 //our app is now fully initialized, listen on port 3000 and await a request from the client.
 http.listen(8082, function() {

@@ -1,7 +1,7 @@
 angular.module('Game.factories')
-.factory('TankFactory' ,['$rootScope', function($rootScope){
+.factory('TankFactory' ,['BulletFactory', function(BulletFactory){
 	
-	var TankFactory = function (id, local, x, y, hp) {
+	var TankFactory = function (id, local, x, y, hp, socket) {
 		var div = document.querySelector("#field");
 		var dimensions = div.getBoundingClientRect();
 		this.id = id;
@@ -18,6 +18,7 @@ angular.module('Game.factories')
 			left: false,
 			right: false
 		}
+		this.socket = socket;
 		this.draw();
 	}
 
@@ -87,7 +88,7 @@ angular.module('Game.factories')
 				t.my = dimensions.top + dimensions.height / 2;
 				t.changeAngle();
 			}) .click( function() {
-				console.log("we did it");
+				t.shoot();
 			})
 		},
 
@@ -127,6 +128,20 @@ angular.module('Game.factories')
 
 		changeAngle : function () {
 			this.angle = Math.atan2(event.clientY - this.my, event.clientX - this.mx);
+		},
+
+		shoot : function () {
+			var bullet = {};
+			bullet.alpha = this.angle;
+			//bullet.alpha = this.angle * Math.PI / 180;
+			var deltaX = Math.sin(bullet.alpha);
+			var deltaY = Math.cos(bullet.alpha);
+
+			bullet.userID = this.id;
+			bullet.x = this.x + deltaX;
+			bullet.y = this.y - deltaY;
+		
+			this.socket.emit('shoot', bullet);
 		}
 	}
 	

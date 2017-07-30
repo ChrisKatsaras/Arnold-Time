@@ -1,5 +1,5 @@
 angular.module('Game.factories')
-.factory('GameFactory' ,['TankFactory', function(TankFactory){
+.factory('GameFactory' ,['TankFactory', 'BulletFactory',function(TankFactory, BulletFactory){
 	
 	//var GameFactory = {};
 	var GameFactory = function (width, height, socket) {
@@ -77,10 +77,17 @@ angular.module('Game.factories')
 					game.addTank({id : serverTank.id, local : false, x: serverTank.x, y: serverTank.y, hp: serverTank.hp});
 				}
 			});
+
+			//$("div.bullet").remove();
+			serverData.bullets.forEach( function(bullet) {
+				console.log()
+				var newBullet = new BulletFactory(bullet.username, bullet.bulletID, bullet.x, bullet.y);
+				//Do destroy stuff here
+			});
 		},
 
 		addTank : function(tankData) {
-			var tank = new TankFactory(tankData.id, tankData.local, tankData.x, tankData.y, tankData.hp);
+			var tank = new TankFactory(tankData.id, tankData.local, tankData.x, tankData.y, tankData.hp, this.socket);
 			if(tank.local) {
 				console.log("The player local");
 				this.local = tank;
@@ -91,7 +98,9 @@ angular.module('Game.factories')
 			
 		},
 		removeTank: function(username){
-			this.tanks = this.tanks.filter(function(t){return t.id != username} );
+			this.tanks = this.tanks.filter(function(t) {
+				return t.id != username
+			});
 			$('#' + username).remove();
 		}
 	}
