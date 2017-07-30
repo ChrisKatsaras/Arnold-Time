@@ -105,8 +105,6 @@ Bullet.prototype = {
 		var speedY = -10 * Math.cos(this.alpha);
 		this.x += speedX;
 		this.y += speedY;
-		console.log(this.x)
-		console.log(this.y);
 	}
 
 }

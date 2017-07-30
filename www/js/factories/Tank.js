@@ -26,12 +26,16 @@ angular.module('Game.factories')
 	TankFactory.prototype = { 
 
 		draw : function(){
-			var div = angular.element('<div id="'+this.id+'"class="tank tank1"></div>');
+			var div = angular.element('<div id="'+this.id+'"class="tank tank1"><div id="holder-'+this.id+'" class="point"></div></div>');
 			//this.body = angular.element(document).find('body');
 			this.body = angular.element(document.querySelector('#field'))
 			this.body.append(div);
 			this.person = angular.element(document.querySelector('#'+this.id));
 			//console.log(this.person);
+			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('bottom','auto');
+			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('top','5px');
+			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('left','auto');
+			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('right','25px');
 			this.refresh();
 
 			if(this.local) {
@@ -40,9 +44,7 @@ angular.module('Game.factories')
 		},
 		
 		refresh : function () {
-			var x = this.x - 49.5;
-			var y = this.y - 68.5;
-			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+x+'px,'+y+'px,0px) rotate('+this.angle+'rad)');
+			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px) rotate('+this.angle+'rad)');
 
 		},
 
@@ -114,11 +116,11 @@ angular.module('Game.factories')
 			moveY *= 5;
 			var div = document.querySelector("#field");
 			var dimensions = div.getBoundingClientRect();
-			if((this.x + moveX > 0 + 49.5) && (this.x + moveX < dimensions.width - 49.5)) {
+			if((this.x + moveX > 0 + 30) && (this.x + moveX < dimensions.width - 30)) {
 				this.x += moveX;
 			}
 
-			if((this.y+ moveY > 0 + 68.5) && (this.y + moveY < dimensions.height - 68.5)) {
+			if((this.y+ moveY > 0 + 30) && (this.y + moveY < dimensions.height - 30)) {
 				this.y += moveY;
 			}
 			
@@ -131,14 +133,32 @@ angular.module('Game.factories')
 		},
 
 		shoot : function () {
+
+			var div2 = document.querySelector("#holder-asd");
+			var div = div2.getBoundingClientRect();
+
+
+			var parent = document.querySelector("#field");
+			var parentDiv = parent.getBoundingClientRect();
+		    relativePos = {};
+
+			relativePos.top = div.top - parentDiv.top 
+			relativePos.right = div.right - parentDiv.left,
+
+			console.log(relativePos);
+
+
+
+
 			var bullet = {};
 			bullet.alpha = this.angle;
-			var deltaX = 68.5 * Math.sin(bullet.alpha);
-			var deltaY = 68.5 * Math.cos(bullet.alpha);
+			var deltaX = Math.sin(bullet.alpha);
+			var deltaY = Math.cos(bullet.alpha);
 			bullet.userID = this.id;
-			bullet.x = this.x + deltaX;
-			bullet.y = this.y - deltaY;
-
+			//bullet.x = this.x + deltaX;
+			//bullet.y = this.y - deltaY;
+			bullet.x = relativePos.right + deltaX; 
+			bullet.y = relativePos.top - deltaY;
 			this.socket.emit('shoot', bullet);
 		}
 	}

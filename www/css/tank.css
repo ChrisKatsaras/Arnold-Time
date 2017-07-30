@@ -6,8 +6,8 @@
 
 .tank1{
 	background-image: url('../img/handgun.png');
-	height: 137px;
-	width: 99px;
+	height: 128px;
+	width: 100px;
 }
 
 .field {
@@ -21,4 +21,11 @@
 	background-image: url('../img/bullet.png');
 	height: 20px;
 	width: 12px;
+}
+
+.point {
+	width: 0px;
+	height: 0px;
+	position: fixed;
+	display: block;
 }
