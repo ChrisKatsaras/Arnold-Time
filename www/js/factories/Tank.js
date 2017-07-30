@@ -40,8 +40,9 @@ angular.module('Game.factories')
 		},
 		
 		refresh : function () {
-			
-			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px) rotate('+this.angle+'rad)');
+			var x = this.x - 49.5;
+			var y = this.y - 68.5;
+			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+x+'px,'+y+'px,0px) rotate('+this.angle+'rad)');
 
 		},
 
@@ -113,12 +114,11 @@ angular.module('Game.factories')
 			moveY *= 5;
 			var div = document.querySelector("#field");
 			var dimensions = div.getBoundingClientRect();
-			
-			if((this.x + moveX >  0) && (this.x + moveX < dimensions.width - 137)) {
+			if((this.x + moveX > 0 + 49.5) && (this.x + moveX < dimensions.width - 49.5)) {
 				this.x += moveX;
 			}
 
-			if((this.y + moveY > 0) && (this.y + moveY < dimensions.height - 99)) {
+			if((this.y+ moveY > 0 + 68.5) && (this.y + moveY < dimensions.height - 68.5)) {
 				this.y += moveY;
 			}
 			
@@ -131,20 +131,14 @@ angular.module('Game.factories')
 		},
 
 		shoot : function () {
-			
-
-
-
 			var bullet = {};
 			bullet.alpha = this.angle;
-			var deltaX = Math.sin(bullet.alpha);
-			var deltaY = Math.cos(bullet.alpha);
-			console.log(deltaX);
-			console.log(deltaY);
+			var deltaX = 68.5 * Math.sin(bullet.alpha);
+			var deltaY = 68.5 * Math.cos(bullet.alpha);
 			bullet.userID = this.id;
-			bullet.x = this.x + deltaX -5;
-			bullet.y = this.y - deltaY -5;
-		
+			bullet.x = this.x + deltaX;
+			bullet.y = this.y - deltaY;
+
 			this.socket.emit('shoot', bullet);
 		}
 	}

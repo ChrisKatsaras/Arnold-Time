@@ -45,7 +45,7 @@ GameServer.prototype = {
 		var game = this;
 
 		this.bullets.forEach(function (bullet) {
-			if(bullet.x < 0 || bullet.x > 1000 || bullet.y < 0 || bullet.y > 500) {
+			if(bullet.x < 0 || bullet.x > 1100 || bullet.y < 0 || bullet.y > 500) {
 				bullet.outOfBounds = true;
 			} else {
 				console.log("Moving bullet", bullet.bulletID, bullet.x, bullet.y);
@@ -78,6 +78,12 @@ GameServer.prototype = {
 	removeTank : function(username){
 		//Remove tank object
 		this.tanks = this.tanks.filter( function(t){return t.id != username} );
+	}, 
+
+	removeBullets : function() {
+		this.bullets = this.bullets.filter(function(bullet) {
+			return !bullet.outOfBounds;
+		})
 	}
 }
 
@@ -130,7 +136,7 @@ io.on('connection', function(user) {
 		}
 
 		game.updateBullets();
-
+		game.removeBullets();
 		user.emit('sync', game.getData());
 		user.broadcast.emit('sync', game.getData());
 	})
