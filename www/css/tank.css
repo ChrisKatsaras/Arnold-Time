@@ -6,13 +6,13 @@
 
 .tank1{
 	background-image: url('../img/handgun.png');
-	height: 99px;
-	width: 137px;
+	height: 137px;
+	width: 99px;
 }
 
 .field {
 	background-image: url('../img/dirt.png');
-	min-width: 1100px; /*Prevents arena from shrinking*/
+	min-width: 1100px!important; /*Prevents arena from shrinking*/
 	border-image: url('../img/handgun.png') 30 round;
 }
 
@@ -20,5 +20,5 @@
 	position: absolute;
 	background-image: url('../img/bullet.png');
 	height: 20px;
-	width: 34px;
+	width: 12px;
 }

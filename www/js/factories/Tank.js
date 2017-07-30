@@ -127,19 +127,23 @@ angular.module('Game.factories')
 		},
 
 		changeAngle : function () {
-			this.angle = Math.atan2(event.clientY - this.my, event.clientX - this.mx);
+			this.angle = Math.atan2(event.clientY - this.my, event.clientX - this.mx) + 1.5708;
 		},
 
 		shoot : function () {
+			
+
+
+
 			var bullet = {};
 			bullet.alpha = this.angle;
-			//bullet.alpha = this.angle * Math.PI / 180;
 			var deltaX = Math.sin(bullet.alpha);
 			var deltaY = Math.cos(bullet.alpha);
-
+			console.log(deltaX);
+			console.log(deltaY);
 			bullet.userID = this.id;
-			bullet.x = this.x + deltaX;
-			bullet.y = this.y - deltaY;
+			bullet.x = this.x + deltaX -5;
+			bullet.y = this.y - deltaY -5;
 		
 			this.socket.emit('shoot', bullet);
 		}
