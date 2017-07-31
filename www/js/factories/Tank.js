@@ -133,8 +133,7 @@ angular.module('Game.factories')
 		},
 
 		shoot : function () {
-
-			var div2 = document.querySelector("#holder-asd");
+			var div2 = document.querySelector("#holder-"+this.id);
 			var div = div2.getBoundingClientRect();
 
 
@@ -147,9 +146,6 @@ angular.module('Game.factories')
 
 			console.log(relativePos);
 
-
-
-
 			var bullet = {};
 			bullet.alpha = this.angle;
 			var deltaX = Math.sin(bullet.alpha);
@@ -157,8 +153,8 @@ angular.module('Game.factories')
 			bullet.userID = this.id;
 			//bullet.x = this.x + deltaX;
 			//bullet.y = this.y - deltaY;
-			bullet.x = relativePos.right + deltaX; 
-			bullet.y = relativePos.top - deltaY;
+			bullet.x = relativePos.right;
+			bullet.y = relativePos.top;
 			this.socket.emit('shoot', bullet);
 		}
 	}
