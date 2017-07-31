@@ -24,8 +24,9 @@
 }
 
 .point {
-	width: 0px;
-	height: 0px;
+	width: 5px;
+	height: 5px;
+	background-color: blue;
 	position: absolute;
 	display: block;
 }

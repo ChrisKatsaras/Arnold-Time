@@ -116,7 +116,7 @@ io.on('connection', function(user) {
 	user.on('joinGame', function(data) {
 		if(game.checkID(data.id)) {
 			console.log(data.id," is joining the game!");
-			var initX = Math.floor(Math.random() * (900 - 10)) + 10;
+			var initX = Math.floor(Math.random() * (800 - 10)) + 10;
 	        var initY = Math.floor(Math.random() * (400 - 10)) + 10;
 	       	user.emit('addTank', { id: data.id, local: true, x: initX, y: initY, hp: 100 });
 	       	user.broadcast.emit('addTank', { id: data.id, local: false, x: initX, y: initY, hp: 100 });

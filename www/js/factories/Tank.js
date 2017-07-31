@@ -1,6 +1,7 @@
 angular.module('Game.factories')
 .factory('TankFactory' ,['BulletFactory', function(BulletFactory){
 	
+	var clickDisabled = false;
 	var TankFactory = function (id, local, x, y, hp, socket) {
 		var div = document.querySelector("#field");
 		var dimensions = div.getBoundingClientRect();
@@ -35,7 +36,7 @@ angular.module('Game.factories')
 			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('bottom','auto');
 			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('top','5px');
 			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('left','auto');
-			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('right','25px');
+			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('right','27px');
 			this.refresh();
 
 			if(this.local) {
@@ -91,7 +92,15 @@ angular.module('Game.factories')
 				t.my = dimensions.top + dimensions.height / 2;
 				t.changeAngle();
 			}) .click( function() {
-				t.shoot();
+					
+				if(clickDisabled) {
+
+				} else {
+					t.shoot();
+					clickDisabled = true;
+					setTimeout(function(){clickDisabled = false;}, 500);
+				}
+				
 			})
 		},
 
