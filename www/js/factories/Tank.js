@@ -125,7 +125,6 @@ angular.module('Game.factories')
 			moveY *= 5;
 			var div = document.querySelector("#field");
 			var dimensions = div.getBoundingClientRect();
-			console.log(dimensions);
 			if((this.x + moveX > 0) && (this.x + moveX < dimensions.width - 100)) {
 				this.x += moveX;
 			}
@@ -133,7 +132,6 @@ angular.module('Game.factories')
 			if((this.y+ moveY > 0) && (this.y + moveY < dimensions.height - 128)) {
 				this.y += moveY;
 			}
-			
 			
 			this.refresh();
 		},
@@ -143,10 +141,9 @@ angular.module('Game.factories')
 		},
 
 		shoot : function () {
+
 			var div2 = document.querySelector("#holder-"+this.id);
 			var div = div2.getBoundingClientRect();
-
-
 			var parent = document.querySelector("#field");
 			var parentDiv = parent.getBoundingClientRect();
 		    relativePos = {};
@@ -158,11 +155,7 @@ angular.module('Game.factories')
 
 			var bullet = {};
 			bullet.alpha = this.angle;
-			var deltaX = Math.sin(bullet.alpha);
-			var deltaY = Math.cos(bullet.alpha);
-			bullet.userID = this.id;
-			//bullet.x = this.x + deltaX;
-			//bullet.y = this.y - deltaY;
+			bullet.username = this.id;
 			bullet.x = relativePos.right;
 			bullet.y = relativePos.top;
 			this.socket.emit('shoot', bullet);

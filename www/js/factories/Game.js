@@ -29,7 +29,6 @@ angular.module('Game.factories')
 
 		sendData : function() {
 			var gameData = {};
-
 			//Send tank data
 			var t = {
 				id: this.local.id,
@@ -80,7 +79,6 @@ angular.module('Game.factories')
 
 			$("div.bullet").remove();
 			serverData.bullets.forEach( function(bullet) {
-				console.log()
 				var newBullet = new BulletFactory(bullet.username, bullet.bulletID, bullet.x, bullet.y, bullet.alpha);
 				//Do destroy stuff here
 			});

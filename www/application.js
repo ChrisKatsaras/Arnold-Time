@@ -4,6 +4,7 @@ console.log("\nInitializing application...\n");
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var SAT = require('sat');
 
 app.use('/', express.static(__dirname + '/'));
 
@@ -45,13 +46,25 @@ GameServer.prototype = {
 		var game = this;
 
 		this.bullets.forEach(function (bullet) {
+			game.bulletCollision(bullet);
 			if(bullet.x < 0 || bullet.x > 1100 || bullet.y < 0 || bullet.y > 500) {
 				bullet.outOfBounds = true;
 			} else {
-				console.log("Moving bullet", bullet.bulletID, bullet.x, bullet.y);
+				//console.log("Moving bullet", bullet.bulletID, bullet.x, bullet.y);
 				bullet.move();
 			}
 		});
+	},
+
+	bulletCollision : function(bullet) {
+		var satBullet = new SAT.Box(new SAT.Vector(bullet.x,bullet.y), 12, 20).toPolygon();
+		this.tanks.forEach(function (tank) {
+			if(bullet.userID != tank.id) {
+				var satTank = new SAT.Box(new SAT.Vector(tank.x,tank.y), 100, 128).toPolygon();
+			 	bullet.outOfBounds = SAT.testPolygonPolygon(satBullet,satTank);
+			}
+		});
+		
 	},
 
 	getData : function(){
@@ -117,7 +130,7 @@ io.on('connection', function(user) {
 		if(game.checkID(data.id)) {
 			console.log(data.id," is joining the game!");
 			var initX = Math.floor(Math.random() * (800 - 10)) + 10;
-	        var initY = Math.floor(Math.random() * (400 - 10)) + 10;
+	        var initY = Math.floor(Math.random() * (350 - 10)) + 10;
 	       	user.emit('addTank', { id: data.id, local: true, x: initX, y: initY, hp: 100 });
 	       	user.broadcast.emit('addTank', { id: data.id, local: false, x: initX, y: initY, hp: 100 });
 	        game.addTank({id: data.id, x: initX, y: initY, hp: 100});
@@ -148,6 +161,7 @@ io.on('connection', function(user) {
 	user.on('shoot', function(bullet) {
 		var bulletObj = new Bullet(bullet.username, bullet.alpha, bullet.x, bullet.y);
 		game.addBullet(bulletObj);
+		//console.log(game.tanks, game.bullets);
 	});
 });
 
