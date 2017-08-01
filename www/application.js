@@ -64,7 +64,7 @@ GameServer.prototype = {
 				var satTank = new SAT.Box(new SAT.Vector(tank.x,tank.y), 100, 128).toPolygon();
 			 	bullet.outOfBounds = SAT.testPolygonPolygon(satBullet,satTank);
 			 	if(bullet.outOfBounds) {
-			 		tank.hp -= 35;
+			 		tank.hp -= 10;
 			 	}
 			}
 		});

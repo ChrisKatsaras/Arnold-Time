@@ -52,7 +52,7 @@ angular.module('Game.factories')
 
 		registerControls : function () {
 			var t = this;
-			
+
 			$(document).keypress( function(e) {
 			var k = e.keyCode || e.which;
 			switch(k){
@@ -86,20 +86,23 @@ angular.module('Game.factories')
 						break;
 				}
 			}) .mousemove( function(e) {
-				//Using jQuery
 				var div = document.querySelector("#"+t.id);
-				var dimensions = div.getBoundingClientRect();
-				t.mx = dimensions.left + dimensions.width / 2;
-				t.my = dimensions.top + dimensions.height / 2;
-				t.changeAngle();
+				//If the soilder isn't dead
+				if(div != null) {
+					var dimensions = div.getBoundingClientRect();
+					t.mx = dimensions.left + dimensions.width / 2;
+					t.my = dimensions.top + dimensions.height / 2;
+					t.changeAngle();
+				}
+				
 			}) .click( function() {
-					
-				if(clickDisabled) {
-
-				} else {
+				var div = document.querySelector("#"+t.id);
+				if(!clickDisabled && div != null) {
 					t.shoot();
 					clickDisabled = true;
-					setTimeout(function(){clickDisabled = false;}, 500);
+					setTimeout(function() {
+						clickDisabled = false;
+					}, 500);
 				}
 				
 			})
@@ -108,6 +111,10 @@ angular.module('Game.factories')
 		move: function () {
 			var moveX = 0;
 			var moveY = 0;
+
+			if(this.dead) {
+				return;
+			}
 
 			if(this.direction.up) {
 				moveY = -1;

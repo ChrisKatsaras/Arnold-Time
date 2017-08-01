@@ -9,7 +9,6 @@ angular.module('Game.factories')
 		this.socket = socket;
 		angular.element(document.querySelector('#field')).css('height','500px');
 		angular.element(document.querySelector('#field')).css('width','1100px');
-		//this.local = null;
 		var loop = this;
 
 		setInterval(function() {
@@ -48,6 +47,7 @@ angular.module('Game.factories')
 					game.local.hp = serverTank.hp;
 					if(game.local.hp <= 0) {
 						game.killSoilder(game.local);
+						this.local = {};
 						console.log("You dead");
 					}
 				}	
