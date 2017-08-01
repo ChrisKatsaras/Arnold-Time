@@ -19,6 +19,7 @@ angular.module('Game.factories')
 			left: false,
 			right: false
 		}
+		this.dead = false;
 		this.socket = socket;
 		this.draw();
 	}
@@ -147,11 +148,9 @@ angular.module('Game.factories')
 			var parent = document.querySelector("#field");
 			var parentDiv = parent.getBoundingClientRect();
 		    relativePos = {};
+			relativePos.top = div.top - parentDiv.top;
+			relativePos.right = div.right - parentDiv.left;
 
-			relativePos.top = div.top - parentDiv.top 
-			relativePos.right = div.right - parentDiv.left,
-
-			console.log(relativePos);
 
 			var bullet = {};
 			bullet.alpha = this.angle;

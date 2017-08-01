@@ -56,12 +56,16 @@ GameServer.prototype = {
 		});
 	},
 
+	//Sat-JS library handles the collision detection for me due to the fact that rotated polygons can be tricky to calculate collision for
 	bulletCollision : function(bullet) {
 		var satBullet = new SAT.Box(new SAT.Vector(bullet.x,bullet.y), 12, 20).toPolygon();
 		this.tanks.forEach(function (tank) {
 			if(bullet.userID != tank.id) {
 				var satTank = new SAT.Box(new SAT.Vector(tank.x,tank.y), 100, 128).toPolygon();
 			 	bullet.outOfBounds = SAT.testPolygonPolygon(satBullet,satTank);
+			 	if(bullet.outOfBounds) {
+			 		tank.hp -= 35;
+			 	}
 			}
 		});
 		
@@ -96,7 +100,13 @@ GameServer.prototype = {
 	removeBullets : function() {
 		this.bullets = this.bullets.filter(function(bullet) {
 			return !bullet.outOfBounds;
-		})
+		});
+	},
+
+	removeDeadSoilers : function() {
+		this.tanks = this.tanks.filter(function(soilder) {
+			return soilder.hp > 0;
+		});
 	}
 }
 
@@ -147,9 +157,11 @@ io.on('connection', function(user) {
 		}
 
 		game.updateBullets();
-		game.removeBullets();
 		user.emit('sync', game.getData());
 		user.broadcast.emit('sync', game.getData());
+		game.removeBullets();
+		game.removeDeadSoilers();
+		
 	})
 
 	user.on('leaveGame', function(username){

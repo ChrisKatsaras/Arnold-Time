@@ -1,5 +1,5 @@
 angular.module('Game.factories')
-.factory('GameFactory' ,['TankFactory', 'BulletFactory',function(TankFactory, BulletFactory){
+.factory('GameFactory' ,['TankFactory', 'BulletFactory',function(TankFactory, BulletFactory) {
 	
 	//var GameFactory = {};
 	var GameFactory = function (width, height, socket) {
@@ -44,26 +44,22 @@ angular.module('Game.factories')
 			
 			var game = this;
 			serverData.tanks.forEach( function(serverTank) {
-				
-
 				if(game.local !== undefined && serverTank.id == game.local.id) {
 					game.local.hp = serverTank.hp;
-					if(game.local.hp <= 0){
-						//game.killTank(game.localTank);
+					if(game.local.hp <= 0) {
+						game.killSoilder(game.local);
 						console.log("You dead");
 					}
 				}	
-				//console.log(game.tanks);
 				var found = false;
-				game.tanks.forEach( function(clientTank){
-
-					if(clientTank.id == serverTank.id){
+				game.tanks.forEach( function(clientTank) {
+					if(clientTank.id == serverTank.id) {
 						clientTank.x = serverTank.x;
 						clientTank.y = serverTank.y;
 						clientTank.angle = serverTank.angle;
 						clientTank.hp = serverTank.hp;
 						if(clientTank.hp <= 0){
-							//game.killTank(clientTank);
+							game.killSoilder(clientTank);
 						}
 
 						clientTank.refresh();
@@ -71,7 +67,7 @@ angular.module('Game.factories')
 					}
 				});
 				//console.log("List of tanks", game.tanks);
-				if(!found && (game.local == undefined || serverTank.id != game.local.id)){
+				if(!found && (game.local == undefined || serverTank.id != game.local.id)) {
 
 					game.addTank({id : serverTank.id, local : false, x: serverTank.x, y: serverTank.y, hp: serverTank.hp});
 				}
@@ -95,11 +91,18 @@ angular.module('Game.factories')
 			}
 			
 		},
-		removeTank: function(username){
+
+		removeTank: function(username) {
 			this.tanks = this.tanks.filter(function(t) {
 				return t.id != username
 			});
 			$('#' + username).remove();
+		},
+
+		killSoilder: function(soilder) {
+			soilder.dead = true;
+			this.removeTank (soilder.id);
+			//TODO : Add death gif later
 		}
 	}
 
