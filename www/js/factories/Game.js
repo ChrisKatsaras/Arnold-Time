@@ -97,6 +97,7 @@ angular.module('Game.factories')
 				return t.id != username
 			});
 			$('#' + username).remove();
+			$('#health-bar' + username).remove();
 		},
 
 		killSoilder: function(soilder) {

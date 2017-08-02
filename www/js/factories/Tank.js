@@ -29,9 +29,11 @@ angular.module('Game.factories')
 
 		draw : function(){
 			var div = angular.element('<div id="'+this.id+'"class="tank tank1"><div id="holder-'+this.id+'" class="point"></div></div>');
+			var healthbar = angular.element('<div id="health-bar'+this.id+'"class="health-bar"><div class="health-bar-glass"><div class="health-bar-fluid"></div></div></div>');
 			//this.body = angular.element(document).find('body');
 			this.body = angular.element(document.querySelector('#field'))
 			this.body.append(div);
+			this.body.append(healthbar);
 			this.person = angular.element(document.querySelector('#'+this.id));
 			//console.log(this.person);
 			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('bottom','auto');
@@ -47,7 +49,7 @@ angular.module('Game.factories')
 		
 		refresh : function () {
 			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px) rotate('+this.angle+'rad)');
-
+			angular.element(document.querySelector('#health-bar'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px)');
 		},
 
 		registerControls : function () {
