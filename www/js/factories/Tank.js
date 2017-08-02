@@ -37,7 +37,7 @@ angular.module('Game.factories')
 			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('bottom','auto');
 			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('top','5px');
 			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('left','auto');
-			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('right','27px');
+			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('right','17px');
 			this.refresh();
 
 			if(this.local) {
