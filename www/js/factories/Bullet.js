@@ -14,8 +14,6 @@ angular.module('Game.factories')
 
 	BulletFactory.prototype = { 
 		draw: function () {
-			var color = $("bullet").css('height');
-
 			var x = this.x - 6;//Half the bullet width
 			var y = this.y - 10;//Half the bullet height
 			var div = angular.element('<div id="'+this.bulletID+'"class="bullet"></div>');

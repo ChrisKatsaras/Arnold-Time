@@ -1,4 +1,4 @@
-var Game = angular.module('Game', ['ngRoute', 'ngMaterial', 'ngAnimate', 'Game.controllers','Game.factories','smoothScroll','chart.js'])
+var Game = angular.module('Game', ['ngRoute', 'ngMaterial', 'ngAnimate', 'Game.controllers','Game.factories','Game.theme','smoothScroll','chart.js'])
 
 
 //Configuration function. Here we define which templates are 

@@ -1,13 +1,12 @@
 .tank{
 	position: absolute;
 	background-repeat: no-repeat;
-	background-position: -10px 0;
 }
 
 .tank1{
 	background-image: url('../img/handgun.png');
-	height: 128px;
-	width: 100px;
+	height: 121px;
+	width: 88px;
 }
 
 .field {
