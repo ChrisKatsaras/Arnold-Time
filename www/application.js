@@ -58,10 +58,10 @@ GameServer.prototype = {
 
 	//Sat-JS library handles the collision detection for me due to the fact that rotated polygons can be tricky to calculate collision for
 	bulletCollision : function(bullet) {
-		var satBullet = new SAT.Box(new SAT.Vector(bullet.x,bullet.y), 12, 20).toPolygon();
+		var satBullet = new SAT.Box(new SAT.Vector(bullet.x,bullet.y), 20, 12).toPolygon();
 		this.tanks.forEach(function (tank) {
 			if(bullet.userID != tank.id) {
-				var satTank = new SAT.Box(new SAT.Vector(tank.x,tank.y), 88, 121).toPolygon();
+				var satTank = new SAT.Box(new SAT.Vector(tank.x,tank.y), 121, 88).toPolygon();
 			 	bullet.outOfBounds = SAT.testPolygonPolygon(satBullet,satTank);
 			 	if(bullet.outOfBounds) {
 			 		tank.hp -= 10;

@@ -7,7 +7,6 @@ angular.module('Game.factories')
 		this.angle = alpha;
 		this.x = x;
 		this.y = y;
-
 		this.draw();
 	}
 
