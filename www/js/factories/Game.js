@@ -49,6 +49,7 @@ angular.module('Game.factories')
 						game.killSoilder(game.local);
 						this.local = {};
 						console.log("You dead");
+						game.socket.emit('localDead');
 					}
 				}	
 				var found = false;

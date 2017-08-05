@@ -76,7 +76,7 @@ GameServer.prototype = {
 			 	bullet.outOfBounds = SAT.testPolygonPolygon(satBullet,satTank);
 			 	game.canvasTank = satTank; //XXX Just for testing
 			 	if(bullet.outOfBounds) {
-			 		tank.hp -= 10;
+			 		tank.hp -= 100;
 			 	}
 
 			}
@@ -191,6 +191,10 @@ io.on('connection', function(user) {
 		var bulletObj = new Bullet(bullet.username, bullet.alpha, bullet.x, bullet.y);
 		game.addBullet(bulletObj);
 		//console.log(game.tanks, game.bullets);
+	});
+
+	user.on('localDead', function() {
+		user.emit('deadModal');
 	});
 });
 

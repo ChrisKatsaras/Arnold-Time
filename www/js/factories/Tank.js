@@ -51,7 +51,6 @@ angular.module('Game.factories')
 			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px) rotate('+this.angle+'rad)');
 			angular.element(document.querySelector('#health-bar'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px)');
 			angular.element(document.querySelector('#health-bar-fluid'+this.id)).css('width',this.hp+'%');
-			console.log(this.hp);
 		},
 
 		registerControls : function () {
