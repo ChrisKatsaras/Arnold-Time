@@ -174,8 +174,8 @@ io.on('connection', function(user) {
 		//test.push(game.canvasBullet); //XXX Just for testing
 		//test.push(game.canvasTank);//XXX Just for testing
 		//user.emit('test',test); //XXX Just for testing
-		//user.emit('sync', game.getData()); //XXX Just for testing
-		//user.broadcast.emit('sync', game.getData());
+		user.emit('sync', game.getData());
+		user.broadcast.emit('sync', game.getData());
 		game.removeBullets();
 		game.removeDeadSoilers();
 		
