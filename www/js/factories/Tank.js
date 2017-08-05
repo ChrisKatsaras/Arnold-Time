@@ -149,7 +149,7 @@ angular.module('Game.factories')
 		},
 
 		changeAngle : function () {
-			this.angle = Math.atan2(event.clientY - this.my, event.clientX - this.mx) + 1.5708;
+			this.angle = Math.atan2(event.clientY - this.my, event.clientX - this.mx) + 1.5378;
 		},
 
 		shoot : function () {
@@ -161,8 +161,6 @@ angular.module('Game.factories')
 		    relativePos = {};
 			relativePos.top = div.top - parentDiv.top;
 			relativePos.right = div.right - parentDiv.left;
-
-
 			var bullet = {};
 			bullet.alpha = this.angle;
 			bullet.username = this.id;

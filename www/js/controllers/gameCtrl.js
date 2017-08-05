@@ -50,6 +50,39 @@ angular.module('Game.controllers')
         
     });
 
+    //XXX Just for testing
+    /*socket.on('test',function (status) {
+        //console.log("TEST!",status);
+        var canvas = document.getElementById("c");
+        var canvasWidth = canvas.width;
+        var canvasHeight = canvas.height;
+        var ctx = canvas.getContext("2d");
+
+        if(status[0] != null) {
+            ctx.fillStyle = 'rgba(0,255,0,0.5)';
+            ctx.beginPath();
+            ctx.moveTo(status[0].pos.x, status[0].pos.y);
+            status[0].calcPoints.forEach(function (p) {
+              ctx.lineTo(status[0].pos.x + p.x, status[0].pos.y + p.y);
+            })
+            ctx.closePath();
+            ctx.fill();
+        }
+
+          if(status[1] != null) {
+
+            ctx.fillStyle = 'rgba(0,144,0,0.5)';
+            ctx.beginPath();
+            ctx.moveTo(status[1].pos.x, status[1].pos.y);
+            status[1].calcPoints.forEach(function (p) {
+              ctx.lineTo(status[1].pos.x + p.x, status[1].pos.y + p.y);
+            })
+            ctx.closePath();
+            ctx.fill();
+          }
+
+    });*/
+
     //User leaves the game
     $(window).on('beforeunload', function(){
         if(username != null) {

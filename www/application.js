@@ -20,6 +20,8 @@ var GameServer = function () {
 	this.tanks = [];
 	this.bullets = [];
 	this.bulletID = 0; //Keeps track of bullets
+	this.canvasBullet; //XXX Just for testing
+	this.canvasTank; //XXX Just for testing
 }
 
 GameServer.prototype = {
@@ -50,7 +52,6 @@ GameServer.prototype = {
 			if(bullet.x < 0 || bullet.x > 1100 || bullet.y < 0 || bullet.y > 500) {
 				bullet.outOfBounds = true;
 			} else {
-				//console.log("Moving bullet", bullet.bulletID, bullet.x, bullet.y);
 				bullet.move();
 			}
 		});
@@ -59,13 +60,25 @@ GameServer.prototype = {
 	//Sat-JS library handles the collision detection for me due to the fact that rotated polygons can be tricky to calculate collision for
 	bulletCollision : function(bullet) {
 		var satBullet = new SAT.Box(new SAT.Vector(bullet.x,bullet.y), 20, 12).toPolygon();
+		satBullet.rotate(bullet.alpha);
+		satBullet.rotate(1.5738 * -1);
+		this.canvasBullet = satBullet; //XXX Just for testing
+		var game = this;
 		this.tanks.forEach(function (tank) {
 			if(bullet.userID != tank.id) {
-				var satTank = new SAT.Box(new SAT.Vector(tank.x,tank.y), 121, 88).toPolygon();
+				var points = [];
+				points.push(new SAT.Vector(-44,-60.5));
+				points.push(new SAT.Vector(+44,-60.5));
+				points.push(new SAT.Vector(+44,+60.5));
+				points.push(new SAT.Vector(-44,+60.5));
+				var satTank = new SAT.Polygon(new SAT.Vector(tank.x+44,tank.y+60.5),points);
+				satTank.rotate(tank.angle);
 			 	bullet.outOfBounds = SAT.testPolygonPolygon(satBullet,satTank);
+			 	game.canvasTank = satTank; //XXX Just for testing
 			 	if(bullet.outOfBounds) {
 			 		tank.hp -= 10;
 			 	}
+
 			}
 		});
 		
@@ -157,8 +170,12 @@ io.on('connection', function(user) {
 		}
 
 		game.updateBullets();
-		user.emit('sync', game.getData());
-		user.broadcast.emit('sync', game.getData());
+		//var test = [];
+		//test.push(game.canvasBullet); //XXX Just for testing
+		//test.push(game.canvasTank);//XXX Just for testing
+		//user.emit('test',test); //XXX Just for testing
+		//user.emit('sync', game.getData()); //XXX Just for testing
+		//user.broadcast.emit('sync', game.getData());
 		game.removeBullets();
 		game.removeDeadSoilers();
 		
