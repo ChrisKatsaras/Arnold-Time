@@ -208,8 +208,13 @@ io.on('connection', function(user) {
 	});
 
 	user.on('shoot', function(bullet) {
-		var bulletObj = new Bullet(bullet.username, bullet.alpha, bullet.x, bullet.y);
-		game.addBullet(bulletObj);
+		game.tanks.forEach(function (tank) { 
+			if(tank.id == bullet.username && !tank.shield) {
+				var bulletObj = new Bullet(bullet.username, bullet.alpha, bullet.x, bullet.y);
+				game.addBullet(bulletObj);
+			}
+		});
+		
 		//console.log(game.tanks, game.bullets);
 	});
 
