@@ -76,7 +76,7 @@ GameServer.prototype = {
 			 	bullet.outOfBounds = SAT.testPolygonPolygon(satBullet,satTank);
 			 	game.canvasTank = satTank; //XXX Just for testing
 			 	if(bullet.outOfBounds) {
-			 		tank.hp -= 100;
+			 		tank.hp -= 10;
 			 	}
 
 			}

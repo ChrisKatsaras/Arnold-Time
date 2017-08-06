@@ -19,6 +19,7 @@ angular.module('Game.factories')
 			left: false,
 			right: false
 		}
+		this.shieldOn = false;
 		this.dead = false;
 		this.socket = socket;
 		this.draw();
@@ -28,7 +29,7 @@ angular.module('Game.factories')
 	TankFactory.prototype = { 
 
 		draw : function(){
-			var div = angular.element('<div id="'+this.id+'"class="tank tank1"><div id="holder-'+this.id+'" class="point"></div></div>');
+			var div = angular.element('<div id="'+this.id+'"class="tank tank1"><div id="holder-'+this.id+'" class="point"></div><div id="shield'+this.id+'" class="shield"></div></div>');
 			var healthbar = angular.element('<div id="health-bar'+this.id+'"class="health-bar"><div id="health-bar-glass'+this.id+'" class="health-bar-glass"><div id="health-bar-fluid'+this.id+'" class="health-bar-fluid"></div></div></div>');
 			var name = angular.element('<div id="name'+this.id+'" class="nametag">'+this.id+'</div>');
 			this.body = angular.element(document.querySelector('#field'))
@@ -51,6 +52,13 @@ angular.module('Game.factories')
 			angular.element(document.querySelector('#health-bar'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px)');
 			angular.element(document.querySelector('#health-bar-fluid'+this.id)).css('width',this.hp+'%');
 			angular.element(document.querySelector('#name'+this.id)).css('transform','translate3d('+this.x+'px,'+(this.y-15)+'px,0px)');
+			angular.element(document.querySelector('#shield'+this.id)).css('transform','translate3d(-30px,-15px,0px)');
+
+			if(this.shieldOn) {
+				$("#shield"+this.id).show();
+			} else {
+				$("#shield"+this.id).hide();
+			}
 		},
 
 		registerControls : function () {
@@ -71,6 +79,10 @@ angular.module('Game.factories')
 				case 97: //A
 					t.direction.left = true;
 					break;
+				case 32:
+					console.log("shield on");
+					t.shieldOn = true;
+					break;
 			}
 			}).keyup( function(e) {
 				var k = e.keyCode || e.which;
@@ -87,6 +99,10 @@ angular.module('Game.factories')
 					case 65: //A
 						t.direction.left = false;
 						break;
+					case 32:
+						t.shieldOn = false;
+						console.log("shield off");
+					break;
 				}
 			}) .mousemove( function(e) {
 				var div = document.querySelector("#"+t.id);

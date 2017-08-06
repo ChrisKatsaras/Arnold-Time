@@ -13,6 +13,13 @@
 	width: 88px;
 }
 
+.shield {
+	background-image: url('../img/shield.png');
+	height: 150px;
+	width: 150px;
+	position: absolute;
+}
+
 .field {
 	background-image: url('../img/dirt.png');
 	min-width: 1100px!important; /*Prevents arena from shrinking*/
@@ -63,8 +70,8 @@
 	color: white;
 	font-size: 20px;
     text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
+    -1.5px -1.5px 0 #000,
+    1.5px -1.5px 0 #000,
+    -1.5px 1.5px 0 #000,
+    1.5px 1.5px 0 #000;
 }
