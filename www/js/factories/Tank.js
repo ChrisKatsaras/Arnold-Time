@@ -30,12 +30,11 @@ angular.module('Game.factories')
 		draw : function(){
 			var div = angular.element('<div id="'+this.id+'"class="tank tank1"><div id="holder-'+this.id+'" class="point"></div></div>');
 			var healthbar = angular.element('<div id="health-bar'+this.id+'"class="health-bar"><div id="health-bar-glass'+this.id+'" class="health-bar-glass"><div id="health-bar-fluid'+this.id+'" class="health-bar-fluid"></div></div></div>');
-			//this.body = angular.element(document).find('body');
+			var name = angular.element('<div id="name'+this.id+'" class="nametag">'+this.id+'</div>');
 			this.body = angular.element(document.querySelector('#field'))
 			this.body.append(div);
 			this.body.append(healthbar);
-			this.person = angular.element(document.querySelector('#'+this.id));
-			//console.log(this.person);
+			this.body.append(name);
 			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('bottom','auto');
 			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('top','5px');
 			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('left','auto');
@@ -51,6 +50,7 @@ angular.module('Game.factories')
 			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px) rotate('+this.angle+'rad)');
 			angular.element(document.querySelector('#health-bar'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px)');
 			angular.element(document.querySelector('#health-bar-fluid'+this.id)).css('width',this.hp+'%');
+			angular.element(document.querySelector('#name'+this.id)).css('transform','translate3d('+this.x+'px,'+(this.y-15)+'px,0px)');
 		},
 
 		registerControls : function () {
