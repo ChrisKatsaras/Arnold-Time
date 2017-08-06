@@ -46,6 +46,9 @@ angular.module('Game.factories')
 			serverData.tanks.forEach( function(serverTank) {
 				if(game.local !== undefined && serverTank.id == game.local.id) {
 					game.local.hp = serverTank.hp;
+					console.log(serverTank.shield);
+					//game.local.shield = serverTank.shield;
+					game.local.shieldHP = serverTank.shieldHP;
 					if(game.local.hp <= 0) {
 						game.killSoilder(game.local);
 						this.local = {};
@@ -61,6 +64,7 @@ angular.module('Game.factories')
 						clientTank.angle = serverTank.angle;
 						clientTank.hp = serverTank.hp;
 						clientTank.shield = serverTank.shield;
+						clientTank.shieldHP = serverTank.shieldHP;
 						if(clientTank.hp <= 0){
 							game.killSoilder(clientTank);
 						}
@@ -69,7 +73,7 @@ angular.module('Game.factories')
 						found = true;
 					}
 				});
-				//console.log("List of tanks", game.tanks);
+
 				if(!found && (game.local == undefined || serverTank.id != game.local.id)) {
 
 					game.addTank({id : serverTank.id, local : false, x: serverTank.x, y: serverTank.y, hp: serverTank.hp});
@@ -101,6 +105,7 @@ angular.module('Game.factories')
 			});
 			$('#' + username).remove();
 			$('#health-bar' + username).remove();
+			$('#shield-bar'+ username).remove();
 			$('#name'+ username).remove();
 		},
 

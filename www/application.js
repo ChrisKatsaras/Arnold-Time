@@ -41,6 +41,17 @@ GameServer.prototype = {
 				tank.y = data.y;
 				tank.angle = data.angle;
 				tank.shield = data.shield;
+				if(tank.shield && tank.shieldHP >= 1) {
+					tank.shieldHP -= 1;
+				} else if(tank.shield && tank.shieldHP < 1) {
+					tank.shieldHP = 0;
+				} else if(tank.shield && tank.shieldHP < 1) {
+					tank.shield = false;
+				}
+				else if (!tank.shield && tank.shieldHP < 100){
+					tank.shieldHP += 0.1;
+				}
+				//console.log("The shield "+tank.shield+" the hp "+tank.shieldHP);
 			}
 		});
 	},
@@ -94,7 +105,7 @@ GameServer.prototype = {
 	checkID : function(id) {
 		var flag = true;
 
-		if(id === "field") {
+		if(id === "field" || id.indexOf(' ') >= 0) {
 			flag = false;
 		}
 		this.tanks.forEach( function(tank){
@@ -155,9 +166,9 @@ io.on('connection', function(user) {
 			console.log(data.id," is joining the game!");
 			var initX = Math.floor(Math.random() * (800 - 10)) + 10;
 	        var initY = Math.floor(Math.random() * (350 - 10)) + 10;
-	       	user.emit('addTank', { id: data.id, local: true, x: initX, y: initY, hp: 100 });
-	       	user.broadcast.emit('addTank', { id: data.id, local: false, x: initX, y: initY, hp: 100, sheild : false});
-	        game.addTank({id: data.id, x: initX, y: initY, hp: 100, sheild : false});
+	       	user.emit('addTank', { id: data.id, local: true, x: initX, y: initY, hp: 100});
+	       	user.broadcast.emit('addTank', { id: data.id, local: false, x: initX, y: initY, hp: 100});
+	        game.addTank({id: data.id, x: initX, y: initY, hp: 100, shield : false, shieldHP: 100});
 			user.emit('joinedGame', true);
 		} else {
 			user.emit('joinedGame', false);

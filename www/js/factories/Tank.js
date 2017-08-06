@@ -20,6 +20,7 @@ angular.module('Game.factories')
 			right: false
 		}
 		this.shield = false;
+		this.shieldHP = 100;
 		this.dead = false;
 		this.socket = socket;
 		this.draw();
@@ -31,10 +32,12 @@ angular.module('Game.factories')
 		draw : function(){
 			var div = angular.element('<div id="'+this.id+'"class="tank tank1"><div id="holder-'+this.id+'" class="point"></div><div id="shield'+this.id+'" class="shield"></div></div>');
 			var healthbar = angular.element('<div id="health-bar'+this.id+'"class="health-bar"><div id="health-bar-glass'+this.id+'" class="health-bar-glass"><div id="health-bar-fluid'+this.id+'" class="health-bar-fluid"></div></div></div>');
+			var shieldbar = angular.element('<div id="shield-bar'+this.id+'"class="health-bar"><div id="shield-bar-glass'+this.id+'" class="health-bar-glass"><div id="shield-bar-fluid'+this.id+'" class="shield-bar-fluid"></div></div></div>');
 			var name = angular.element('<div id="name'+this.id+'" class="nametag">'+this.id+'</div>');
 			this.body = angular.element(document.querySelector('#field'))
 			this.body.append(div);
 			this.body.append(healthbar);
+			this.body.append(shieldbar);
 			this.body.append(name);
 			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('bottom','auto');
 			this.placeholder = angular.element(document.querySelector('#holder-'+this.id)).css('top','5px');
@@ -51,10 +54,12 @@ angular.module('Game.factories')
 			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px) rotate('+this.angle+'rad)');
 			angular.element(document.querySelector('#health-bar'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px)');
 			angular.element(document.querySelector('#health-bar-fluid'+this.id)).css('width',this.hp+'%');
+			angular.element(document.querySelector('#shield-bar'+this.id)).css('transform','translate3d('+this.x+'px,'+(this.y+6)+'px,0px)');
+			angular.element(document.querySelector('#shield-bar-fluid'+this.id)).css('width',this.shieldHP+'%');
 			angular.element(document.querySelector('#name'+this.id)).css('transform','translate3d('+this.x+'px,'+(this.y-15)+'px,0px)');
 			angular.element(document.querySelector('#shield'+this.id)).css('transform','translate3d(-30px,-15px,0px)');
-
-			if(this.shield) {
+			
+			if(this.shield && this.shieldHP > 1) {
 				$("#shield"+this.id).show();
 			} else {
 				$("#shield"+this.id).hide();
@@ -80,7 +85,6 @@ angular.module('Game.factories')
 					t.direction.left = true;
 					break;
 				case 32:
-					console.log("shield on");
 					t.shield = true;
 					break;
 			}
@@ -101,7 +105,6 @@ angular.module('Game.factories')
 						break;
 					case 32:
 						t.shield = false;
-						console.log("shield off");
 					break;
 				}
 			}) .mousemove( function(e) {
