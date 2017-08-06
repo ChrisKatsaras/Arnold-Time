@@ -99,6 +99,7 @@ angular.module('Game.factories')
 			});
 			$('#' + username).remove();
 			$('#health-bar' + username).remove();
+			$('#name'+ username).remove();
 		},
 
 		killSoilder: function(soilder) {
