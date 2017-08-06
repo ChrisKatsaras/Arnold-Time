@@ -40,6 +40,7 @@ GameServer.prototype = {
 				tank.x = data.x;
 				tank.y = data.y;
 				tank.angle = data.angle;
+				tank.shield = data.shield;
 			}
 		});
 	},
@@ -155,8 +156,8 @@ io.on('connection', function(user) {
 			var initX = Math.floor(Math.random() * (800 - 10)) + 10;
 	        var initY = Math.floor(Math.random() * (350 - 10)) + 10;
 	       	user.emit('addTank', { id: data.id, local: true, x: initX, y: initY, hp: 100 });
-	       	user.broadcast.emit('addTank', { id: data.id, local: false, x: initX, y: initY, hp: 100 });
-	        game.addTank({id: data.id, x: initX, y: initY, hp: 100});
+	       	user.broadcast.emit('addTank', { id: data.id, local: false, x: initX, y: initY, hp: 100, sheild : false});
+	        game.addTank({id: data.id, x: initX, y: initY, hp: 100, sheild : false});
 			user.emit('joinedGame', true);
 		} else {
 			user.emit('joinedGame', false);

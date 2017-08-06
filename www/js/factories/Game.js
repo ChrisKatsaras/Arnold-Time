@@ -33,7 +33,8 @@ angular.module('Game.factories')
 				id: this.local.id,
 				x: this.local.x,
 				y: this.local.y,
-				angle: this.local.angle
+				angle: this.local.angle,
+				shield: this.local.shield
 			};
 			gameData.tank = t;
 			this.socket.emit('sync', gameData);	
@@ -59,6 +60,7 @@ angular.module('Game.factories')
 						clientTank.y = serverTank.y;
 						clientTank.angle = serverTank.angle;
 						clientTank.hp = serverTank.hp;
+						clientTank.shield = serverTank.shield;
 						if(clientTank.hp <= 0){
 							game.killSoilder(clientTank);
 						}

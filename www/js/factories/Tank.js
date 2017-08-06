@@ -19,7 +19,7 @@ angular.module('Game.factories')
 			left: false,
 			right: false
 		}
-		this.shieldOn = false;
+		this.shield = false;
 		this.dead = false;
 		this.socket = socket;
 		this.draw();
@@ -54,7 +54,7 @@ angular.module('Game.factories')
 			angular.element(document.querySelector('#name'+this.id)).css('transform','translate3d('+this.x+'px,'+(this.y-15)+'px,0px)');
 			angular.element(document.querySelector('#shield'+this.id)).css('transform','translate3d(-30px,-15px,0px)');
 
-			if(this.shieldOn) {
+			if(this.shield) {
 				$("#shield"+this.id).show();
 			} else {
 				$("#shield"+this.id).hide();
@@ -81,7 +81,7 @@ angular.module('Game.factories')
 					break;
 				case 32:
 					console.log("shield on");
-					t.shieldOn = true;
+					t.shield = true;
 					break;
 			}
 			}).keyup( function(e) {
@@ -100,7 +100,7 @@ angular.module('Game.factories')
 						t.direction.left = false;
 						break;
 					case 32:
-						t.shieldOn = false;
+						t.shield = false;
 						console.log("shield off");
 					break;
 				}
