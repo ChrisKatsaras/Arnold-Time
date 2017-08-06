@@ -22,6 +22,7 @@ var GameServer = function () {
 	this.bulletID = 0; //Keeps track of bullets
 	this.canvasBullet; //XXX Just for testing
 	this.canvasTank; //XXX Just for testing
+	this.canvasShield; //XXX Just for testing
 }
 
 GameServer.prototype = {
@@ -74,7 +75,7 @@ GameServer.prototype = {
 		var satBullet = new SAT.Box(new SAT.Vector(bullet.x,bullet.y), 20, 12).toPolygon();
 		satBullet.rotate(bullet.alpha);
 		satBullet.rotate(1.5738 * -1);
-		this.canvasBullet = satBullet; //XXX Just for testing
+		//this.canvasBullet = satBullet; //XXX Just for testing
 		var game = this;
 		this.tanks.forEach(function (tank) {
 			if(bullet.userID != tank.id) {
@@ -85,12 +86,18 @@ GameServer.prototype = {
 				points.push(new SAT.Vector(-44,+60.5));
 				var satTank = new SAT.Polygon(new SAT.Vector(tank.x+44,tank.y+60.5),points);
 				satTank.rotate(tank.angle);
-			 	bullet.outOfBounds = SAT.testPolygonPolygon(satBullet,satTank);
-			 	game.canvasTank = satTank; //XXX Just for testing
-			 	if(bullet.outOfBounds) {
-			 		tank.hp -= 10;
-			 	}
+				if(tank.shield) {
+					var satShield = new SAT.Circle(new SAT.Vector((tank.x-30)+75,(tank.y-15)+75), 75);
+					game.canvasShield = satShield;
+					bullet.outOfBounds = SAT.testPolygonCircle(satBullet,satShield);
+				} else {
+					bullet.outOfBounds = SAT.testPolygonPolygon(satBullet,satTank);
+					if(bullet.outOfBounds) {
+						tank.hp -= 10;
+					}	
+				}
 
+			 	//game.canvasTank = satTank; //XXX Just for testing
 			}
 		});
 		
@@ -183,8 +190,9 @@ io.on('connection', function(user) {
 
 		game.updateBullets();
 		//var test = [];
-		//test.push(game.canvasBullet); //XXX Just for testing
+		///test.push(game.canvasBullet); //XXX Just for testing
 		//test.push(game.canvasTank);//XXX Just for testing
+		//test.push(game.canvasShield);
 		//user.emit('test',test); //XXX Just for testing
 		user.emit('sync', game.getData());
 		user.broadcast.emit('sync', game.getData());

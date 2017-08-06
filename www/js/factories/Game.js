@@ -46,8 +46,6 @@ angular.module('Game.factories')
 			serverData.tanks.forEach( function(serverTank) {
 				if(game.local !== undefined && serverTank.id == game.local.id) {
 					game.local.hp = serverTank.hp;
-					console.log(serverTank.shield);
-					//game.local.shield = serverTank.shield;
 					game.local.shieldHP = serverTank.shieldHP;
 					if(game.local.hp <= 0) {
 						game.killSoilder(game.local);

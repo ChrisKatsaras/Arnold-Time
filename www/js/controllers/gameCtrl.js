@@ -86,7 +86,7 @@ angular.module('Game.controllers')
             ctx.fill();
         }
 
-          if(status[1] != null) {
+        if(status[1] != null) {
 
             ctx.fillStyle = 'rgba(0,144,0,0.5)';
             ctx.beginPath();
@@ -96,7 +96,15 @@ angular.module('Game.controllers')
             })
             ctx.closePath();
             ctx.fill();
-          }
+        8}
+        if(status[2] != null) {
+            console.log("we here");
+             ctx.fillStyle = 'rgba(22,144,0,0.5)';
+             ctx.beginPath();
+             ctx.arc(status[2].pos.x,status[2].pos.y,75,0,1.5*Math.PI);
+             ctx.stroke;
+             ctx.fill();
+        }
 
     });*/
 
