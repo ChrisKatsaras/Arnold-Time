@@ -3,15 +3,15 @@ A simple online shooter to play with your friends
 
 ## Controls
 
-###Move:
+### Move:
 <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to move   
 
-###Rotate:
+### Rotate:
 Use mouse to rotate character
 
-###Shoot:  
+### Shoot:  
 Click to shoot  
 
-##Shield
-<kbd>Spacebar</kbd> to activate shield
+### Shield
+<kbd>Spacebar</kbd> to activate shield  
 ![alt text](www/img/shield.gif) 
