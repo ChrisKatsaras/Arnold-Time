@@ -28,7 +28,7 @@ var GameServer = function () {
 GameServer.prototype = {
 	addTank: function(tank) {
 		this.tanks.push(tank);
-		console.log(this.tanks);
+		//console.log(this.tanks);
 	},
 
 	addBullet : function(bullet) {
@@ -111,10 +111,12 @@ GameServer.prototype = {
 	},
 	checkID : function(id) {
 		var flag = true;
+		var regExp = new RegExp(/^[a-zA-Z-]+$/);
 
-		if(id === "field" /*|| id.indexOf(' ') >= 0*/) {
+		if(id === "field" || !regExp.test(id)) {
 			flag = false;
 		}
+
 		this.tanks.forEach( function(tank){
 			console.log(id);
 			if(tank.id === id) {
