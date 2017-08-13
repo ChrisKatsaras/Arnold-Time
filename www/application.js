@@ -112,7 +112,7 @@ GameServer.prototype = {
 	checkID : function(id) {
 		var flag = true;
 
-		if(id === "field" || id.indexOf(' ') >= 0) {
+		if(id === "field" /*|| id.indexOf(' ') >= 0*/) {
 			flag = false;
 		}
 		this.tanks.forEach( function(tank){
