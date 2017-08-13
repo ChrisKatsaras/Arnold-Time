@@ -226,6 +226,6 @@ io.on('connection', function(user) {
 var game = new GameServer();
 
 //our app is now fully initialized, listen on port 3000 and await a request from the client.
-http.listen(8082, function() {
-  console.log("Now listening on 8082.");
+http.listen(3000, function() {
+  console.log("Now listening on 3000.");
 });
