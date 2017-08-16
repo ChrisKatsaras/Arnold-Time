@@ -1,16 +1,74 @@
+var fs = require('fs');
 var express = require('express');
 console.log("\nInitializing application...\n");
 //register our app as an express application
 var app = express();
+var bodyParser = require('body-parser');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var SAT = require('sat');
+var Fingerprint = require('express-fingerprint');
+var redis = require('redis');
+var client = redis.createClient();
+var chalk = require('chalk');
+var bluebird = require("bluebird");
+bluebird.promisifyAll(redis.RedisClient.prototype);
+bluebird.promisifyAll(redis.Multi.prototype);
 
-app.use('/', express.static(__dirname + '/'));
-
-app.get('*', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
+client.on('connect', function() {
+    console.log(chalk.green('Redis connected'));
 });
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+	extended: true
+})); 
+
+app.use(Fingerprint({
+    parameters:[
+        // Defaults 
+        Fingerprint.useragent,
+        Fingerprint.acceptHeaders,
+        Fingerprint.geoip,
+    ]
+}));
+
+app.get('/', function (req, res) {
+    res.sendFile(__dirname + '/');
+});
+
+app.post('/login', function (req, res) {
+	var status;
+
+	client.ttl(req.fingerprint.hash, function(err, reply) {
+   		if(reply == -1) {
+   			console.log(chalk.red("You already exist"));
+   			res.sendStatus(400);
+   			
+   		} else if(reply >= 0) {
+   			console.log(chalk.red("You are being timed", reply));
+   			res.sendStatus(404);
+   		} else {
+   			console.log(chalk.green("You're a new player"));
+   			client.get(req.body.token, function(err, reply) {
+		   		if(reply) {
+		   			var object = {
+		   				socketID : reply,
+		   				fingerprint : req.fingerprint.hash
+		   			}
+		   			client.set(req.body.token, JSON.stringify(object), function(err, reply) {});
+		   			client.set(req.fingerprint.hash, reply, function(err, reply) {});
+		   			res.sendStatus(200);
+		   		} else {
+		   			res.sendStatus(400);
+		   		}
+			});
+   		}
+	});
+});
+
+//Putting this before the app.get results in the app.get not being run
+app.use('/', express.static(__dirname + '/'));
 
 console.log("\nInitilization complete.\n");
 
@@ -126,6 +184,16 @@ GameServer.prototype = {
 		});
 		return flag;
 	},
+	getNameBySocketID: function (socketID) {
+		var game = this;
+		var id;
+		this.tanks.forEach(function (soilder) {
+			if(soilder.socketID === socketID) {
+				id = soilder.id;
+			}
+		});
+		return id;
+	},
 	removeTank : function(username){
 		//Remove tank object
 		this.tanks = this.tanks.filter( function(t){return t.id != username} );
@@ -169,15 +237,22 @@ Bullet.prototype = {
 /*Socket events*/
 io.on('connection', function(user) {
 	console.log("A user has connected");
-	
-	user.on('joinGame', function(data) {
+	var token;
+	require('crypto').randomBytes(48, function(err, buffer) {
+  		token = buffer.toString('hex');
+  		client.set(token, user.id, function(err, reply) {
+  			user.emit('userToken', token);
+  		});
+	});
+
+	user.on('joinGame', function(data) {	
 		if(game.checkID(data.id)) {
 			console.log(data.id," is joining the game!");
 			var initX = Math.floor(Math.random() * (800 - 10)) + 10;
 	        var initY = Math.floor(Math.random() * (350 - 10)) + 10;
 	       	user.emit('addTank', { id: data.id, local: true, x: initX, y: initY, hp: 100});
 	       	user.broadcast.emit('addTank', { id: data.id, local: false, x: initX, y: initY, hp: 100});
-	        game.addTank({id: data.id, x: initX, y: initY, hp: 100, shield : false, shieldHP: 100});
+	        game.addTank({id: data.id, x: initX, y: initY, hp: 100, shield : false, shieldHP: 100, socketID: user.id});
 			user.emit('joinedGame', true);
 		} else {
 			user.emit('joinedGame', false);
@@ -203,10 +278,35 @@ io.on('connection', function(user) {
 		
 	})
 
-	user.on('leaveGame', function(username){
+	//user.on('leaveGame', function(username){
+	//	console.log(username + ' has left the game');
+	//	game.removeTank(username);
+	//	user.broadcast.emit('removeTank', username);
+	//});
+
+	user.on('disconnect', function() {
+		var username = game.getNameBySocketID(user.id);
+		var timeout = false;
+		console.log("disconnect", username);
 		console.log(username + ' has left the game');
 		game.removeTank(username);
 		user.broadcast.emit('removeTank', username);
+		console.log("The token", token);
+		return client.getAsync(token).then(function(res) {
+		    try {
+		        userObject = JSON.parse(res);
+		        timeout = true;
+		    } catch(e) {
+		    	console.log(chalk.red("JSON parsing error on disconnect"));
+		    }
+
+		    if(timeout) {
+		    	console.log("User entered the game and is now leaving");
+		    	client.expire(userObject.fingerprint, 5);
+		    } else {
+		    	 console.log("User never entered the game")
+		    }
+		});
 	});
 
 	user.on('shoot', function(bullet) {
@@ -216,8 +316,6 @@ io.on('connection', function(user) {
 				game.addBullet(bulletObj);
 			}
 		});
-		
-		//console.log(game.tanks, game.bullets);
 	});
 
 	user.on('localDead', function() {

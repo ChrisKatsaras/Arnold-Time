@@ -14,9 +14,8 @@ Game.config(function($routeProvider, $locationProvider) {
 		templateUrl: "/templates/404.html"
 	})
 
-    //default catch-all
-	.otherwise({
-		templateUrl: '/templates/404.html'
+    .otherwise({
+		redirectTo: '/'
 	});
 
 	$locationProvider.html5Mode(true);

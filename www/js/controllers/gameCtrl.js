@@ -1,10 +1,11 @@
 angular.module('Game.controllers')
-.controller('GameCtrl', ['$location', '$mdDialog','$mdPanel','$scope','GameFactory', function($location, $mdDialog,$mdPanel,$scope,GameFactory) {
+.controller('GameCtrl', ['$http','$location', '$mdDialog','$mdPanel','$scope','GameFactory', function($http, $location, $mdDialog,$mdPanel,$scope,GameFactory) {
     this._mdPanel = $mdPanel;
     var client = this;
     var socket = io.connect();
     var game;
     var username = null;
+    var userToken = null;
     game = new GameFactory(1000, 500, socket);
    	client.init = function(ev) {
         $mdDialog.show({
@@ -21,7 +22,13 @@ angular.module('Game.controllers')
 
     client.joinGame = function(name) {
         username = name;
-        socket.emit('joinGame', {id: name});
+        $http.post('/login',{id: name, token: userToken}).
+        success(function(data) {
+            console.log("posted successfully");
+            socket.emit('joinGame', {id: name, token: userToken});
+        }).error(function(data) {
+            console.error("error in posting");
+        })    
         //var audio = new Audio('audio/sob.wav');//LOL
         //audio.play();
     }	
@@ -50,6 +57,13 @@ angular.module('Game.controllers')
         
     });
 
+    socket.on('userToken', function (token) {
+        if(token) {
+            userToken = token; 
+            //console.log("The users token is ", userToken);
+        }
+    });
+
     socket.on('deadModal', function () {
         $mdDialog.show({
             templateUrl: 'templates/deadModal.html',
@@ -60,11 +74,6 @@ angular.module('Game.controllers')
             clickOutsideToClose: false,
             fullscreen: true
         });
-        if (performance.navigation.type == 1) {
-            console.info( "This page is reloaded" );
-        } else {
-            console.info( "This page is not reloaded");
-        }
     });
 
     //XXX Just for testing
@@ -109,16 +118,11 @@ angular.module('Game.controllers')
     });*/
 
     //User leaves the game
-    $(window).on('beforeunload', function(){
-        if(username != null) {
-            socket.emit('leaveGame', username);
-        }
+    //$(window).on('beforeunload', function(){
+      //  if(username != null) {
+        //    socket.emit('leaveGame', username);
+        //}
         
-    });
-
-    if (window.performance) {
-      console.info("window.performance work's fine on this browser");
-    }
-
+    //});
 
 }]);
