@@ -29,11 +29,11 @@ angular.module('Game.controllers')
             client.countdown = -1;
         }).error(function(data) {
             console.error("Error in posting to login", data);
-            client.countdown = parseInt(data);
+            console.log("THE CLIENT ", client.countdown);
             if(client.countdown == -1) {
+                client.countdown = parseInt(data);
                 countdown();
             }
-            
         })    
         //var audio = new Audio('audio/sob.wav');//LOL
         //audio.play();
@@ -41,7 +41,7 @@ angular.module('Game.controllers')
 
     var countdown = function() {
         $timeout(function() {
-            client.countdown--; 
+            client.countdown--;
             countdown();    
         }, 1000);
     }
