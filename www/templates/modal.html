@@ -12,10 +12,10 @@
 	  <!--Content of modal-->
 	 	<md-dialog-content class="section" layout-margin>
 	 	<img src="img/giphy.gif"/>
-			<form name="myForm" layout="column" layout-algin="center center">
+			<form name="myForm" ng-submit="game.joinGame()" layout="column" layout-algin="center center">
 				<md-input-container>
 					<label>Name</label>
-						<input md-maxlength="15" ng-model="inputValue" type="text" ng-model="mytext" required ng-keyup="$event.keyCode == 13 && game.joinGame(inputValue)" ng-pattern="/^[A-Za-z-]+$/"/>
+						<input md-maxlength="15" ng-maxlength="15" ng-model="game.inputName" ng-model-options="{ allowInvalid: true }" type="text" ng-model="mytext" required ng-pattern="/^[A-Za-z-]+$/" placeholder="Name"/>
 				</md-input-container>
 				
 			</form>
@@ -27,7 +27,7 @@
 	 	</md-dialog-content>
 	  	<!--Button at bottom of modal-->
 	  	<md-dialog-actions>
-	    	<md-button class="md-raised md-primary" ng-click="game.joinGame(inputValue)" ng-disabled="myForm.$invalid || myForm.$pending">Send</button>
+	    	<md-button class="md-raised md-primary" ng-click="game.joinGame()" ng-disabled="myForm.$invalid || myForm.$pending">Send</button>
 	 	</md-dialog-actions>
 	</md-dialog>
 </div>

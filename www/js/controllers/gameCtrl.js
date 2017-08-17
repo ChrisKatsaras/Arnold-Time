@@ -7,12 +7,13 @@ angular.module('Game.controllers')
     var username = null;
     var userToken = null;
     client.countdown = -1;
+    client.inputName;
     game = new GameFactory(1000, 500, socket);
    	client.init = function(ev) {
         $mdDialog.show({
             templateUrl: 'templates/modal.html',
             parent: angular.element(document.body),
-            targetEvent: event,
+            targetEvent: ev,
             controller: () => this,
             controllerAs: 'game',
             clickOutsideToClose: false,
@@ -21,15 +22,14 @@ angular.module('Game.controllers')
    	}
 
 
-    client.joinGame = function(name) {
-        username = name;
-        $http.post('/login',{id: name, token: userToken}).
+    client.joinGame = function() {
+        username = client.inputName;
+        $http.post('/login',{id: username, token: userToken}).
         success(function(data) {
-            socket.emit('joinGame', {id: name, token: userToken});
+            socket.emit('joinGame', {id: username, token: userToken});
             client.countdown = -1;
         }).error(function(data) {
             console.error("Error in posting to login", data);
-            console.log("THE CLIENT ", client.countdown);
             if(client.countdown == -1) {
                 client.countdown = parseInt(data);
                 countdown();
@@ -42,7 +42,7 @@ angular.module('Game.controllers')
     var countdown = function() {
         $timeout(function() {
             client.countdown--;
-            countdown();    
+            countdown();
         }, 1000);
     }
 

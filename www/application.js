@@ -38,33 +38,37 @@ app.get('/', function (req, res) {
 });
 
 app.post('/login', function (req, res) {
-	var status;
 
-	client.ttl(req.fingerprint.hash, function(err, reply) {
-   		if(reply == -1) {
-   			console.log(chalk.red("You already exist"));
-   			res.sendStatus(400);
-   			
-   		} else if(reply >= 0) {
-   			console.log(chalk.red("You are being timed", reply));
-   			res.status(409).send(reply.toString());
-   		} else {
-   			console.log(chalk.green("You're a new player"));
-   			client.get(req.body.token, function(err, reply) {
-		   		if(reply) {
-		   			var object = {
-		   				socketID : reply,
-		   				fingerprint : req.fingerprint.hash
-		   			}
-		   			client.set(req.body.token, JSON.stringify(object), function(err, reply) {});
-		   			client.set(req.fingerprint.hash, reply, function(err, reply) {});
-		   			res.sendStatus(200);
-		   		} else {
-		   			res.sendStatus(400);
-		   		}
-			});
-   		}
-	});
+	//If the username exceeds the maximum length
+	if(req.body.id.length > 15) {
+		res.sendStatus(400);
+	} else {
+		client.ttl(req.fingerprint.hash, function(err, reply) {
+	   		if(reply == -1) {
+	   			console.log(chalk.red("You already exist"));
+	   			res.sendStatus(400);
+	   			
+	   		} else if(reply >= 0) {
+	   			console.log(chalk.red("You are being timed", reply));
+	   			res.status(409).send(reply.toString());
+	   		} else {
+	   			console.log(chalk.green("You're a new player"));
+	   			client.get(req.body.token, function(err, reply) {
+			   		if(reply) {
+			   			var object = {
+			   				socketID : reply,
+			   				fingerprint : req.fingerprint.hash
+			   			}
+			   			client.set(req.body.token, JSON.stringify(object), function(err, reply) {});
+			   			client.set(req.fingerprint.hash, reply, function(err, reply) {});
+			   			res.sendStatus(200);
+			   		} else {
+			   			res.sendStatus(400);
+			   		}
+				});
+	   		}
+		});
+	}
 });
 
 //Putting this before the app.get results in the app.get not being run
@@ -302,7 +306,7 @@ io.on('connection', function(user) {
 
 		    if(timeout) {
 		    	console.log("User entered the game and is now leaving");
-		    	client.expire(userObject.fingerprint, 10);
+		    	client.expire(userObject.fingerprint, 1);
 		    } else {
 		    	 console.log("User never entered the game")
 		    }
