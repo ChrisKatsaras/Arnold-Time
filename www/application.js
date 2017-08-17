@@ -47,7 +47,7 @@ app.post('/login', function (req, res) {
    			
    		} else if(reply >= 0) {
    			console.log(chalk.red("You are being timed", reply));
-   			res.sendStatus(404);
+   			res.status(409).send(reply.toString());
    		} else {
    			console.log(chalk.green("You're a new player"));
    			client.get(req.body.token, function(err, reply) {
@@ -302,7 +302,7 @@ io.on('connection', function(user) {
 
 		    if(timeout) {
 		    	console.log("User entered the game and is now leaving");
-		    	client.expire(userObject.fingerprint, 5);
+		    	client.expire(userObject.fingerprint, 10);
 		    } else {
 		    	 console.log("User never entered the game")
 		    }

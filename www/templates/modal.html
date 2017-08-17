@@ -1,5 +1,5 @@
 <div flex-xs="100">
-	<md-dialog aria-label="City Form" flex="100">
+	<md-dialog aria-label="Login Form" flex="100">
 	  	<md-toolbar>
 	    	<div class="md-toolbar-tools">
 	      		<h1 class="primary-font">
@@ -19,8 +19,13 @@
 				</md-input-container>
 				
 			</form>
+			<p ng-if="game.countdown > -1">
+				<font color="red">You must wait </font>
+				<b ng-bind="game.countdown"></b> 
+				<font color="red"> seconds before you can play</font>
+			</p>
 	 	</md-dialog-content>
-	  <!--Button at bottom of modal-->
+	  	<!--Button at bottom of modal-->
 	  	<md-dialog-actions>
 	    	<md-button class="md-raised md-primary" ng-click="game.joinGame(inputValue)" ng-disabled="myForm.$invalid || myForm.$pending">Send</button>
 	 	</md-dialog-actions>

@@ -1,11 +1,12 @@
 angular.module('Game.controllers')
-.controller('GameCtrl', ['$http','$location', '$mdDialog','$mdPanel','$scope','GameFactory', function($http, $location, $mdDialog,$mdPanel,$scope,GameFactory) {
+.controller('GameCtrl', ['$http', '$location', '$mdDialog', '$mdPanel', '$scope', '$timeout', 'GameFactory', function($http, $location, $mdDialog, $mdPanel, $scope, $timeout, GameFactory) {
     this._mdPanel = $mdPanel;
     var client = this;
     var socket = io.connect();
     var game;
     var username = null;
     var userToken = null;
+    client.countdown = -1;
     game = new GameFactory(1000, 500, socket);
    	client.init = function(ev) {
         $mdDialog.show({
@@ -24,15 +25,26 @@ angular.module('Game.controllers')
         username = name;
         $http.post('/login',{id: name, token: userToken}).
         success(function(data) {
-            console.log("posted successfully");
             socket.emit('joinGame', {id: name, token: userToken});
+            client.countdown = -1;
         }).error(function(data) {
-            console.error("error in posting");
+            console.error("Error in posting to login", data);
+            client.countdown = parseInt(data);
+            if(client.countdown == -1) {
+                countdown();
+            }
+            
         })    
         //var audio = new Audio('audio/sob.wav');//LOL
         //audio.play();
-    }	
+    }
 
+    var countdown = function() {
+        $timeout(function() {
+            client.countdown--; 
+            countdown();    
+        }, 1000);
+    }
 
     /*Socket events*/
     socket.on('sync',function (gameServerData) {
