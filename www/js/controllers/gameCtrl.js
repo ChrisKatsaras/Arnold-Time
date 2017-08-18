@@ -36,7 +36,7 @@ angular.module('Game.controllers')
                 if(client.countdown == -1 && status == 409) {
                     client.countdown = parseInt(data);
                     countdown();
-                } else if(status == 400){
+                } else if(status == 400) {
                     client.errorMessage = data;
                 }
             })    
@@ -77,13 +77,11 @@ angular.module('Game.controllers')
             var audio = new Audio('audio/dontdothat.mp3');//LOL
             audio.play();
         }
-        
     });
 
     socket.on('userToken', function (token) {
         if(token) {
-            userToken = token; 
-            //console.log("The users token is ", userToken);
+            userToken = token;
         }
     });
 
