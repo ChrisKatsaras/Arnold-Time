@@ -1,17 +1,16 @@
 var fs = require('fs');
 var express = require('express');
 console.log("\nInitializing application...\n");
-//register our app as an express application
-var app = express();
+var app = express(); //Registers the app as an express application
 var bodyParser = require('body-parser');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var SAT = require('sat');
+var SAT = require('sat'); //Used for collision detection (Separating axis theorem)
 var Fingerprint = require('express-fingerprint');
 var redis = require('redis');
-var client = redis.createClient();
-var chalk = require('chalk');
-var bluebird = require("bluebird");
+var client = redis.createClient(); //Creates Redis instance
+var chalk = require('chalk'); //For coloured console output
+var bluebird = require("bluebird"); //Used for promises with Redis requests
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
@@ -19,11 +18,13 @@ client.on('connect', function() {
     console.log(chalk.green('Redis connected'));
 });
 
+//Included so we can retrieve data from HTTP requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: true
 })); 
 
+//Included to "fingerprint" users
 app.use(Fingerprint({
     parameters:[
         // Defaults 
@@ -37,6 +38,7 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/');
 });
 
+//Login endpoint
 app.post('/login', function (req, res) {
 
 	//If the username exceeds the maximum length
@@ -46,7 +48,7 @@ app.post('/login', function (req, res) {
 		client.ttl(req.fingerprint.hash, function(err, reply) {
 	   		if(reply == -1) {
 	   			console.log(chalk.red("You already exist"));
-	   			res.sendStatus(400);
+	   			res.status(400).send("You are already logged in");
 	   			
 	   		} else if(reply >= 0) {
 	   			console.log(chalk.red("You are being timed", reply));
@@ -306,7 +308,7 @@ io.on('connection', function(user) {
 
 		    if(timeout) {
 		    	console.log("User entered the game and is now leaving");
-		    	client.expire(userObject.fingerprint, 1);
+		    	client.expire(userObject.fingerprint, 10);
 		    } else {
 		    	 console.log("User never entered the game")
 		    }

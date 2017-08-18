@@ -15,7 +15,7 @@
 			<form name="myForm" ng-submit="game.joinGame()" layout="column" layout-algin="center center">
 				<md-input-container>
 					<label>Name</label>
-						<input md-maxlength="15" ng-maxlength="15" ng-model="game.inputName" ng-model-options="{ allowInvalid: true }" type="text" ng-model="mytext" required ng-pattern="/^[A-Za-z-]+$/" placeholder="Name"/>
+						<input md-maxlength="15" ng-maxlength="15" ng-model="game.inputName" ng-model-options="{allowInvalid: true}" type="text" ng-model="mytext" required ng-pattern="/^[A-Za-z-]+$/" placeholder="Name"/>
 				</md-input-container>
 				
 			</form>
@@ -23,6 +23,9 @@
 				<font color="red">You must wait </font>
 				<b ng-bind="game.countdown"></b> 
 				<font color="red"> seconds before you can play</font>
+			</p>
+			<p ng-if="game.errorMessage != null">
+				<font color="red">{{game.errorMessage}}</font>
 			</p>
 	 	</md-dialog-content>
 	  	<!--Button at bottom of modal-->

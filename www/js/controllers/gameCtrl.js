@@ -8,7 +8,9 @@ angular.module('Game.controllers')
     var userToken = null;
     client.countdown = -1;
     client.inputName;
+    client.errorMessage = null;
     game = new GameFactory(1000, 500, socket);
+
    	client.init = function(ev) {
         $mdDialog.show({
             templateUrl: 'templates/modal.html',
@@ -23,20 +25,29 @@ angular.module('Game.controllers')
 
 
     client.joinGame = function() {
-        username = client.inputName;
-        $http.post('/login',{id: username, token: userToken}).
-        success(function(data) {
-            socket.emit('joinGame', {id: username, token: userToken});
-            client.countdown = -1;
-        }).error(function(data) {
-            console.error("Error in posting to login", data);
-            if(client.countdown == -1) {
-                client.countdown = parseInt(data);
-                countdown();
+        if(client.inputName.length <= 15 && client.countdown <= 0) {
+            client.errorMessage = null;
+            $http.post('/login',{id: client.inputName, token: userToken}).
+            success(function(data) {
+                socket.emit('joinGame', {id: client.inputName, token: userToken});
+                client.countdown = -1;
+            }).error(function(data, status) {
+                console.error("Error in posting to login", data, status);
+                if(client.countdown == -1 && status == 409) {
+                    client.countdown = parseInt(data);
+                    countdown();
+                } else if(status == 400){
+                    client.errorMessage = data;
+                }
+            })    
+            
+        } else {
+            if(client.inputName.length > 15) {
+                client.errorMessage = "Name is too long!"
+                //var audio = new Audio('audio/sob.wav');//LOL
+                //audio.play(); 
             }
-        })    
-        //var audio = new Audio('audio/sob.wav');//LOL
-        //audio.play();
+        }
     }
 
     var countdown = function() {
