@@ -8,6 +8,7 @@
     "chalk": "^2.1.0",
     "express": "4.10.2",
     "express-fingerprint": "^1.1.1",
+    "fingerprintjs2": "^1.5.1",
     "profanity-util": "^0.2.0",
     "redis": "^2.8.0",
     "redis-server": "^1.1.0",

@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var SAT = require('sat'); //Used for collision detection (Separating axis theorem)
-var Fingerprint = require('express-fingerprint');
+//var Fingerprint = require('express-fingerprint');
 var redis = require('redis');
 var client = redis.createClient(); //Creates Redis instance
 var chalk = require('chalk'); //For coloured console output
@@ -26,14 +26,15 @@ app.use(bodyParser.urlencoded({
 })); 
 
 //Included to "fingerprint" users
-app.use(Fingerprint({
+/*app.use(Fingerprint({
     parameters:[
         // Defaults 
         Fingerprint.useragent,
         Fingerprint.acceptHeaders,
         Fingerprint.geoip,
     ]
-}));
+}));*/
+
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/');
@@ -47,9 +48,8 @@ app.post('/login', function (req, res) {
 	} else if(profanity.check(req.body.id).length != 0) {
 		res.status(400).send("No swearing, please");
 	} else {
-		client.ttl(req.fingerprint.hash, function(err, reply) {
+		client.ttl(req.body.fp, function(err, reply) {
 	   		if(reply == -1) {
-	   			console.log(req.fingerprint);
 	   			console.log(chalk.red("You already exist"));
 	   			res.status(400).send("You are already logged in");
 	   			
@@ -62,10 +62,10 @@ app.post('/login', function (req, res) {
 			   		if(reply) {
 			   			var object = {
 			   				socketID : reply,
-			   				fingerprint : req.fingerprint.hash
+			   				fingerprint : req.body.fp
 			   			}
 			   			client.set(req.body.token, JSON.stringify(object), function(err, reply) {});
-			   			client.set(req.fingerprint.hash, reply, function(err, reply) {});
+			   			client.set(req.body.fp, reply, function(err, reply) {});
 			   			res.sendStatus(200);
 			   		} else {
 			   			res.sendStatus(400);
@@ -300,7 +300,6 @@ io.on('connection', function(user) {
 		console.log(username + ' has left the game');
 		game.removeTank(username);
 		user.broadcast.emit('removeTank', username);
-		console.log("The token", token);
 		return client.getAsync(token).then(function(res) {
 		    try {
 		        userObject = JSON.parse(res);

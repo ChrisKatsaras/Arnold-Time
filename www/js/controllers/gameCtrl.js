@@ -11,6 +11,7 @@ angular.module('Game.controllers')
     client.errorMessage = null;
     game = new GameFactory(1000, 500, socket);
 
+
    	client.init = function(ev) {
         $mdDialog.show({
             templateUrl: 'templates/modal.html',
@@ -27,19 +28,21 @@ angular.module('Game.controllers')
     client.joinGame = function() {
         if(client.inputName.length <= 15 && client.countdown <= 0) {
             client.errorMessage = null;
-            $http.post('/login',{id: client.inputName, token: userToken}).
-            success(function(data) {
-                socket.emit('joinGame', {id: client.inputName, token: userToken});
-                client.countdown = -1;
-            }).error(function(data, status) {
-                console.error("Error in posting to login", data, status);
-                if(client.countdown == -1 && status == 409) {
-                    client.countdown = parseInt(data);
-                    countdown();
-                } else if(status == 400) {
-                    client.errorMessage = data;
-                }
-            })    
+            new Fingerprint2().get(function(result, components){         
+                $http.post('/login',{id: client.inputName, token: userToken, fp: result}).
+                success(function(data) {
+                    socket.emit('joinGame', {id: client.inputName, token: userToken});
+                    client.countdown = -1;
+                }).error(function(data, status) {
+                    console.error("Error in posting to login", data, status);
+                    if(client.countdown == -1 && status == 409) {
+                        client.countdown = parseInt(data);
+                        countdown();
+                    } else if(status == 400) {
+                        client.errorMessage = data;
+                    }
+                }) 
+            }); 
             
         } else {
             if(client.inputName.length > 15) {
