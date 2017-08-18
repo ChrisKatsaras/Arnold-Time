@@ -42,8 +42,6 @@ app.get('/', function (req, res) {
 //Login endpoint
 app.post('/login', function (req, res) {
 	//If the username exceeds the maximum length
-	
-	console.log(profanity.check(req.body.id));
 	if(req.body.id.length > 15) {
 		res.sendStatus(400);
 	} else if(profanity.check(req.body.id).length != 0) {
@@ -51,6 +49,7 @@ app.post('/login', function (req, res) {
 	} else {
 		client.ttl(req.fingerprint.hash, function(err, reply) {
 	   		if(reply == -1) {
+	   			console.log(req.fingerprint);
 	   			console.log(chalk.red("You already exist"));
 	   			res.status(400).send("You are already logged in");
 	   			
