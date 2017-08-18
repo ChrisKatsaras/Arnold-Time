@@ -42,9 +42,11 @@ app.get('/', function (req, res) {
 //Login endpoint
 app.post('/login', function (req, res) {
 	//If the username exceeds the maximum length
+	
+	console.log(profanity.check(req.body.id));
 	if(req.body.id.length > 15) {
 		res.sendStatus(400);
-	} else if(profanity.check(req.body.id)) {
+	} else if(profanity.check(req.body.id).length != 0) {
 		res.status(400).send("No swearing, please");
 	} else {
 		client.ttl(req.fingerprint.hash, function(err, reply) {
