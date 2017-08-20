@@ -83,15 +83,23 @@ angular.module('Game.factories')
 				var newBullet = new BulletFactory(bullet.username, bullet.bulletID, bullet.x, bullet.y, bullet.alpha);
 				//Do destroy stuff here
 			});
+			/*serverData.bullets.forEach( function(bullet) {
+				if($("#b" + bullet.bulletID).length == 0) {
+  					var newBullet = new BulletFactory(bullet.username, bullet.bulletID, bullet.x, bullet.y, bullet.alpha);
+				} else {
+					angular.element(document.querySelector('#b'+bullet.bulletID)).css('transform','translate3d('+(bullet.x-6)+'px,'+(bullet.y-10)+'px,0px) rotate('+bullet.alpha+'rad)');
+					//Do destroy stuff here
+				}
+				//console.log($("div[id^='b']"))
+			});*/
+
 		},
 
 		addTank : function(tankData) {
 			var tank = new TankFactory(tankData.id, tankData.local, tankData.x, tankData.y, tankData.hp, this.socket);
 			if(tank.local) {
-				console.log("The player local");
 				this.local = tank;
 			} else {
-				console.log("The player isnt local");
 				this.tanks.push(tank);
 			}
 			

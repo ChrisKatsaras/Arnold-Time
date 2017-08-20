@@ -5,12 +5,14 @@
 .tank{
 	position: absolute;
 	background-repeat: no-repeat;
+
 }
 
 .tank1{
 	background-image: url('../img/handgun.png');
 	height: 121px;
 	width: 88px;
+	transition: transform 0.1s;
 }
 
 .shield {
@@ -31,6 +33,7 @@
 	background-image: url('../img/bullet.png');
 	height: 20px;
 	width: 12px;
+	transition: transform 0.09s;
 }
 
 .point {
@@ -44,6 +47,7 @@
     position: absolute;
     margin: 6px 0;
     opacity: 0.8;
+    transition: transform 0.1s;
 }
 
 .health-bar-glass {
@@ -51,12 +55,14 @@
     height: 4px;
     z-index: 10;
     border: 2px solid #000000;
+    transition: transform 0.1s;
 }
 
 .health-bar-fluid {
     width: 100%;
     height: 100%;
     background: #d34549;
+    transition: transform 0.1s;
 }
 
 
@@ -64,6 +70,7 @@
     width: 100%;
     height: 100%;
     background: blue;
+    transition: transform 0.1s;
 }
 
 
@@ -77,4 +84,5 @@
     1.5px -1.5px 0 #000,
     -1.5px 1.5px 0 #000,
     1.5px 1.5px 0 #000;
+    transition: transform 0.1s;
 }
