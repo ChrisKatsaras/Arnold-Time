@@ -33,7 +33,7 @@
 	background-image: url('../img/bullet.png');
 	height: 20px;
 	width: 12px;
-	transition: transform 0.09s;
+	/*transition: transform 0.09s;*/
 }
 
 .point {

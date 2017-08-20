@@ -52,7 +52,6 @@ angular.module('Game.factories')
 		},
 		
 		refresh : function () {
-			console.log("THE ANGLE", this.angle);
 			var aR;
 		    rot = rot || 0;
 		    aR = rot % 6.28319;
