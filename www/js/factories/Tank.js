@@ -3,7 +3,7 @@ angular.module('Game.factories')
 	
 	var clickDisabled = false;
 	var rot;
-	keyboardJS.bind('a', function(e) {
+	/*keyboardJS.bind('a', function(e) {
   		console.log('a is pressed');
 	});
 	keyboardJS.bind('w', function(e) {
@@ -14,7 +14,7 @@ angular.module('Game.factories')
 	});
 	keyboardJS.bind('d', function(e) {
   		console.log('d is pressed');
-	});
+	});*/
 	var TankFactory = function (id, local, x, y, hp, socket) {
 		var div = document.querySelector("#field");
 		var dimensions = div.getBoundingClientRect();

@@ -34,7 +34,6 @@
 	height: 20px;
 	width: 12px;
 	transition: transform 0.09s;
-	transition-timing-function: linear;
 }
 
 .point {
