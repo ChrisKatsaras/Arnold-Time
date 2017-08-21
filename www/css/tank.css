@@ -33,7 +33,8 @@
 	background-image: url('../img/bullet.png');
 	height: 20px;
 	width: 12px;
-	/*transition: transform 0.09s;*/
+	transition: transform 0.09s;
+	transition-timing-function: linear;
 }
 
 .point {
@@ -85,4 +86,8 @@
     -1.5px 1.5px 0 #000,
     1.5px 1.5px 0 #000;
     transition: transform 0.1s;
+}
+
+.website-link {
+	color: ;
 }

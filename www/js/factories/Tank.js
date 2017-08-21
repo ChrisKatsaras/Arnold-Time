@@ -3,6 +3,18 @@ angular.module('Game.factories')
 	
 	var clickDisabled = false;
 	var rot;
+	keyboardJS.bind('a', function(e) {
+  		console.log('a is pressed');
+	});
+	keyboardJS.bind('w', function(e) {
+  		console.log('w is pressed');
+	});
+	keyboardJS.bind('s', function(e) {
+  		console.log('s is pressed');
+	});
+	keyboardJS.bind('d', function(e) {
+  		console.log('d is pressed');
+	});
 	var TankFactory = function (id, local, x, y, hp, socket) {
 		var div = document.querySelector("#field");
 		var dimensions = div.getBoundingClientRect();
@@ -59,7 +71,6 @@ angular.module('Game.factories')
 		    if ( aR < 3.14159 && (this.angle > (aR + 3.14159)) ) { rot -= 6.28319; }
 		    if ( aR >= 3.14159 && (this.angle <= (aR - 3.14159)) ) { rot += 6.28319; }
 		    rot += (this.angle - aR);
-			console.log(rot);
 			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px) rotate('+rot+'rad)');
 			angular.element(document.querySelector('#health-bar'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px)');
 			angular.element(document.querySelector('#health-bar-fluid'+this.id)).css('width',this.hp+'%');

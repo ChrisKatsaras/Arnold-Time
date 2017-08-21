@@ -78,21 +78,39 @@ angular.module('Game.factories')
 				}
 			});
 
-			$("div.bullet").remove();
+			/*$("div.bullet").remove();
 			serverData.bullets.forEach( function(bullet) {
 				var newBullet = new BulletFactory(bullet.username, bullet.bulletID, bullet.x, bullet.y, bullet.alpha);
 				//Do destroy stuff here
-			});
-			/*serverData.bullets.forEach( function(bullet) {
-				if($("#b" + bullet.bulletID).length == 0) {
-  					var newBullet = new BulletFactory(bullet.username, bullet.bulletID, bullet.x, bullet.y, bullet.alpha);
-				} else {
-					angular.element(document.querySelector('#b'+bullet.bulletID)).css('transform','translate3d('+(bullet.x-6)+'px,'+(bullet.y-10)+'px,0px) rotate('+bullet.alpha+'rad)');
-					//Do destroy stuff here
-				}
-				//console.log($("div[id^='b']"))
 			});*/
-
+			serverData.bullets.forEach( function(bullet) {
+				if($("#bullet" + bullet.bulletID).length == 0) {
+  					var newBullet = new BulletFactory(bullet.username, bullet.bulletID, bullet.x, bullet.y, bullet.alpha);
+				} /*else {
+					angular.element(document.querySelector('#bullet'+bullet.bulletID)).css('transform','translate3d('+(bullet.x-6)+'px,'+(bullet.y-10)+'px,0px) rotate('+bullet.alpha+'rad)');
+					//Do destroy stuff here
+				}*/
+			
+			});
+			var ids = $("div[id^='bullet']").map(function(){
+    			return this.id;
+			}).get();
+			let arr = serverData;
+			test = serverData.bullets;
+			ids.forEach( function(bullet) {
+				let obj = test.find(o => ("bullet"+o.bulletID) === bullet);
+				if(obj) {
+					console.log(obj);
+					angular.element(document.querySelector('#bullet'+obj.bulletID)).css('transform','translate3d('+(obj.x-6)+'px,'+(obj.y-10)+'px,0px) rotate('+obj.alpha+'rad)');
+					//Do destroy stuff here
+					
+				} else {
+					console.log("nah")
+					console.log(bullet);
+					$('#'+bullet).remove();
+				}
+				
+			});
 		},
 
 		addTank : function(tankData) {

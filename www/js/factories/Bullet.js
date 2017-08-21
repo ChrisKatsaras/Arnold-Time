@@ -15,7 +15,7 @@ angular.module('Game.factories')
 		draw: function () {
 			var x = this.x - 6;//Half the bullet width
 			var y = this.y - 10;//Half the bullet height
-			var div = angular.element('<div id="b'+this.bulletID+'"class="bullet"></div>');
+			var div = angular.element('<div id="bullet'+this.bulletID+'"class="bullet"></div>');
 			this.body = angular.element(document.querySelector('#field'))
 			div.css('transform','translate3d('+x+'px,'+y+'px,0px) rotate('+this.angle+'rad)');
 			this.body.append(div);
