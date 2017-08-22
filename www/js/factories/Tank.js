@@ -2,7 +2,6 @@ angular.module('Game.factories')
 .factory('TankFactory' ,['BulletFactory', function(BulletFactory){
 	
 	var clickDisabled = false;
-	var rot;
 	/*keyboardJS.bind('a', function(e) {
   		console.log('a is pressed');
 	});
@@ -18,6 +17,7 @@ angular.module('Game.factories')
 	var TankFactory = function (id, local, x, y, hp, socket) {
 		var div = document.querySelector("#field");
 		var dimensions = div.getBoundingClientRect();
+		var rot;
 		this.id = id;
 		this.x = x;
 		this.y = y;
@@ -65,13 +65,13 @@ angular.module('Game.factories')
 		
 		refresh : function () {
 			var aR;
-		    rot = rot || 0;
-		    aR = rot % 6.28319;
+		    this.rot = this.rot || 0;
+		    aR = this.rot % 6.28319;
 		    if ( aR < 0 ) { aR += 6.28319; }
-		    if ( aR < 3.14159 && (this.angle > (aR + 3.14159)) ) { rot -= 6.28319; }
-		    if ( aR >= 3.14159 && (this.angle <= (aR - 3.14159)) ) { rot += 6.28319; }
-		    rot += (this.angle - aR);
-			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px) rotate('+rot+'rad)');
+		    if ( aR < 3.14159 && (this.angle > (aR + 3.14159)) ) { this.rot -= 6.28319; }
+		    if ( aR >= 3.14159 && (this.angle <= (aR - 3.14159)) ) { this.rot += 6.28319; }
+		    this.rot += (this.angle - aR);
+			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px) rotate('+this.rot+'rad)');
 			angular.element(document.querySelector('#health-bar'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px)');
 			angular.element(document.querySelector('#health-bar-fluid'+this.id)).css('width',this.hp+'%');
 			angular.element(document.querySelector('#shield-bar'+this.id)).css('transform','translate3d('+this.x+'px,'+(this.y+6)+'px,0px)');
