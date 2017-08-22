@@ -13,7 +13,7 @@ angular.module('Game.factories')
 
 		setInterval(function() {
 			loop.gameLoop();
-		}, 35);
+		}, 100);
 	}
 
 	GameFactory.prototype = { 

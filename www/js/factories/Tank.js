@@ -171,8 +171,8 @@ angular.module('Game.factories')
 				moveX = 1;
 			} 
 
-			moveX *= 5;
-			moveY *= 5;
+			moveX *= 13;
+			moveY *= 13;
 			var div = document.querySelector("#field");
 			var dimensions = div.getBoundingClientRect();
 			if((this.x + moveX > 0) && (this.x + moveX < dimensions.width - 88)) {

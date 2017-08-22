@@ -234,8 +234,8 @@ var Bullet = function (userID, alpha, x, y) {
 
 Bullet.prototype = {
 	move : function() {
-		var speedX = 10 * Math.sin(this.alpha);
-		var speedY = -10 * Math.cos(this.alpha);
+		var speedX = 20 * Math.sin(this.alpha);
+		var speedY = -20 * Math.cos(this.alpha);
 		this.x += speedX;
 		this.y += speedY;
 	}
