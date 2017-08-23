@@ -102,6 +102,11 @@ angular.module('Game.factories')
 			}, function(e) {
 			  t.direction.right = false;
 			});
+			keyboardJS.bind('space', function(e) {
+			  t.shield = true;
+			}, function(e) {
+			  t.shield = false;
+			});
 			$(document).mousemove( function(e) {
 				var div = document.querySelector("#"+t.id);
 				//If the soilder isn't dead
