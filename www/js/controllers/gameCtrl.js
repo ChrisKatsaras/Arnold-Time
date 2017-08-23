@@ -100,6 +100,10 @@ angular.module('Game.controllers')
         });
     });
 
+    socket.on('updateBullets', function (bullets) {
+        game.updateBullets(bullets);
+    });
+
     //XXX Just for testing
     /*socket.on('test',function (status) {
         //console.log("TEST!",status);

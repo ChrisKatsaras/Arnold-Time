@@ -83,13 +83,13 @@ angular.module('Game.factories')
 				var newBullet = new BulletFactory(bullet.username, bullet.bulletID, bullet.x, bullet.y, bullet.alpha);
 				//Do destroy stuff here
 			});*/
-			serverData.bullets.forEach( function(bullet) {
+			/*serverData.bullets.forEach( function(bullet) {
 				if($("#bullet" + bullet.bulletID).length == 0) {
-  					var newBullet = new BulletFactory(bullet.username, bullet.bulletID, bullet.x, bullet.y, bullet.alpha);
+  					var newBullet = new BulletFactory(bullet.userID, bullet.bulletID, bullet.x, bullet.y, bullet.alpha);
 				} /*else {
 					angular.element(document.querySelector('#bullet'+bullet.bulletID)).css('transform','translate3d('+(bullet.x-6)+'px,'+(bullet.y-10)+'px,0px) rotate('+bullet.alpha+'rad)');
 					//Do destroy stuff here
-				}*/
+				}
 			
 			});
 			var ids = $("div[id^='bullet']").map(function(){
@@ -107,7 +107,36 @@ angular.module('Game.factories')
 					$('#'+bullet).remove();
 				}
 				
+			});*/
+		},
+
+		updateBullets : function (bullets) {
+			console.log(bullets);
+			bullets.forEach( function(bullet) {
+				if($("#bullet" + bullet.bulletID).length == 0) {
+  					var newBullet = new BulletFactory(bullet.userID, bullet.bulletID, bullet.x, bullet.y, bullet.alpha);
+				} /*else {
+					angular.element(document.querySelector('#bullet'+bullet.bulletID)).css('transform','translate3d('+(bullet.x-6)+'px,'+(bullet.y-10)+'px,0px) rotate('+bullet.alpha+'rad)');
+					//Do destroy stuff here
+				}*/
+			
 			});
+			var ids = $("div[id^='bullet']").map(function(){
+    			return this.id;
+			}).get();
+			test = bullets;
+			ids.forEach( function(bullet) {
+				let obj = test.find(o => ("bullet"+o.bulletID) === bullet);
+				if(obj) {
+					angular.element(document.querySelector('#bullet'+obj.bulletID)).css('transform','translate3d('+(obj.x-6)+'px,'+(obj.y-10)+'px,0px) rotate('+obj.alpha+'rad)');
+					//Do destroy stuff here
+					
+				} else {
+					$('#'+bullet).remove();
+				}
+				
+			});
+
 		},
 
 		addTank : function(tankData) {

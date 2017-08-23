@@ -143,7 +143,7 @@ GameServer.prototype = {
 		var game = this;
 
 		this.bullets.forEach(function (bullet) {
-			game.bulletCollision(bullet);
+			//game.bulletCollision(bullet);
 			if(!bullet.outOfBounds) {
 				bullet.move();
 			}
@@ -346,6 +346,7 @@ var game = new GameServer();
 
 setInterval(function() {
 	game.moveBullets();
+	io.sockets.emit('updateBullets', game.bullets);
 }, 100);
 
 //our app is now fully initialized, listen on port 3000 and await a request from the client.
