@@ -1,7 +1,6 @@
 angular.module('Game.factories')
 .factory('GameFactory' ,['TankFactory', 'BulletFactory',function(TankFactory, BulletFactory) {
 	
-	//var GameFactory = {};
 	var GameFactory = function (width, height, socket) {
 		this.tanks = [];
 		this.width = width;
@@ -111,7 +110,6 @@ angular.module('Game.factories')
 		},
 
 		updateBullets : function (bullets) {
-			console.log(bullets);
 			bullets.forEach( function(bullet) {
 				if($("#bullet" + bullet.bulletID).length == 0) {
   					var newBullet = new BulletFactory(bullet.userID, bullet.bulletID, bullet.x, bullet.y, bullet.alpha);

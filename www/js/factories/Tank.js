@@ -2,18 +2,6 @@ angular.module('Game.factories')
 .factory('TankFactory' ,['BulletFactory', function(BulletFactory){
 	
 	var clickDisabled = false;
-	/*keyboardJS.bind('a', function(e) {
-  		console.log('a is pressed');
-	});
-	keyboardJS.bind('w', function(e) {
-  		console.log('w is pressed');
-	});
-	keyboardJS.bind('s', function(e) {
-  		console.log('s is pressed');
-	});
-	keyboardJS.bind('d', function(e) {
-  		console.log('d is pressed');
-	});*/
 	var TankFactory = function (id, local, x, y, hp, socket) {
 		var div = document.querySelector("#field");
 		var dimensions = div.getBoundingClientRect();
@@ -67,9 +55,15 @@ angular.module('Game.factories')
 			var aR;
 		    this.rot = this.rot || 0;
 		    aR = this.rot % 6.28319;
-		    if ( aR < 0 ) { aR += 6.28319; }
-		    if ( aR < 3.14159 && (this.angle > (aR + 3.14159)) ) { this.rot -= 6.28319; }
-		    if ( aR >= 3.14159 && (this.angle <= (aR - 3.14159)) ) { this.rot += 6.28319; }
+		    if ( aR < 0 ) { 
+		    	aR += 6.28319; 
+		    }
+		    if ( aR < 3.14159 && (this.angle > (aR + 3.14159)) ) { 
+		    	this.rot -= 6.28319; 
+		    }
+		    if ( aR >= 3.14159 && (this.angle <= (aR - 3.14159)) ) { 
+		    	this.rot += 6.28319; 
+		    }
 		    this.rot += (this.angle - aR);
 			angular.element(document.querySelector('#'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px) rotate('+this.rot+'rad)');
 			angular.element(document.querySelector('#health-bar'+this.id)).css('transform','translate3d('+this.x+'px,'+this.y+'px,0px)');
@@ -88,46 +82,27 @@ angular.module('Game.factories')
 
 		registerControls : function () {
 			var t = this;
-
-			$(document).keypress( function(e) {
-			var k = e.keyCode || e.which;
-			switch(k){
-				case 119: //W
-					t.direction.up = true;
-					break;
-				case 100: //D
-					t.direction.right = true;
-					break;
-				case 115: //S
-					t.direction.down = true;
-					break;
-				case 97: //A
-					t.direction.left = true;
-					break;
-				case 32:
-					t.shield = true;
-					break;
-			}
-			}).keyup( function(e) {
-				var k = e.keyCode || e.which;
-				switch(k){
-					case 87: //W
-						t.direction.up = false;
-						break;
-					case 68: //D
-						t.direction.right = false;
-						break;
-					case 83: //S
-						t.direction.down = false;
-						break;
-					case 65: //A
-						t.direction.left = false;
-						break;
-					case 32:
-						t.shield = false;
-					break;
-				}
-			}) .mousemove( function(e) {
+			keyboardJS.bind('w', function(e) {
+			  t.direction.up = true;
+			}, function(e) {
+			  t.direction.up = false;
+			});
+			keyboardJS.bind('a', function(e) {
+			  t.direction.left = true;
+			}, function(e) {
+			  t.direction.left = false;
+			});
+			keyboardJS.bind('s', function(e) {
+			  t.direction.down = true;
+			}, function(e) {
+			  t.direction.down = false;
+			});
+			keyboardJS.bind('d', function(e) {
+			  t.direction.right = true;
+			}, function(e) {
+			  t.direction.right = false;
+			});
+			$(document).mousemove( function(e) {
 				var div = document.querySelector("#"+t.id);
 				//If the soilder isn't dead
 				if(div != null) {
