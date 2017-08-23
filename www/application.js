@@ -345,8 +345,8 @@ var game = new GameServer();
 
 
 setInterval(function() {
-	game.moveBullets();
 	io.sockets.emit('updateBullets', game.bullets);
+	game.moveBullets();
 }, 100);
 
 //our app is now fully initialized, listen on port 3000 and await a request from the client.
