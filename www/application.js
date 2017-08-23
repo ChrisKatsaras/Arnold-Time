@@ -133,9 +133,21 @@ GameServer.prototype = {
 			if(bullet.x < 0 || bullet.x > 1100 || bullet.y < 0 || bullet.y > 500) {
 				bullet.outOfBounds = true;
 			} else {
-				bullet.move();
+				//bullet.move();
 			}
 		});
+	},
+
+
+	moveBullets : function () {
+		var game = this;
+
+		this.bullets.forEach(function (bullet) {
+			game.bulletCollision(bullet);
+			if(!bullet.outOfBounds) {
+				bullet.move();
+			}
+		});	
 	},
 
 	//Sat-JS library handles the collision detection for me due to the fact that rotated polygons can be tricky to calculate collision for
@@ -215,7 +227,7 @@ GameServer.prototype = {
 		});
 	},
 
-	removeDeadSoilers : function() {
+	removeDeadSoilders : function() {
 		this.tanks = this.tanks.filter(function(soilder) {
 			return soilder.hp > 0;
 		});
@@ -234,8 +246,8 @@ var Bullet = function (userID, alpha, x, y) {
 
 Bullet.prototype = {
 	move : function() {
-		var speedX = 20 * Math.sin(this.alpha);
-		var speedY = -20 * Math.cos(this.alpha);
+		var speedX = 25 * Math.sin(this.alpha);
+		var speedY = -25 * Math.cos(this.alpha);
 		this.x += speedX;
 		this.y += speedY;
 	}
@@ -281,7 +293,7 @@ io.on('connection', function(user) {
 		user.emit('sync', game.getData());
 		user.broadcast.emit('sync', game.getData());
 		game.removeBullets();
-		game.removeDeadSoilers();
+		game.removeDeadSoilders();
 		
 	})
 
@@ -330,6 +342,11 @@ io.on('connection', function(user) {
 });
 
 var game = new GameServer();
+
+
+setInterval(function() {
+	game.moveBullets();
+}, 100);
 
 //our app is now fully initialized, listen on port 3000 and await a request from the client.
 http.listen(3000, function() {
