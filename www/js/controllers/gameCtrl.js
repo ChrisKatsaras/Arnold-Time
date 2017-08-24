@@ -6,13 +6,21 @@ angular.module('Game.controllers')
     var game;
     var username = null;
     var userToken = null;
+    var loadingScreen = pleaseWait({
+      logo: "img/ArnoldTime.png",
+      backgroundColor: '#ffffff',
+      loadingHtml: "<div class='sk-folding-cube'><div class='sk-cube1 sk-cube'></div><div class='sk-cube2 sk-cube'></div><div class='sk-cube4 sk-cube'></div><div class='sk-cube3 sk-cube'></div></div>"
+    });
     client.countdown = -1;
     client.inputName;
     client.errorMessage = null;
     game = new GameFactory(1000, 500, socket);
 
-
    	client.init = function(ev) {
+        setTimeout(function() { 
+            loadingScreen.finish();
+        }, 2500);
+
         $mdDialog.show({
             templateUrl: 'templates/modal.html',
             parent: angular.element(document.body),

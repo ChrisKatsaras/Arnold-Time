@@ -10,6 +10,7 @@
     "express-fingerprint": "^1.1.1",
     "fingerprintjs2": "^1.5.1",
     "keyboardjs": "^2.3.3",
+    "please-wait": "0.0.5",
     "profanity-util": "^0.2.0",
     "redis": "^2.8.0",
     "redis-server": "^1.1.0",

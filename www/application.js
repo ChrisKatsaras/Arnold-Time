@@ -300,7 +300,7 @@ io.on('connection', function(user) {
 
 		    if(timeout) {
 		    	console.log("User entered the game and is now leaving");
-		    	client.expire(userObject.fingerprint, 1);
+		    	client.expire(userObject.fingerprint, 10);
 		    } else {
 		    	 console.log("User never entered the game")
 		    }
