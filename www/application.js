@@ -11,6 +11,7 @@ var client = redis.createClient(); //Creates Redis instance
 var chalk = require('chalk'); //For coloured console output
 var bluebird = require("bluebird"); //Used for promises with Redis requests
 var profanity = require( 'profanity-util', { substring: "lite" } );
+var UAParser = require('ua-parser-js');
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
@@ -30,13 +31,23 @@ app.get('/', function (req, res) {
 
 //Login endpoint
 app.post('/login', function (req, res) {
-	//If the username exceeds the maximum length
-	console.log(profanity.check(req.body.id));
+	
+	var parser = new UAParser();
+  	var ua = req.headers['user-agent'];
+  	var browserName = parser.setUA(ua).getBrowser().name;
+  	var fullBrowserVersion = parser.setUA(ua).getBrowser().version;
+  	var browserVersion = fullBrowserVersion.split(".",1).toString();
+  	var browserVersionNumber = Number(browserVersion);
+    //If the username exceeds the maximum length
 	if(req.body.id.length > 15) {
 		res.sendStatus(400);
 	} else if(profanity.check(req.body.id).length != 0) {
 		res.status(400).send("No swearing, please");
-	} else {
+	} else if((browserName == 'Firefox' && browserVersion <= 24) || (browserName == 'Chrome' && browserVersion <= 29) || (browserName == 'Safari' && browserVersion <= 5)) {
+    	res.status(403).send("Arnold Time requires "+browserName+" to be updated first");
+    } else if(browserName != 'Firefox' && browserName != 'Chrome' && browserName != 'Safari') {
+    	res.status(403).send("Currently, Arnold Time does not support "+browserName);
+    } else {
 		client.ttl(req.body.fp, function(err, reply) {
 	   		if(reply == -1) {
 	   			console.log(chalk.red("You already exist"));

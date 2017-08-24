@@ -46,7 +46,7 @@ angular.module('Game.controllers')
                     if(client.countdown == -1 && status == 409) {
                         client.countdown = parseInt(data);
                         countdown();
-                    } else if(status == 400) {
+                    } else if(status == 400 || status == 403) {
                         client.errorMessage = data;
                     }
                 }) 
@@ -55,8 +55,6 @@ angular.module('Game.controllers')
         } else {
             if(client.inputName.length > 15) {
                 client.errorMessage = "Name is too long!"
-                //var audio = new Audio('audio/sob.wav');//LOL
-                //audio.play(); 
             }
         }
     }
