@@ -122,23 +122,25 @@ GameServer.prototype = {
 		});
 	},
 
-	updateBullets : function () {
+	/*updateBullets : function () {
 		var game = this;
 
 		this.bullets.forEach(function (bullet) {
-			game.bulletCollision(bullet);
-			if(bullet.x < 0 || bullet.x > 1100 || bullet.y < 0 || bullet.y > 500) {
-				bullet.outOfBounds = true;
-			}
+			//game.bulletCollision(bullet);
+			//if(bullet.x < 0 || bullet.x > 1100 || bullet.y < 0 || bullet.y > 500) {
+			//	bullet.outOfBounds = true;
+			//}
 		});
-	},
+	},*/
 
 
 	moveBullets : function () {
 		var game = this;
-
 		this.bullets.forEach(function (bullet) {
-			if(!bullet.outOfBounds) {
+			game.bulletCollision(bullet);
+			if(bullet.x < 0 || bullet.x > 1100 || bullet.y < 0 || bullet.y > 500) {
+				bullet.outOfBounds = true;
+			} else if(!bullet.outOfBounds) {
 				bullet.move();
 			}
 		});	
@@ -281,7 +283,7 @@ io.on('connection', function(user) {
 			game.updateTanks(data.tank);
 		}
 
-		game.updateBullets();
+		//game.updateBullets();
 		//var test = [];
 		///test.push(game.canvasBullet); //XXX Just for testing
 		//test.push(game.canvasTank);//XXX Just for testing
