@@ -10,7 +10,6 @@ angular.module('Game.factories')
 		this.draw();
 	}
 
-
 	BulletFactory.prototype = { 
 		draw: function () {
 			var x = this.x - 6;//Half the bullet width
@@ -23,7 +22,5 @@ angular.module('Game.factories')
 			//this.person = angular.element(document.querySelector('#'+this.bu));
 		}
 	}
-
 	return BulletFactory;	
-
 }]);

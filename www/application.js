@@ -6,7 +6,6 @@ var bodyParser = require('body-parser');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var SAT = require('sat'); //Used for collision detection (Separating axis theorem)
-//var Fingerprint = require('express-fingerprint');
 var redis = require('redis');
 var client = redis.createClient(); //Creates Redis instance
 var chalk = require('chalk'); //For coloured console output
@@ -24,17 +23,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: true
 })); 
-
-//Included to "fingerprint" users
-/*app.use(Fingerprint({
-    parameters:[
-        // Defaults 
-        Fingerprint.useragent,
-        Fingerprint.acceptHeaders,
-        Fingerprint.geoip,
-    ]
-}));*/
-
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/');
@@ -96,7 +84,6 @@ var GameServer = function () {
 GameServer.prototype = {
 	addTank: function(tank) {
 		this.tanks.push(tank);
-		//console.log(this.tanks);
 	},
 
 	addBullet : function(bullet) {
@@ -120,7 +107,6 @@ GameServer.prototype = {
 				else if (!tank.shield && tank.shieldHP < 100){
 					tank.shieldHP += 0.1;
 				}
-				//console.log("The shield "+tank.shield+" the hp "+tank.shieldHP);
 			}
 		});
 	},
@@ -132,8 +118,6 @@ GameServer.prototype = {
 			game.bulletCollision(bullet);
 			if(bullet.x < 0 || bullet.x > 1100 || bullet.y < 0 || bullet.y > 500) {
 				bullet.outOfBounds = true;
-			} else {
-				//bullet.move();
 			}
 		});
 	},
@@ -143,7 +127,6 @@ GameServer.prototype = {
 		var game = this;
 
 		this.bullets.forEach(function (bullet) {
-			//game.bulletCollision(bullet);
 			if(!bullet.outOfBounds) {
 				bullet.move();
 			}
@@ -189,6 +172,7 @@ GameServer.prototype = {
 		gameData.bullets = this.bullets;
 		return gameData;
 	},
+
 	checkID : function(id) {
 		var flag = true;
 		var regExp = new RegExp(/^[a-zA-Z-]+$/);
@@ -206,6 +190,7 @@ GameServer.prototype = {
 		});
 		return flag;
 	},
+
 	getNameBySocketID: function (socketID) {
 		var game = this;
 		var id;
@@ -216,6 +201,7 @@ GameServer.prototype = {
 		});
 		return id;
 	},
+
 	removeTank : function(username){
 		//Remove tank object
 		this.tanks = this.tanks.filter( function(t){return t.id != username} );
@@ -297,12 +283,6 @@ io.on('connection', function(user) {
 		
 	})
 
-	//user.on('leaveGame', function(username){
-	//	console.log(username + ' has left the game');
-	//	game.removeTank(username);
-	//	user.broadcast.emit('removeTank', username);
-	//});
-
 	user.on('disconnect', function() {
 		var username = game.getNameBySocketID(user.id);
 		var timeout = false;
@@ -343,7 +323,7 @@ io.on('connection', function(user) {
 
 var game = new GameServer();
 
-
+//Interval to keep bullets updated. This needs to be done in a seperate loop as users cannot be relied on to updated movement, etc.
 setInterval(function() {
 	io.sockets.emit('updateBullets', game.bullets);
 	game.moveBullets();

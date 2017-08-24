@@ -2,6 +2,8 @@ angular.module('Game.factories')
 .factory('TankFactory' ,['BulletFactory', function(BulletFactory){
 	
 	var clickDisabled = false;
+	var moveX;
+	var moveY;
 	var TankFactory = function (id, local, x, y, hp, socket) {
 		var div = document.querySelector("#field");
 		var dimensions = div.getBoundingClientRect();
@@ -131,8 +133,8 @@ angular.module('Game.factories')
 		},
 
 		move: function () {
-			var moveX = 0;
-			var moveY = 0;
+			moveX = 0;
+			moveY = 0;
 
 			if(this.dead) {
 				return;
@@ -184,11 +186,12 @@ angular.module('Game.factories')
 			bullet.username = this.id;
 			bullet.x = relativePos.right;
 			bullet.y = relativePos.top;
+			bullet.x += moveX;
+			bullet.y += moveY;
 			this.socket.emit('shoot', bullet);
 		}
 	}
 	
-
 	return TankFactory;	
 
 }]);

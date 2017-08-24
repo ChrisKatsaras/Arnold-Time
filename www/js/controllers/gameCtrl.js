@@ -144,13 +144,4 @@ angular.module('Game.controllers')
         }
 
     });*/
-
-    //User leaves the game
-    //$(window).on('beforeunload', function(){
-      //  if(username != null) {
-        //    socket.emit('leaveGame', username);
-        //}
-        
-    //});
-
 }]);
