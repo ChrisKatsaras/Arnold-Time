@@ -291,7 +291,7 @@ io.on('connection', function(user) {
 		//user.emit('test',test); //XXX Just for testing
 		user.emit('sync', game.getData());
 		user.broadcast.emit('sync', game.getData());
-		game.removeBullets();
+		//game.removeBullets();
 		game.removeDeadSoilders();
 		
 	})
@@ -340,6 +340,7 @@ var game = new GameServer();
 setInterval(function() {
 	io.sockets.emit('updateBullets', game.bullets);
 	game.moveBullets();
+	game.removeBullets();
 }, 100);
 
 //our app is now fully initialized, listen on port 3000 and await a request from the client.
