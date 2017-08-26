@@ -86,3 +86,13 @@
     1.5px 1.5px 0 #000;
     transition: transform 0.15s linear;
 }
+
+.website-link {
+	text-decoration: underline!important;
+	padding: 0px 10px;
+}
+
+.website-link:hover {
+	text-decoration: none!important;
+	padding: 0px 10px;
+}
