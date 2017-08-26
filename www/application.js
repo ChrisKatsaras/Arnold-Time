@@ -81,7 +81,6 @@ app.use('/', express.static(__dirname + '/'));
 
 console.log("\nInitilization complete.\n");
 
-
 var GameServer = function () {
 	console.log("Starting the game server");
 	this.tanks = [];
@@ -121,18 +120,6 @@ GameServer.prototype = {
 			}
 		});
 	},
-
-	/*updateBullets : function () {
-		var game = this;
-
-		this.bullets.forEach(function (bullet) {
-			//game.bulletCollision(bullet);
-			//if(bullet.x < 0 || bullet.x > 1100 || bullet.y < 0 || bullet.y > 500) {
-			//	bullet.outOfBounds = true;
-			//}
-		});
-	},*/
-
 
 	moveBullets : function () {
 		var game = this;
@@ -279,11 +266,9 @@ io.on('connection', function(user) {
 	})
 
 	user.on('sync', function(data) {
-		if(data.tank != undefined){
+		if(data.tank != undefined) {
 			game.updateTanks(data.tank);
 		}
-
-		//game.updateBullets();
 		//var test = [];
 		///test.push(game.canvasBullet); //XXX Just for testing
 		//test.push(game.canvasTank);//XXX Just for testing

@@ -18,8 +18,6 @@ angular.module('Game.factories')
 			this.body = angular.element(document.querySelector('#field'))
 			div.css('transform','translate3d('+x+'px,'+y+'px,0px) rotate('+this.angle+'rad)');
 			this.body.append(div);
-
-			//this.person = angular.element(document.querySelector('#'+this.bu));
 		}
 	}
 	return BulletFactory;	

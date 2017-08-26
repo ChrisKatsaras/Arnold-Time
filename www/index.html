@@ -1,64 +1,63 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="Game">
+  <head>
+    <title>ARNOLD</title>
 
-<head>
-  <title>ARNOLD</title>
+    <!--Favicons-->
+    <link rel="apple-touch-icon" sizes="57x57" href="favicons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="favicons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="favicons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="favicons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="favicons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="favicons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="favicons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="favicons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="favicons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
 
-  <!--Favicons-->
-  <link rel="apple-touch-icon" sizes="57x57" href="favicons/apple-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="favicons/apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="favicons/apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="favicons/apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="favicons/apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="favicons/apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="favicons/apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="favicons/apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192"  href="favicons/android-icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="favicons/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
-  <link rel="manifest" href="/manifest.json">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-  <meta name="theme-color" content="#ffffff">
+    <!--Necessary to remove '#' from url-->
+    <base href="/">
+    <script src="node_modules/please-wait/build/please-wait.min.js"></script>
+    <script src="angular/angular_min_1.5.3.js"></script>
+    <script src="angular/animate.js"></script>
+    <script src="angular/aria.js"></script>
+    <script src="angular/messages.js"></script>
+    <script src="angular/icons.js"></script> 
+    <script src="angular/route.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.4/socket.io.js"></script>
+    
+    <!--Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One" rel="stylesheet">
 
-  <!--Necessary to remove '#' from url-->
-  <base href="/">
-  <script src="node_modules/please-wait/build/please-wait.min.js"></script>
-  <script src="angular/angular_min_1.5.3.js"></script>
-  <script src="angular/animate.js"></script>
-  <script src="angular/aria.js"></script>
-  <script src="angular/messages.js"></script>
-  <script src="angular/icons.js"></script> 
-  <script src="angular/route.js"></script>
-  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.4/socket.io.js"></script>
-  
-  <!--Google fonts-->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Black+Ops+One" rel="stylesheet">
+    <!-- Angular Material CSS and code. -->
+    <!--<script src="angular/material.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.js"></script>
+    <link rel="stylesheet" href="node_modules/please-wait/build/please-wait.css">
+    <link rel="stylesheet" href="css/loading.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.css">
 
-  <!-- Angular Material CSS and code. -->
-  <!--<script src="angular/material.js"></script>-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.js"></script>
-  <link rel="stylesheet" href="node_modules/please-wait/build/please-wait.css">
-  <link rel="stylesheet" href="css/loading.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.css">
-
-  <script src="js/app.js"></script>
-  <script src="js/controllers/controllers.js"></script>
-  <script src="js/controllers/gameCtrl.js"></script>
-  <script src="js/factories/factory.js"></script>
-  <script src="js/factories/Game.js"></script>
-  <script src="js/factories/Tank.js"></script>
-  <script src="js/factories/Bullet.js"></script>
-  <script src="js/angular-smooth-scroll.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js"></script>
-  <script src="node_modules/keyboardjs/dist/keyboard.min.js"></script>
-  <link href="css/tank.css" rel="stylesheet" type="text/css"/>
-</head>
-<body ng-cloak>
-  <div ng-cloak ng-view=""></div>
-</body>
+    <script src="js/app.js"></script>
+    <script src="js/controllers/controllers.js"></script>
+    <script src="js/controllers/gameCtrl.js"></script>
+    <script src="js/factories/factory.js"></script>
+    <script src="js/factories/Game.js"></script>
+    <script src="js/factories/Tank.js"></script>
+    <script src="js/factories/Bullet.js"></script>
+    <script src="js/angular-smooth-scroll.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js"></script>
+    <script src="node_modules/keyboardjs/dist/keyboard.min.js"></script>
+    <link href="css/tank.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body ng-cloak>
+    <div ng-cloak ng-view=""></div>
+  </body>
 </html>
