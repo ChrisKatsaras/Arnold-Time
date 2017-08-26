@@ -83,39 +83,39 @@ console.log("\nInitilization complete.\n");
 
 var GameServer = function () {
 	console.log("Starting the game server");
-	this.tanks = [];
+	this.soldiers = [];
 	this.bullets = [];
 	this.bulletID = 0; //Keeps track of bullets
 	this.canvasBullet; //XXX Just for testing
-	this.canvasTank; //XXX Just for testing
+	this.canvasSoldier; //XXX Just for testing
 	this.canvasShield; //XXX Just for testing
 }
 
 GameServer.prototype = {
-	addTank: function(tank) {
-		this.tanks.push(tank);
+	addSoldier: function(soldier) {
+		this.soldiers.push(soldier);
 	},
 
 	addBullet : function(bullet) {
 		this.bullets.push(bullet);
 	},
 
-	updateTanks : function(data){
-		this.tanks.forEach(function (tank) {
-			if(tank.id == data.id){
-				tank.x = data.x;
-				tank.y = data.y;
-				tank.angle = data.angle;
-				tank.shield = data.shield;
-				if(tank.shield && tank.shieldHP >= 1) {
-					tank.shieldHP -= 1;
-				} else if(tank.shield && tank.shieldHP < 1) {
-					tank.shieldHP = 0;
-				} else if(tank.shield && tank.shieldHP < 1) {
-					tank.shield = false;
+	updateSoldiers : function(data){
+		this.soldiers.forEach(function (soldier) {
+			if(soldier.id == data.id){
+				soldier.x = data.x;
+				soldier.y = data.y;
+				soldier.angle = data.angle;
+				soldier.shield = data.shield;
+				if(soldier.shield && soldier.shieldHP >= 1) {
+					soldier.shieldHP -= 1;
+				} else if(soldier.shield && soldier.shieldHP < 1) {
+					soldier.shieldHP = 0;
+				} else if(soldier.shield && soldier.shieldHP < 1) {
+					soldier.shield = false;
 				}
-				else if (!tank.shield && tank.shieldHP < 100){
-					tank.shieldHP += 0.1;
+				else if (!soldier.shield && soldier.shieldHP < 100){
+					soldier.shieldHP += 0.1;
 				}
 			}
 		});
@@ -140,27 +140,27 @@ GameServer.prototype = {
 		satBullet.rotate(1.5738 * -1);
 		//this.canvasBullet = satBullet; //XXX Just for testing
 		var game = this;
-		this.tanks.forEach(function (tank) {
-			if(bullet.userID != tank.id) {
+		this.soldiers.forEach(function (soldier) {
+			if(bullet.userID != soldier.id) {
 				var points = [];
 				points.push(new SAT.Vector(-44,-60.5));
 				points.push(new SAT.Vector(+44,-60.5));
 				points.push(new SAT.Vector(+44,+60.5));
 				points.push(new SAT.Vector(-44,+60.5));
-				var satTank = new SAT.Polygon(new SAT.Vector(tank.x+44,tank.y+60.5),points);
-				satTank.rotate(tank.angle);
-				if(tank.shield) {
-					var satShield = new SAT.Circle(new SAT.Vector((tank.x-30)+75,(tank.y-15)+75), 75);
+				var satSoldier = new SAT.Polygon(new SAT.Vector(soldier.x+44,soldier.y+60.5),points);
+				satSoldier.rotate(soldier.angle);
+				if(soldier.shield) {
+					var satShield = new SAT.Circle(new SAT.Vector((soldier.x-30)+75,(soldier.y-15)+75), 75);
 					game.canvasShield = satShield;
 					bullet.outOfBounds = SAT.testPolygonCircle(satBullet,satShield);
 				} else {
-					bullet.outOfBounds = SAT.testPolygonPolygon(satBullet,satTank);
+					bullet.outOfBounds = SAT.testPolygonPolygon(satBullet,satSoldier);
 					if(bullet.outOfBounds) {
-						tank.hp -= 10;
+						soldier.hp -= 10;
 					}	
 				}
 
-			 	//game.canvasTank = satTank; //XXX Just for testing
+			 	//game.canvasSoldier= satSoldier; //XXX Just for testing
 			}
 		});
 		
@@ -168,7 +168,7 @@ GameServer.prototype = {
 
 	getData : function(){
 		var gameData = {};
-		gameData.tanks = this.tanks;
+		gameData.soldiers = this.soldiers;
 		gameData.bullets = this.bullets;
 		return gameData;
 	},
@@ -181,9 +181,9 @@ GameServer.prototype = {
 			flag = false;
 		}
 
-		this.tanks.forEach( function(tank){
+		this.soldiers.forEach( function(soldier){
 			console.log(id);
-			if(tank.id === id) {
+			if(soldier.id === id) {
 				console.log("User already exists");
 				flag = false;
 			}
@@ -194,17 +194,17 @@ GameServer.prototype = {
 	getNameBySocketID: function (socketID) {
 		var game = this;
 		var id;
-		this.tanks.forEach(function (soilder) {
-			if(soilder.socketID === socketID) {
-				id = soilder.id;
+		this.soldiers.forEach(function (soldier) {
+			if(soldier.socketID === socketID) {
+				id = soldier.id;
 			}
 		});
 		return id;
 	},
 
-	removeTank : function(username){
-		//Remove tank object
-		this.tanks = this.tanks.filter( function(t){return t.id != username} );
+	removeSoldier : function(username){
+		//Remove soldier object
+		this.soldiers = this.soldiers.filter( function(t){return t.id != username} );
 	}, 
 
 	removeBullets : function() {
@@ -213,9 +213,9 @@ GameServer.prototype = {
 		});
 	},
 
-	removeDeadSoilders : function() {
-		this.tanks = this.tanks.filter(function(soilder) {
-			return soilder.hp > 0;
+	removeDeadSoldiers : function() {
+		this.soldiers = this.soldiers.filter(function(soldier) {
+			return soldier.hp > 0;
 		});
 	}
 }
@@ -255,9 +255,9 @@ io.on('connection', function(user) {
 			console.log(data.id," is joining the game!");
 			var initX = Math.floor(Math.random() * (800 - 10)) + 10;
 	        var initY = Math.floor(Math.random() * (350 - 10)) + 10;
-	       	user.emit('addTank', { id: data.id, local: true, x: initX, y: initY, hp: 100});
-	       	user.broadcast.emit('addTank', { id: data.id, local: false, x: initX, y: initY, hp: 100});
-	        game.addTank({id: data.id, x: initX, y: initY, hp: 100, shield : false, shieldHP: 100, socketID: user.id});
+	       	user.emit('addSoldier', { id: data.id, local: true, x: initX, y: initY, hp: 100});
+	       	user.broadcast.emit('addSoldier', { id: data.id, local: false, x: initX, y: initY, hp: 100});
+	        game.addSoldier({id: data.id, x: initX, y: initY, hp: 100, shield : false, shieldHP: 100, socketID: user.id});
 			user.emit('joinedGame', true);
 		} else {
 			user.emit('joinedGame', false);
@@ -266,18 +266,18 @@ io.on('connection', function(user) {
 	})
 
 	user.on('sync', function(data) {
-		if(data.tank != undefined) {
-			game.updateTanks(data.tank);
+		if(data.soldier != undefined) {
+			game.updateSoldiers(data.soldier);
 		}
 		//var test = [];
 		///test.push(game.canvasBullet); //XXX Just for testing
-		//test.push(game.canvasTank);//XXX Just for testing
+		//test.push(game.canvasSoldier);//XXX Just for testing
 		//test.push(game.canvasShield);
 		//user.emit('test',test); //XXX Just for testing
 		user.emit('sync', game.getData());
 		user.broadcast.emit('sync', game.getData());
 		//game.removeBullets();
-		game.removeDeadSoilders();
+		game.removeDeadSoldiers();
 		
 	})
 
@@ -286,8 +286,8 @@ io.on('connection', function(user) {
 		var timeout = false;
 		console.log("disconnect", username);
 		console.log(username + ' has left the game');
-		game.removeTank(username);
-		user.broadcast.emit('removeTank', username);
+		game.removeSoldier(username);
+		user.broadcast.emit('removeSoldier', username);
 		return client.getAsync(token).then(function(res) {
 		    try {
 		        userObject = JSON.parse(res);
@@ -306,8 +306,8 @@ io.on('connection', function(user) {
 	});
 
 	user.on('shoot', function(bullet) {
-		game.tanks.forEach(function (tank) { 
-			if(tank.id == bullet.username && !tank.shield) {
+		game.soldiers.forEach(function (soldier) { 
+			if(soldier.id == bullet.username && !soldier.shield) {
 				var bulletObj = new Bullet(bullet.username, bullet.alpha, bullet.x, bullet.y);
 				game.addBullet(bulletObj);
 			}

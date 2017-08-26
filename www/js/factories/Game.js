@@ -1,8 +1,8 @@
 angular.module('Game.factories')
-.factory('GameFactory' ,['TankFactory', 'BulletFactory',function(TankFactory, BulletFactory) {
+.factory('GameFactory' ,['SoldierFactory', 'BulletFactory',function(SoldierFactory, BulletFactory) {
 	
 	var GameFactory = function (width, height, socket) {
-		this.tanks = [];
+		this.soldiers = [];
 		this.width = width;
 		this.height = height
 		this.socket = socket;
@@ -27,7 +27,7 @@ angular.module('Game.factories')
 
 		sendData : function() {
 			var gameData = {};
-			//Send tank data
+			//Send soldier data
 			var t = {
 				id: this.local.id,
 				x: this.local.x,
@@ -35,45 +35,45 @@ angular.module('Game.factories')
 				angle: this.local.angle,
 				shield: this.local.shield
 			};
-			gameData.tank = t;
+			gameData.soldier = t;
 			this.socket.emit('sync', gameData);	
 		},
 
 		receiveData : function(serverData) {
 			
 			var game = this;
-			serverData.tanks.forEach( function(serverTank) {
-				if(game.local !== undefined && serverTank.id == game.local.id) {
-					game.local.hp = serverTank.hp;
-					game.local.shieldHP = serverTank.shieldHP;
+			serverData.soldiers.forEach( function(serverSoldier) {
+				if(game.local !== undefined && serverSoldier.id == game.local.id) {
+					game.local.hp = serverSoldier.hp;
+					game.local.shieldHP = serverSoldier.shieldHP;
 					if(game.local.hp <= 0) {
-						game.killSoilder(game.local);
+						game.killSoldier(game.local);
 						this.local = {};
 						console.log("You dead");
 						game.socket.emit('localDead');
 					}
 				}	
 				var found = false;
-				game.tanks.forEach( function(clientTank) {
-					if(clientTank.id == serverTank.id) {
-						clientTank.x = serverTank.x;
-						clientTank.y = serverTank.y;
-						clientTank.angle = serverTank.angle;
-						clientTank.hp = serverTank.hp;
-						clientTank.shield = serverTank.shield;
-						clientTank.shieldHP = serverTank.shieldHP;
-						if(clientTank.hp <= 0){
-							game.killSoilder(clientTank);
+				game.soldiers.forEach( function(clientSoldier) {
+					if(clientSoldier.id == serverSoldier.id) {
+						clientSoldier.x = serverSoldier.x;
+						clientSoldier.y = serverSoldier.y;
+						clientSoldier.angle = serverSoldier.angle;
+						clientSoldier.hp = serverSoldier.hp;
+						clientSoldier.shield = serverSoldier.shield;
+						clientSoldier.shieldHP = serverSoldier.shieldHP;
+						if(clientSoldier.hp <= 0){
+							game.killSoldier(clientSoldier);
 						}
 
-						clientTank.refresh();
+						clientSoldier.refresh();
 						found = true;
 					}
 				});
 
-				if(!found && (game.local == undefined || serverTank.id != game.local.id)) {
+				if(!found && (game.local == undefined || serverSoldier.id != game.local.id)) {
 
-					game.addTank({id : serverTank.id, local : false, x: serverTank.x, y: serverTank.y, hp: serverTank.hp});
+					game.addSoldier({id : serverSoldier.id, local : false, x: serverSoldier.x, y: serverSoldier.y, hp: serverSoldier.hp});
 				}
 			});
 		},
@@ -103,17 +103,17 @@ angular.module('Game.factories')
 
 		},
 
-		addTank : function(tankData) {
-			var tank = new TankFactory(tankData.id, tankData.local, tankData.x, tankData.y, tankData.hp, this.socket);
-			if(tank.local) {
-				this.local = tank;
+		addSoldier : function(soldierData) {
+			var soldier = new SoldierFactory(soldierData.id, soldierData.local, soldierData.x, soldierData.y, soldierData.hp, this.socket);
+			if(soldier.local) {
+				this.local = soldier;
 			} else {
-				this.tanks.push(tank);
+				this.soldiers.push(soldier);
 			}
 		},
 
-		removeTank: function(username) {
-			this.tanks = this.tanks.filter(function(t) {
+		removeSoldier: function(username) {
+			this.soldiers = this.soldiers.filter(function(t) {
 				return t.id != username
 			});
 			$('#' + username).remove();
@@ -122,9 +122,9 @@ angular.module('Game.factories')
 			$('#name'+ username).remove();
 		},
 
-		killSoilder: function(soilder) {
-			soilder.dead = true;
-			this.removeTank (soilder.id);
+		killSoldier: function(soldier) {
+			soldier.dead = true;
+			this.removeSoldier (soldier.id);
 			//TODO : Add death gif later
 		}
 	}

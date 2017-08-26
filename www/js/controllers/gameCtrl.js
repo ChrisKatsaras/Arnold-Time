@@ -71,12 +71,12 @@ angular.module('Game.controllers')
     	game.receiveData(gameServerData);
     });
 
-    socket.on('addTank',function (tank) {
-    	game.addTank(tank)
+    socket.on('addSoldier',function (soldier) {
+    	game.addSoldier(soldier)
     });
 
-    socket.on('removeTank',function (username) {
-        game.removeTank(username)
+    socket.on('removeSoldier',function (username) {
+        game.removeSoldier(username)
     });
 
     socket.on('joinedGame',function (status) {

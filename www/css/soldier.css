@@ -2,13 +2,13 @@
 	font-family: 'Black Ops One', cursive;
 }
 
-.tank{
+.soldier{
 	position: absolute;
 	background-repeat: no-repeat;
 
 }
 
-.tank1{
+.soldier1{
 	background-image: url('../img/handgun.png');
 	height: 121px;
 	width: 88px;
