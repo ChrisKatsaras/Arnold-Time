@@ -1,4 +1,5 @@
 var fs = require('fs');
+var path = require("path");
 var express = require('express');
 console.log("\nInitializing application...\n");
 var app = express(); //Registers the app as an express application
@@ -25,8 +26,11 @@ app.use(bodyParser.urlencoded({
 	extended: true
 })); 
 
-app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/');
+//Putting this before the app.get results in the app.get not being run
+app.use('/', express.static(__dirname + '/'));
+
+app.get('*',function(req,res){
+  res.sendFile(path.join(__dirname+'/'));
 });
 
 //Login endpoint
@@ -75,9 +79,6 @@ app.post('/login', function (req, res) {
 		});
 	}
 });
-
-//Putting this before the app.get results in the app.get not being run
-app.use('/', express.static(__dirname + '/'));
 
 console.log("\nInitilization complete.\n");
 
