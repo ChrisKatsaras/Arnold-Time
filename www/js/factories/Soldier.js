@@ -117,7 +117,7 @@ angular.module('Game.factories')
 					var dimensions = div.getBoundingClientRect();
 					t.mx = dimensions.left + dimensions.width / 2;
 					t.my = dimensions.top + dimensions.height / 2;
-					t.changeAngle();
+					t.changeAngle(e);
 				}
 				
 			}) .click( function() {
@@ -169,8 +169,8 @@ angular.module('Game.factories')
 			this.refresh();
 		},
 
-		changeAngle : function () {
-			this.angle = Math.atan2(event.clientY - this.my, event.clientX - this.mx) + 1.5378;
+		changeAngle : function (e) {
+			this.angle = Math.atan2(e.clientY - this.my, e.clientX - this.mx) + 1.5378;
 		},
 
 		shoot : function () {
