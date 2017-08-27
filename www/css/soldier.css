@@ -2,6 +2,10 @@
 	font-family: 'Black Ops One', cursive;
 }
 
+.instruction-font {
+	font-family: 'Lora', serif;
+}
+
 .soldier{
 	position: absolute;
 	background-repeat: no-repeat;
@@ -96,3 +100,8 @@
 	text-decoration: none!important;
 	padding: 0px 10px;
 }
+
+.instructions {
+	white-space: pre;
+}
+ 

@@ -1,36 +1,60 @@
 <div flex-xs="100">
-	<md-dialog aria-label="Login Form" flex="100">
-	  	<md-toolbar>
-	    	<div class="md-toolbar-tools">
-	      		<h1 class="primary-font">
-	       			Join the fight!
-	      		</h1>
-	    	</div>
-	  	</md-toolbar>
-
-	  	
-	  <!--Content of modal-->
-	 	<md-dialog-content class="section" layout-margin>
-	 	<img src="img/giphy.gif"/>
-			<form name="myForm" ng-submit="game.joinGame()" layout="column" layout-algin="center center">
-				<md-input-container>
-					<label>Name</label>
-						<input md-maxlength="15" ng-maxlength="15" ng-model="game.inputName" ng-model-options="{allowInvalid: true}" type="text" ng-model="mytext" required ng-pattern="/^[A-Za-z-]+$/" placeholder="Name"/>
-				</md-input-container>
-				
-			</form>
-			<p ng-if="game.countdown > -1">
-				<font color="red">You must wait </font>
-				<b ng-bind="game.countdown"></b> 
-				<font color="red"> seconds before you can play</font>
-			</p>
-			<p ng-if="game.errorMessage != null">
-				<font color="red">{{game.errorMessage}}</font>
-			</p>
-	 	</md-dialog-content>
-	  	<!--Button at bottom of modal-->
-	  	<md-dialog-actions>
-	    	<md-button class="md-raised md-primary" ng-click="game.joinGame()" ng-disabled="myForm.$invalid || myForm.$pending">Send</button>
-	 	</md-dialog-actions>
+	<md-dialog aria-label="Form" flex="100">
+		<md-toolbar>
+    		<div class="md-toolbar-tools">
+      			<h1 class="primary-font">
+       				Join the fight!
+      			</h1>
+    		</div>
+  		</md-toolbar>
+		<md-dialog-content>
+  			<md-tabs md-dynamic-height md-border-bottom>
+        		<md-tab label="Join">
+          			<md-content class="md-padding">
+          				<img src="img/giphy.gif"/>
+						<form name="myForm" ng-submit="game.joinGame()" layout="column" layout-algin="center center">
+							<md-input-container>
+								<label>Name</label>
+									<input md-maxlength="15" ng-maxlength="15" ng-model="game.inputName" ng-model-options="{allowInvalid: true}" type="text" ng-model="mytext" required ng-pattern="/^[A-Za-z-]+$/" placeholder="Name"/>
+							</md-input-container>	
+						</form>
+						<p ng-if="game.countdown > -1">
+							<font color="red">You must wait </font>
+							<b ng-bind="game.countdown"></b> 
+							<font color="red"> seconds before you can play</font>
+						</p>
+						<p ng-if="game.errorMessage != null">
+							<font color="red">{{game.errorMessage}}</font>
+						</p>
+          			</md-content>
+          			<md-dialog-actions>
+				    	<md-button class="md-raised md-primary" ng-click="game.joinGame()" ng-disabled="myForm.$invalid || myForm.$pending">Send</button>
+			 		</md-dialog-actions>
+        		</md-tab>
+        		<md-tab label="How to play">
+     			<md-content class="md-padding" layout-align="center center">   
+<span><b>Move using:</b></span>
+<pre>    
+<span class="dark-keys">
+   <kbd>W</kbd>
+<kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
+</span>
+</pre> 
+<span><b>Activate shield holding:</b></span>
+<pre>
+<span class="dark-keys">
+<kbd>spacebar</kbd>
+</span>
+</pre>  
+<span><b>Rotate soldier using mouse</b></span> 
+<pre><img src="img/mouseMove.png"/></pre>
+<span><b>Left click to shoot</b></span> 
+<pre>
+<img src="img/mouseClick.png"/>
+</pre>
+          			</md-content>
+        		</md-tab>
+      		</md-tabs>
+    	</md-dialog-content>
 	</md-dialog>
 </div>
