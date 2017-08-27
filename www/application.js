@@ -260,6 +260,13 @@ io.on('connection', function(user) {
 	       	user.broadcast.emit('addSoldier', { id: data.id, local: false, x: initX, y: initY, hp: 100});
 	        game.addSoldier({id: data.id, x: initX, y: initY, hp: 100, shield : false, shieldHP: 100, socketID: user.id});
 			user.emit('joinedGame', true);
+
+			if(game.soldiers.length == 1) {
+				user.emit('alone', true);
+			} else {
+				user.emit('alone', false);
+				user.broadcast.emit('alone', false);
+			}
 		} else {
 			user.emit('joinedGame', false);
 		}
@@ -289,6 +296,11 @@ io.on('connection', function(user) {
 		console.log(username + ' has left the game');
 		game.removeSoldier(username);
 		user.broadcast.emit('removeSoldier', username);
+		if(game.soldiers.length == 1) {
+			user.broadcast.emit('alone', true);
+		} else {
+			user.broadcast.emit('alone', false);
+		}
 		return client.getAsync(token).then(function(res) {
 		    try {
 		        userObject = JSON.parse(res);

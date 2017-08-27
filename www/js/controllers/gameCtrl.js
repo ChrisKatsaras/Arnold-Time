@@ -1,25 +1,26 @@
 angular.module('Game.controllers')
-.controller('GameCtrl', ['$http', '$location', '$mdDialog', '$mdPanel', '$scope', '$timeout', 'GameFactory', function($http, $location, $mdDialog, $mdPanel, $scope, $timeout, GameFactory) {
+.controller('GameCtrl', ['$http', '$location', '$mdDialog', '$mdPanel', '$mdToast', '$scope', '$timeout', 'GameFactory', function($http, $location, $mdDialog, $mdPanel, $mdToast, $scope, $timeout, GameFactory) {
     this._mdPanel = $mdPanel;
     var client = this;
     var socket = io.connect();
     var game;
     var username = null;
     var userToken = null;
-    //var loadingScreen = pleaseWait({
-      //logo: "img/ArnoldTime.png",
-      //backgroundColor: '#ffffff',
-      //loadingHtml: "<div class='sk-folding-cube'><div class='sk-cube1 sk-cube'></div><div class='sk-cube2 sk-cube'></div><div class='sk-cube4 sk-cube'></div><div class='sk-cube3 sk-cube'></div></div>"
-    //});
+    new Clipboard('.btn');
+    var loadingScreen = pleaseWait({
+      logo: "img/ArnoldTime.png",
+      backgroundColor: '#ffffff',
+      loadingHtml: "<div class='sk-folding-cube'><div class='sk-cube1 sk-cube'></div><div class='sk-cube2 sk-cube'></div><div class='sk-cube4 sk-cube'></div><div class='sk-cube3 sk-cube'></div></div>"
+    });
     client.countdown = -1;
     client.inputName;
     client.errorMessage = null;
     game = new GameFactory(1000, 500, socket);
 
    	client.init = function(ev) {
-      //  setTimeout(function() { 
-        //    loadingScreen.finish();
-        //}, 2500);
+        setTimeout(function() { 
+            loadingScreen.finish();
+        }, 2500);
 
         $mdDialog.show({
             templateUrl: 'templates/modal.html',
@@ -94,11 +95,29 @@ angular.module('Game.controllers')
         }
     });
 
-    socket.on('deadModal', function () {
+    socket.on('alone', function (status) {
+        if(status) {
+            $mdToast.show({
+              hideDelay   : 0,
+              position    : 'top right',
+              parent: angular.element(document.body),
+              controller: 'ToastCtrl',
+              controllerAs: 'toast',
+              templateUrl : 'templates/inviteFriends.html'
+            });
+            console.log("Opening modal")
+        } else {
+             $mdToast.cancel();
+             console.log("closing modal")
+        }
+        
+    });
+
+    socket.on('deadModal', function (ev) {
         $mdDialog.show({
             templateUrl: 'templates/deadModal.html',
             parent: angular.element(document.body),
-            targetEvent: event,
+            targetEvent: ev,
             controller: () => this,
             controllerAs: 'game',
             clickOutsideToClose: false,
