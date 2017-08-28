@@ -2,7 +2,8 @@ angular.module('Game.controllers')
 .controller('GameCtrl', ['$http', '$location', '$mdDialog', '$mdPanel', '$mdToast', '$scope', '$timeout', 'GameFactory', function($http, $location, $mdDialog, $mdPanel, $mdToast, $scope, $timeout, GameFactory) {
     this._mdPanel = $mdPanel;
     var client = this;
-    var socket = io.connect();
+    //var socket = io.connect();
+    var socket = new io("ws://arnoldtime.com:3000/");
     var game;
     var username = null;
     var userToken = null;
