@@ -106,10 +106,8 @@ angular.module('Game.controllers')
               controllerAs: 'toast',
               templateUrl : 'templates/inviteFriends.html'
             });
-            console.log("Opening modal")
         } else {
              $mdToast.cancel();
-             console.log("closing modal")
         }
         
     });

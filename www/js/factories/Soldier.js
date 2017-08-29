@@ -129,7 +129,6 @@ angular.module('Game.factories')
 						clickDisabled = false;
 					}, 500);
 				}
-				
 			})
 		},
 
