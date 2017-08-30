@@ -110,7 +110,11 @@ angular.module('Game.factories')
 			}, function(e) {
 			  t.shield = false;
 			});
-			$(document).mousemove( function(e) {
+			$("#toast").on("click", function(event){
+			  event.stopPropagation();
+			  console.log( "I was clicked, but my parent will not be." );
+			});
+			$('#field').mousemove( function(e) {
 				var div = document.querySelector("#"+t.id);
 				//If the soldier isn't dead
 				if(div != null) {
