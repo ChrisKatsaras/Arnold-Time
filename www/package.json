@@ -5,20 +5,29 @@
     "async": "^2.5.0",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
+    "chai": "^4.1.2",
     "chalk": "^2.1.0",
     "clipboard": "^1.7.1",
-    "express": "4.10.2",
+    "express": "^4.10.2",
     "express-fingerprint": "^1.1.1",
     "fingerprintjs2": "^1.5.1",
     "keyboardjs": "^2.3.3",
+    "mocha": "^3.5.0",
     "ng-toast": "^2.0.0",
     "path": "^0.12.7",
     "please-wait": "0.0.5",
     "profanity-util": "^0.2.0",
     "redis": "^2.8.0",
     "redis-server": "^1.1.0",
+    "request": "^2.81.0",
     "sat": "^0.6.0",
     "socket.io": "^2.0.3",
     "ua-parser-js": "^0.7.14"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "devDependencies": {
+    "supertest": "^3.0.0"
   }
 }
