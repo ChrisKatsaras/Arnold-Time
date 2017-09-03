@@ -35,7 +35,6 @@ app.get('*',function(req,res){
 
 //Login endpoint
 app.post('/login', function (req, res) {
-	
 	var parser = new UAParser();
   	var ua = req.headers['user-agent'];
   	var browserName = parser.setUA(ua).getBrowser().name;

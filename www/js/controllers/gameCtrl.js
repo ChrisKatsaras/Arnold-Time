@@ -37,7 +37,6 @@ angular.module('Game.controllers')
 
     client.joinGame = function() {
         if(client.inputName.length <= 15 && client.countdown <= 0) {
-            //client.errorMessage = null;
             new Fingerprint2().get(function(result, components){         
                 $http.post('/login',{id: client.inputName, token: userToken, fp: result}).
                 success(function(data) {
