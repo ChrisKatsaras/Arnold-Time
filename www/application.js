@@ -36,6 +36,8 @@ app.get('*',function(req,res){
 
 //Login endpoint
 app.post('/login', function (req, res) {
+
+	var regExp = new RegExp(/^[a-zA-Z-]+$/);
 	var parser = new UAParser();
   	var ua = req.headers['user-agent'];
   	var browserName = parser.setUA(ua).getBrowser().name;
@@ -46,6 +48,8 @@ app.post('/login', function (req, res) {
 	if(req.body.id.length > 15) {
 		res.sendStatus(400);
 	} else if(!game.checkID(req.body.id)) {
+		res.status(400).send("Username already taken");
+	} else if(req.body.id === "field" || !regExp.test(req.body.id)) {
 		res.status(400).send("Invalid username");
 	} else if(profanity.check(req.body.id).length != 0) {
 		res.status(400).send("No swearing, please");
@@ -107,7 +111,7 @@ GameServer.prototype = {
 
 	updateSoldiers : function(data){
 		this.soldiers.forEach(function (soldier) {
-			if(soldier.id == data.id){
+			if(soldier.id == data.id) {
 				soldier.x = data.x;
 				soldier.y = data.y;
 				soldier.angle = data.angle;
@@ -119,7 +123,7 @@ GameServer.prototype = {
 				} else if(soldier.shield && soldier.shieldHP < 1) {
 					soldier.shield = false;
 				}
-				else if (!soldier.shield && soldier.shieldHP < 100){
+				else if (!soldier.shield && soldier.shieldHP < 100) {
 					soldier.shieldHP += 0.1;
 				}
 			}
@@ -174,7 +178,7 @@ GameServer.prototype = {
 		
 	},
 
-	getData : function(){
+	getData : function() {
 		var gameData = {};
 		gameData.soldiers = this.soldiers;
 		gameData.bullets = this.bullets;
@@ -182,21 +186,14 @@ GameServer.prototype = {
 	},
 
 	checkID : function(id) {
-		var flag = true;
-		var regExp = new RegExp(/^[a-zA-Z-]+$/);
-
-		if(id === "field" || !regExp.test(id)) {
-			flag = false;
-		}
-
-		this.soldiers.forEach( function(soldier){
-			console.log(id);
-			if(soldier.id === id) {
-				console.log("User already exists");
-				flag = false;
+		var flag;
+		for(i=0;i<this.soldiers.length;i++) {
+			if(this.soldiers[i].id === id) {
+				console.log(chalk.red('Username already taken'));
+				return false;
 			}
-		});
-		return flag;
+		}
+		return true;
 	},
 
 	getNameBySocketID: function (socketID) {
@@ -210,7 +207,7 @@ GameServer.prototype = {
 		return id;
 	},
 
-	removeSoldier : function(username){
+	removeSoldier : function(username) {
 		//Remove soldier object
 		this.soldiers = this.soldiers.filter( function(t){return t.id != username} );
 	}, 

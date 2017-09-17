@@ -32,7 +32,7 @@ angular.module('Game.factories')
 
 	SoldierFactory.prototype = { 
 
-		draw : function(){
+		draw : function() {
 			var div = angular.element('<div id="'+this.id+'"class="soldier soldier1"><div id="holder-'+this.id+'" class="point"></div><div id="shield'+this.id+'" class="shield"></div></div>');
 			var healthbar = angular.element('<div id="health-bar'+this.id+'"class="health-bar"><div id="health-bar-glass'+this.id+'" class="health-bar-glass"><div id="health-bar-fluid'+this.id+'" class="health-bar-fluid"></div></div></div>');
 			var shieldbar = angular.element('<div id="shield-bar'+this.id+'"class="health-bar"><div id="shield-bar-glass'+this.id+'" class="health-bar-glass"><div id="shield-bar-fluid'+this.id+'" class="shield-bar-fluid"></div></div></div>');
@@ -110,10 +110,7 @@ angular.module('Game.factories')
 			}, function(e) {
 			  t.shield = false;
 			});
-			$("#toast").on("click", function(event){
-			  event.stopPropagation();
-			  console.log( "I was clicked, but my parent will not be." );
-			});
+
 			$('#field').mousemove( function(e) {
 				var div = document.querySelector("#"+t.id);
 				//If the soldier isn't dead

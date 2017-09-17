@@ -7,6 +7,7 @@ angular.module('Game.controllers')
     var game;
     var username = null;
     var userToken = null;
+    var userRegex = new RegExp(/^[a-zA-Z-]+$/);
     new Clipboard('.btn');
     var loadingScreen = pleaseWait({
       logo: "img/ArnoldTime.png",
@@ -37,7 +38,8 @@ angular.module('Game.controllers')
 
 
     client.joinGame = function() {
-        if(client.inputName.length <= 15 && client.countdown <= 0) {
+
+        if(client.inputName.length <= 15 && client.countdown <= 0 && client.inputName != "field" && userRegex.test(client.inputName)) {
             new Fingerprint2().get(function(result, components){         
                 $http.post('/login',{id: client.inputName, token: userToken, fp: result}).
                 success(function(data) {
@@ -56,7 +58,9 @@ angular.module('Game.controllers')
             
         } else {
             if(client.inputName.length > 15) {
-                client.errorMessage = "Name is too long!"
+                client.errorMessage = "Username is too long";
+            } else if(client.inputName == "field" || !userRegex.test(client.inputName)) {
+                client.errorMessage = "Invalid username";
             }
         }
     }

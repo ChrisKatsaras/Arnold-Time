@@ -85,7 +85,7 @@ angular.module('Game.factories')
 				}
 			
 			});
-			var ids = $("div[id^='bullet']").map(function(){
+			var ids = $("div[id^='bullet']").map(function() {
     			return this.id;
 			}).get();
 			test = bullets;
