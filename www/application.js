@@ -13,6 +13,7 @@ var chalk = require('chalk'); //For coloured console output
 var bluebird = require("bluebird"); //Used for promises with Redis requests
 var profanity = require( 'profanity-util', { substring: "lite" } );
 var UAParser = require('ua-parser-js');
+var debugMode = false;
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
@@ -44,6 +45,8 @@ app.post('/login', function (req, res) {
     //If the username exceeds the maximum length
 	if(req.body.id.length > 15) {
 		res.sendStatus(400);
+	} else if(!game.checkID(req.body.id)) {
+		res.status(400).send("Invalid username");
 	} else if(profanity.check(req.body.id).length != 0) {
 		res.status(400).send("No swearing, please");
 	} else if((browserName == 'Firefox' && browserVersion <= 24) || (browserName == 'Chrome' && browserVersion <= 29) || (browserName == 'Safari' && browserVersion <= 5)) {
@@ -86,9 +89,11 @@ var GameServer = function () {
 	this.soldiers = [];
 	this.bullets = [];
 	this.bulletID = 0; //Keeps track of bullets
-	this.canvasBullet; //XXX Just for testing
-	this.canvasSoldier; //XXX Just for testing
-	this.canvasShield; //XXX Just for testing
+	if(debugMode) {
+		this.canvasBullet; //XXX Just for testing
+		this.canvasSoldier; //XXX Just for testing
+		this.canvasShield; //XXX Just for testing
+	}
 }
 
 GameServer.prototype = {
@@ -136,10 +141,12 @@ GameServer.prototype = {
 	//Sat-JS library handles the collision detection for me due to the fact that rotated polygons can be tricky to calculate collision for
 	bulletCollision : function(bullet) {
 		var satBullet = new SAT.Box(new SAT.Vector(bullet.x,bullet.y), 20, 12).toPolygon();
+		var game = this;
 		satBullet.rotate(bullet.alpha);
 		satBullet.rotate(1.5738 * -1);
-		//this.canvasBullet = satBullet; //XXX Just for testing
-		var game = this;
+		if(debugMode) {
+			this.canvasBullet = satBullet; //XXX Just for testing
+		}
 		this.soldiers.forEach(function (soldier) {
 			if(bullet.userID != soldier.id) {
 				var points = [];
@@ -159,8 +166,9 @@ GameServer.prototype = {
 						soldier.hp -= 10;
 					}	
 				}
-
-			 	//game.canvasSoldier= satSoldier; //XXX Just for testing
+				if(debugMode) {
+					game.canvasSoldier= satSoldier; //XXX Just for testing
+				}	
 			}
 		});
 		
@@ -247,6 +255,7 @@ io.on('connection', function(user) {
   		token = buffer.toString('hex');
   		client.set(token, user.id, function(err, reply) {
   			user.emit('userToken', token);
+  			user.emit('debug', debugMode);
   		});
 	});
 
@@ -273,17 +282,21 @@ io.on('connection', function(user) {
 	})
 
 	user.on('sync', function(data) {
+
 		if(data.soldier != undefined) {
 			game.updateSoldiers(data.soldier);
 		}
-		//var test = [];
-		///test.push(game.canvasBullet); //XXX Just for testing
-		//test.push(game.canvasSoldier);//XXX Just for testing
-		//test.push(game.canvasShield);
-		//user.emit('test',test); //XXX Just for testing
+
+		if(debugMode) {
+			var test = [];
+			test.push(game.canvasBullet); //XXX Just for testing
+			test.push(game.canvasSoldier);//XXX Just for testing
+			test.push(game.canvasShield);
+			user.emit('test',test); //XXX Just for testing
+		}
+		
 		user.emit('sync', game.getData());
 		user.broadcast.emit('sync', game.getData());
-		//game.removeBullets();
 		game.removeDeadSoldiers();
 		
 	})

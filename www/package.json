@@ -21,6 +21,7 @@
     "redis-server": "^1.1.0",
     "request": "^2.81.0",
     "sat": "^0.6.0",
+    "should": "^13.0.1",
     "socket.io": "^2.0.3",
     "ua-parser-js": "^0.7.14"
   },

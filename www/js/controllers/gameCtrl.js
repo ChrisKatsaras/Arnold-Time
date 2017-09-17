@@ -2,8 +2,8 @@ angular.module('Game.controllers')
 .controller('GameCtrl', ['$http', '$location', '$mdDialog', '$mdPanel', '$mdToast', '$scope', '$timeout', 'GameFactory', function($http, $location, $mdDialog, $mdPanel, $mdToast, $scope, $timeout, GameFactory) {
     this._mdPanel = $mdPanel;
     var client = this;
-    //var socket = io.connect();
-    var socket = new io("ws://arnoldtime.com:3000/");
+    var socket = io.connect();
+    //var socket = new io("ws://arnoldtime.com:3000/");
     var game;
     var username = null;
     var userToken = null;
@@ -16,6 +16,7 @@ angular.module('Game.controllers')
     client.countdown = -1;
     client.inputName;
     client.errorMessage = null;
+    client.debug = false;
     game = new GameFactory(1000, 500, socket);
 
    	client.init = function(ev) {
@@ -127,9 +128,8 @@ angular.module('Game.controllers')
         game.updateBullets(bullets);
     });
 
-    //XXX Just for testing
-    /*socket.on('test',function (status) {
-        //console.log("TEST!",status);
+    socket.on('test',function (status) {
+        client.debug = true;
         var canvas = document.getElementById("c");
         var canvasWidth = canvas.width;
         var canvasHeight = canvas.height;
@@ -158,13 +158,11 @@ angular.module('Game.controllers')
             ctx.fill();
         8}
         if(status[2] != null) {
-            console.log("we here");
              ctx.fillStyle = 'rgba(22,144,0,0.5)';
              ctx.beginPath();
              ctx.arc(status[2].pos.x,status[2].pos.y,75,0,1.5*Math.PI);
              ctx.stroke;
              ctx.fill();
         }
-
-    });*/
+    });
 }]);
