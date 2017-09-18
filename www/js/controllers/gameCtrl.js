@@ -86,12 +86,7 @@ angular.module('Game.controllers')
     });
 
     socket.on('joinedGame',function (status) {
-        if(status) {
-            $mdDialog.cancel();
-        } else {
-            var audio = new Audio('audio/dontdothat.mp3');//LOL
-            audio.play();
-        }
+        $mdDialog.cancel();
     });
 
     socket.on('userToken', function (token) {

@@ -257,25 +257,19 @@ io.on('connection', function(user) {
 	});
 
 	user.on('joinGame', function(data) {	
-		if(game.checkID(data.id)) {
-			console.log(data.id," is joining the game!");
-			var initX = Math.floor(Math.random() * (800 - 10)) + 10;
-	        var initY = Math.floor(Math.random() * (350 - 10)) + 10;
-	       	user.emit('addSoldier', { id: data.id, local: true, x: initX, y: initY, hp: 100});
-	       	user.broadcast.emit('addSoldier', { id: data.id, local: false, x: initX, y: initY, hp: 100});
-	        game.addSoldier({id: data.id, x: initX, y: initY, hp: 100, shield : false, shieldHP: 100, socketID: user.id});
-			user.emit('joinedGame', true);
+		var initX = Math.floor(Math.random() * (800 - 10)) + 10;
+        var initY = Math.floor(Math.random() * (350 - 10)) + 10;
+       	user.emit('addSoldier', { id: data.id, local: true, x: initX, y: initY, hp: 100});
+       	user.broadcast.emit('addSoldier', { id: data.id, local: false, x: initX, y: initY, hp: 100});
+        game.addSoldier({id: data.id, x: initX, y: initY, hp: 100, shield : false, shieldHP: 100, socketID: user.id});
+		user.emit('joinedGame', true);
 
-			if(game.soldiers.length == 1) {
-				user.emit('alone', true);
-			} else {
-				user.emit('alone', false);
-				user.broadcast.emit('alone', false);
-			}
+		if(game.soldiers.length == 1) {
+			user.emit('alone', true);
 		} else {
-			user.emit('joinedGame', false);
-		}
-		
+			user.emit('alone', false);
+			user.broadcast.emit('alone', false);
+		}		
 	})
 
 	user.on('sync', function(data) {
