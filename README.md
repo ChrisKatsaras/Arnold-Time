@@ -1,6 +1,6 @@
 # ARNOLD TIME!:fire:
-A simple online shooter to play with your friends
-
+**In development!**  
+A simple online shooter to play with your friends  
 ## Controls
 
 ### Move:
