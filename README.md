@@ -1,5 +1,5 @@
 # ARNOLD TIME!:fire:
-**In development!**  
+**Project has been Archived**  
 A simple online shooter to play with your friends  
 ## Controls
 
